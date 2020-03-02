@@ -5,4 +5,12 @@
     <string name="forgot_password">Forgot Password</string>
     <string name="signin">Sign In</string>
     <string name="signup">Sign Up</string>
+    <string name="edt_nama">Name</string>
+    <string name="edt_fistname">First Name</string>
+    <string name="edt_lastname">Last Name</string>
+    <string name="edt_confrimpassword">Confirm Password</string>
+    <string name="edt_dob">Date of Birth</string>
+    <string name="edt_phone">Phone Number</string>
+    <string name="female">Female</string>
+    <string name="male">Male</string>
 </resources>
