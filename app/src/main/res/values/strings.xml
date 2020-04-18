@@ -13,4 +13,7 @@
     <string name="edt_phone">Phone Number</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
+    <string name="recommended">Recommended</string>
+    <string name="jobs">Jobs</string>
+    <string name="events">Events</string>
 </resources>

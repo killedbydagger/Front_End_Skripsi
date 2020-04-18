@@ -10,6 +10,7 @@ import android.widget.TextView;
 public class LoginActivity extends AppCompatActivity {
 
     TextView tvSignup;
+    Button btSignin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,15 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent singupIntent = new Intent(getApplicationContext(),SignupActivity.class);
                 startActivity(singupIntent);
+            }
+        });
+
+        btSignin = findViewById(R.id.btn_signin);
+        btSignin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signinIntent = new Intent(getApplicationContext(),MainMenu.class);
+                startActivity(signinIntent);
             }
         });
     }
