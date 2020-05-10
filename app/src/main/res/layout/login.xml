@@ -29,24 +29,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginLeft="20sp"
+            android:layout_marginRight="20sp">
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="50sp"
                 android:hint="@string/edt_email"
                 android:background="@drawable/edit_text_card"
-                android:paddingHorizontal="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:paddingHorizontal="10sp"
+                android:layout_marginBottom="10sp"/>
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="50sp"
                 android:hint="@string/edt_password"
                 android:background="@drawable/edit_text_card"
-                android:paddingHorizontal="10dp"
-                android:layout_marginBottom="10dp"/>
+                android:paddingHorizontal="10sp"
+                android:layout_marginBottom="10sp"/>
 
             <Button
                 android:id="@+id/btn_signin"
@@ -55,16 +55,16 @@
                 android:text="@string/signin"
                 android:background="@drawable/button_login_card"
                 android:textColor="@color/colorWhite"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"/>
+                android:layout_marginBottom="10sp"
+                android:layout_marginTop="10sp"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/forgot_password"
                 android:gravity="center"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_marginTop="10sp"
+                android:layout_marginBottom="5sp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -74,7 +74,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="1dp"
+                    android:layout_height="1sp"
                     android:background="@color/colorWhite"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"/>
@@ -88,7 +88,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="1dp"
+                    android:layout_height="1sp"
                     android:background="@color/colorWhite"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"/>
@@ -100,8 +100,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/signup"
                 android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="10dp"/>
+                android:layout_marginTop="5sp"
+                android:layout_marginBottom="10sp"/>
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

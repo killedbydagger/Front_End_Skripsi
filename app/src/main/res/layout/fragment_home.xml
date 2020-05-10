@@ -14,11 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text= "@string/recommended"
-            android:textSize="16dp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
-            android:layout_marginVertical="15dp"/>
+            android:layout_marginVertical="15sp"/>
 
     </LinearLayout>
 
