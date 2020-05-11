@@ -11,10 +11,14 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -60,6 +64,7 @@ public class SignupActivity extends AppCompatActivity {
     private Button btn_signup;
     private RadioButton rb_gender;
     private String tanggal;
+    CheckBox cb_showPassword;
 
     Map<String, Boolean> validationChecks = new HashMap<>();
 
@@ -89,6 +94,22 @@ public class SignupActivity extends AppCompatActivity {
         rb_genderGroup = (RadioGroup) findViewById(R.id.rb_genderGroup);
 
         viewDialog = new ViewDialog(SignupActivity.this);
+
+        cb_showPassword = (CheckBox) findViewById(R.id.cb_showPassword);
+
+        cb_showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    et_confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+                else{
+                    et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    et_confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+        });
 
         et_firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -147,6 +168,14 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDateDialog();
+
+            }
+        });
+
+        mDisplayDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                validateDate();
             }
         });
 
@@ -165,7 +194,6 @@ public class SignupActivity extends AppCompatActivity {
                 if (!validationChecks.containsValue(false)){
                     viewDialog.showDialog();
                     try {
-                        Log.d(TAG, "onClick: EWOI ANIJINGDGDSFDS");
                         submit();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -226,13 +254,21 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void validatePhoneNumber(){
+
         if(et_phoneNumber.getText().toString().isEmpty()){
             et_phoneNumber.setError("Field can't be empty");
             validationChecks.put("Phone", false);
         }
         else{
-            et_phoneNumber.setError(null);
-            validationChecks.put("Phone", true);
+            String first = et_phoneNumber.getText().toString().substring(0,1);
+            if(first.equals("0")){
+                et_phoneNumber.setError("Phone number can't start with 0");
+                validationChecks.put("Phone", false);
+            }
+            else{
+                et_phoneNumber.setError(null);
+                validationChecks.put("Phone", true);
+            }
         }
     }
 
@@ -324,7 +360,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public Map<String,String> getHeaders() throws AuthFailureError {
                 final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","applicatiom/json");
+                params.put("Context-Type","application/json");
                 return params;
             }
     };

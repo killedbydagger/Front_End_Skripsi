@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".loading"></activity>
+        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".loading" />
         <activity
             android:name=".MainMenu"
             android:theme="@style/AppTheme.NoActionBar" />

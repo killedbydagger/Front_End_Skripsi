@@ -16,4 +16,13 @@
     <string name="recommended">Recommended</string>
     <string name="jobs">Jobs</string>
     <string name="events">Events</string>
+    <string name="dont">Don\'t have an account?</string>
+    <string name="nomor">+62</string>
+    <string name="show">Show Password</string>
+    <string name="profile">Profile</string>
+    <string name="edit">Edit Profile</string>
+    <string name="portfolio">Portfolio</string>
+    <string name="save">save</string>
+    <string name="profileFoto">Profile photo</string>
+    <string name="firstName">First name</string>
 </resources>
