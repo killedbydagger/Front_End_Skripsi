@@ -17,10 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TableLayout;
+import android.widget.TextView;
 
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
+
 
     @Nullable
     @Override
@@ -31,22 +33,17 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ViewPager viewPager = view.findViewById(R.id.viewpager);
 
-        setupViewPager(viewPager);
-        TabLayout tabs = view.findViewById(R.id.tabs);
-
-        tabs.setupWithViewPager(viewPager);
     }
 
-    private void setupViewPager (ViewPager viewPager){
-        SectionPagerAdapter adapter = new SectionPagerAdapter(getChildFragmentManager());
-
-        adapter.addFragment(new JobsFragment() , "Jobs");
-        adapter.addFragment(new EventsFragment(), "Events");
-
-        viewPager.setAdapter(adapter);
-    }
+//    private void setupViewPager (ViewPager viewPager){
+//        SectionPagerAdapter adapter = new SectionPagerAdapter(getChildFragmentManager());
+//
+//        adapter.addFragment(new JobsFragment() , "Jobs");
+//        adapter.addFragment(new EventsFragment(), "Events");
+//
+//        viewPager.setAdapter(adapter);
+//    }
 
 
 }

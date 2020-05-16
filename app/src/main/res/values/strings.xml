@@ -24,5 +24,21 @@
     <string name="portfolio">Portfolio</string>
     <string name="save">save</string>
     <string name="profileFoto">Profile photo</string>
-    <string name="firstName">First name</string>
+    <string name="lastEducation">Last Education</string>
+    <string name="lokasi">Location</string>
+    <string name="description">Description about yourself</string>
+    <string name="upload">Upload</string>
+    <string name="uploadYourFile">Upload your file</string>
+    <string name="setRecommendation">Set Recommendation</string>
+    <string name="category">Category</string>
+    <string name="categoryOptional">Category (optional)</string>
+    <string name="done">Done</string>
+    <string name="filter">Filter</string>
+    <string name="search">Search</string>
+    <string name="searchKeyword">Search title, keyword or company</string>
+    <string name="forgetWord1">Your email must be the same as the one</string>
+    <string name="forgetWord2">you used to be register yourself</string>
+    <string name="sendReset">Send reset password email</string>
+    <string name="or">OR</string>
+    <string name="minimumSalary">Minimum salary</string>
 </resources>

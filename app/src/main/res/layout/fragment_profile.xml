@@ -83,18 +83,25 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5sp"
                             android:text="TextView"
-                            android:textSize="15sp"
+                            android:textSize="18sp"
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/tempat"
+                            android:id="@+id/dob"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
                             android:textSize="15sp"/>
 
                         <TextView
-                            android:id="@+id/daerah"
+                            android:id="@+id/pendidikanTerakhir"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="TextView"
+                            android:textSize="15sp"/>
+
+                        <TextView
+                            android:id="@+id/lokasi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"

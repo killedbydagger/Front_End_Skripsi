@@ -7,13 +7,24 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import java.util.HashMap;
 
 public class MainMenu extends AppCompatActivity {
+
+    SessionManager sessionManager;
+    TextView email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        email = findViewById(R.id.et_email);
+
+        sessionManager = new SessionManager(this);
+        sessionManager.checkLogin();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);

@@ -22,37 +22,11 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/action"
-        app:tabIndicatorColor="@color/colorPrimary"
-        app:tabTextColor="@color/colorBlack">
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/jobs"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/jobs" />
-
-        <android.support.design.widget.TabItem
-            android:id="@+id/events"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/events" />
-    </android.support.design.widget.TabLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_below="@+id/tabs">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v4.view.ViewPager>
+        android:layout_below="@id/action"></LinearLayout>
 
-    </LinearLayout>
+
 </RelativeLayout>

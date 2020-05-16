@@ -23,25 +23,31 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextView tvSignup;
+    TextView tvSignup, tvForgot;
     Button btSignin;
     EditText et_email, et_password;
     CheckBox cb_showPassword;
 
     ViewDialog viewDialog;
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        sessionManager = new SessionManager(this);
 
         et_email = (EditText) findViewById(R.id.et_email);
         et_password = (EditText) findViewById(R.id.et_password);
@@ -50,11 +56,22 @@ public class LoginActivity extends AppCompatActivity {
         viewDialog = new ViewDialog(LoginActivity.this);
 
         tvSignup = findViewById(R.id.tv_signup);
+        tvForgot = findViewById(R.id.tv_forgotPassword);
+
+
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent singupIntent = new Intent(getApplicationContext(),SignupActivity.class);
                 startActivity(singupIntent);
+            }
+        });
+
+        tvForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent forgotIntent = new Intent(getApplicationContext(),ForgotPassword.class);
+                startActivity(forgotIntent);
             }
         });
 
@@ -85,11 +102,11 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void login(String email, String password) throws JSONException {
+    private void login(final String email, String password) throws JSONException {
         Context mContext = LoginActivity.this;
 
         String URL = "http://25.54.110.177:8095/User/getUserLogIn";
-        JSONObject jsonBody = new JSONObject();
+        final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email",email);
         jsonBody.put("password",password);
 
@@ -98,15 +115,35 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
+                    JSONArray jsonArray = response.getJSONArray("data");
 
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
-                        Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
-                        startActivity(singinIntent);
+
+                        for(int i = 0;i<jsonArray.length();i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String id = object.getString("user_id");
+                            String email = object.getString("user_email");
+                            String name = object.getString("user_name");
+                            String phone = object.getString("user_phone");
+                            String gender = object.getString("user_gender");
+                            String dateOfBirth = object.getString("user_dateOfBirth");
+                            String description = object.getString("user_description");
+                            String user_status = object.getString("user_status");
+
+                            sessionManager.createSession(id,email,name,phone,gender,dateOfBirth,description,user_status);
+
+                            Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
+                            startActivity(singinIntent);
+
+                        }
+
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
