@@ -41,4 +41,6 @@
     <string name="sendReset">Send reset password email</string>
     <string name="or">OR</string>
     <string name="minimumSalary">Minimum salary</string>
+    <string name="viewFile">View file</string>
+    <string name="addPortfolio">Add portfolio</string>
 </resources>

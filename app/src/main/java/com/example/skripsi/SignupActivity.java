@@ -379,7 +379,8 @@ public class SignupActivity extends AppCompatActivity {
 
         jsonBody.put("email", et_email.getText().toString());
         jsonBody.put("password", et_password.getText().toString());
-        jsonBody.put("name", et_firstName.getText().toString() + " " + et_lastName.getText().toString());
+        jsonBody.put("first_name", et_firstName.getText().toString());
+        jsonBody.put("last_name", et_lastName.getText().toString());
         jsonBody.put("phone", "62" + et_phoneNumber.getText().toString());
         jsonBody.put("gender", rb_gender.getText().toString());
         jsonBody.put("dateOfBirth", tanggal);

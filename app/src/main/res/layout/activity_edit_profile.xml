@@ -265,10 +265,10 @@
                     android:layout_height="50sp"
                     android:textSize="18sp"
                     android:gravity="center_vertical"
-                    android:background="@drawable/edit_text_card"
+                    android:background="@drawable/edit_text_card_gray"
                     android:paddingHorizontal="10sp"
                     android:layout_marginBottom="10sp"
-                    android:elevation="5sp" />
+                    android:elevation="5sp"/>
 
 
             </LinearLayout>

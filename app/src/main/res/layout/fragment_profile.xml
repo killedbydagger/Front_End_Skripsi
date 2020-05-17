@@ -78,7 +78,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/nama"
+                            android:id="@+id/tv_nama"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5sp"
@@ -87,21 +87,21 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/dob"
+                            android:id="@+id/tv_dob"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
                             android:textSize="15sp"/>
 
                         <TextView
-                            android:id="@+id/pendidikanTerakhir"
+                            android:id="@+id/tv_pendidikanTerakhir"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
                             android:textSize="15sp"/>
 
                         <TextView
-                            android:id="@+id/lokasi"
+                            android:id="@+id/tv_lokasi"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -117,30 +117,63 @@
                     android:layout_marginVertical="5sp">
 
                     <TextView
-                        android:id="@+id/desc"
+                        android:id="@+id/tv_desc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="TextView"
                         android:textSize="15sp"
-                        android:layout_weight="0.9"/>
+                        android:layout_weight="1"/>
 
-                    <ImageView
-                        android:id="@+id/cv"
-                        android:layout_width="35sp"
-                        android:layout_height="35sp"
-                        app:srcCompat="@drawable/outline_insert_drive_file_white_48dp"
-                        android:layout_weight="0.1"/>
+<!--                    <ImageView-->
+<!--                        android:id="@+id/cv"-->
+<!--                        android:layout_width="35sp"-->
+<!--                        android:layout_height="35sp"-->
+<!--                        app:srcCompat="@drawable/outline_insert_drive_file_white_48dp"-->
+<!--                        android:layout_weight="0.1"/>-->
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btn_edit"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="35sp"
-                    android:text="@string/edit"
-                    android:background="@drawable/button_login_card"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="15sp"/>
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="3"
+                    android:layout_marginTop="5sp">
+
+                    <Button
+                        android:id="@+id/btn_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:background="@drawable/button_login_card"
+                        android:text="@string/edit"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="5sp"/>
+
+                    <Button
+                        android:id="@+id/btn_viewfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:background="@drawable/button_login_card"
+                        android:text="@string/viewFile"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:layout_marginHorizontal="5sp"/>
+
+                    <Button
+                        android:id="@+id/btn_addPortfolio"
+                        android:layout_width="match_parent"
+                        android:layout_height="35sp"
+                        android:background="@drawable/button_login_card"
+                        android:text="@string/addPortfolio"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5sp"/>
+                </LinearLayout>
+
             </LinearLayout>
 
             <RelativeLayout
@@ -159,12 +192,12 @@
                     android:textAlignment="center"
                     android:layout_centerInParent="true"/>
 
-                <ImageView
-                    android:id="@+id/add"
-                    android:layout_width="35sp"
-                    android:layout_height="35sp"
-                    app:srcCompat="@drawable/baseline_add_circle_outline_white_48dp"
-                    android:layout_alignParentRight="true"/>
+<!--                <ImageView-->
+<!--                    android:id="@+id/add"-->
+<!--                    android:layout_width="35sp"-->
+<!--                    android:layout_height="35sp"-->
+<!--                    app:srcCompat="@drawable/baseline_add_circle_outline_white_48dp"-->
+<!--                    android:layout_alignParentRight="true"/>-->
 
             </RelativeLayout>
 

@@ -126,14 +126,25 @@ public class LoginActivity extends AppCompatActivity {
 
                             String id = object.getString("user_id");
                             String email = object.getString("user_email");
-                            String name = object.getString("user_name");
+                            String firstName = object.getString("user_first_name");
+                            String lastName = object.getString("user_last_name");
                             String phone = object.getString("user_phone");
                             String gender = object.getString("user_gender");
                             String dateOfBirth = object.getString("user_dateOfBirth");
                             String description = object.getString("user_description");
                             String user_status = object.getString("user_status");
 
-                            sessionManager.createSession(id,email,name,phone,gender,dateOfBirth,description,user_status);
+                            JSONObject object1 = object.getJSONObject("user_lastEducation");
+                            String educationId = object1.getString("education_id");
+                            String educationName = object1.getString("education_name");
+
+                            JSONObject object2 = object.getJSONObject("user_location");
+                            String locationId = object2.getString("location_id");
+                            String locationName = object2.getString("location_name");
+
+
+
+                            sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName);
 
                             Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
                             startActivity(singinIntent);
