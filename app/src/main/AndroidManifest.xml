@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.skripsi">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,10 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddBusiness"></activity>
-        <activity android:name=".EditBusiness" />
+        <activity android:name=".AddBusiness"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".EditBusiness"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ForgotPassword"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Premium"></activity>
+        <activity
+            android:name=".ApplicantProfile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Rating"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ApplicantList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SetRecommendation"
@@ -43,5 +59,7 @@
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
