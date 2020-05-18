@@ -43,4 +43,11 @@
     <string name="minimumSalary">Minimum salary</string>
     <string name="viewFile">View file</string>
     <string name="addPortfolio">Add portfolio</string>
+    <string name="addBusiness">Add Business</string>
+    <string name="editBusiness">Edit Business</string>
+    <string name="businessPhoto">Business Photo</string>
+    <string name="businessName">Business name</string>
+    <string name="businessOverview">Business Overview</string>
+    <string name="addButton">Add</string>
+    <string name="editButton">Edit</string>
 </resources>
