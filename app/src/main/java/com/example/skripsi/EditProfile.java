@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,6 +33,7 @@ public class EditProfile extends AppCompatActivity {
     EditText et_firstName, et_lastName,et_description,et_phoneNumber;
     TextView tv_DOB, tv_email;
     Spinner sp_lastEducation,sp_location;
+    Button btn_save;
 
     SessionManager sessionManager;
     SharedPreferences sharedPreferences;
@@ -56,6 +59,14 @@ public class EditProfile extends AppCompatActivity {
 
         sp_lastEducation = findViewById(R.id.sp_lastEducation);
         sp_location = findViewById(R.id.sp_location);
+
+        btn_save = findViewById(R.id.btn_save);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         sessionManager = new SessionManager(this);
 
@@ -87,6 +98,8 @@ public class EditProfile extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+
     }
 
     private void setEducationSpinner() throws JSONException {
@@ -171,6 +184,54 @@ public class EditProfile extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
 
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
+                        editor.putString(EDUCATION_DATA, jsonArray.toString());
+                        editor.apply();
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void editProfile() throws JSONException {
+        String URL = "http://25.54.110.177:8095/User/editUserProfile";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("first_name", et_firstName.getText().toString());
+        jsonBody.put("last_name", et_lastName.getText().toString());
+        jsonBody.put("lastEducation", sp_lastEducation.getSelectedItemPosition());
+        jsonBody.put("location", sp_location.getSelectedItemPosition());
+        jsonBody.put("description", et_description.getText().toString());
+        jsonBody.put("upload_file", null);
+        jsonBody.put("phone", et_phoneNumber.getText().toString());
+        jsonBody.put("dateOfBirth", sessionManager.EMAIL);
+        jsonBody.put("email", sessionManager.EMAIL);
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
                         editor.putString(EDUCATION_DATA, jsonArray.toString());
