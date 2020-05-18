@@ -43,7 +43,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/lokasi"
+            android:text="@string/location"
             android:textSize="15sp"
             android:textStyle="bold"
             android:layout_marginTop="10sp"/>

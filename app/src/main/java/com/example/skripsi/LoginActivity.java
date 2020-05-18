@@ -58,7 +58,6 @@ public class LoginActivity extends AppCompatActivity {
         tvSignup = findViewById(R.id.tv_signup);
         tvForgot = findViewById(R.id.tv_forgotPassword);
 
-
         tvSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -115,9 +114,8 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    JSONArray jsonArray = response.getJSONArray("data");
-
                     if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
                         Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
 
@@ -142,15 +140,11 @@ public class LoginActivity extends AppCompatActivity {
                             String locationId = object2.getString("location_id");
                             String locationName = object2.getString("location_name");
 
-
-
                             sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName);
 
                             Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
                             startActivity(singinIntent);
-
                         }
-
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
