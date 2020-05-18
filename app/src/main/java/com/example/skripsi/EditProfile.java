@@ -86,25 +86,46 @@ public class EditProfile extends AppCompatActivity {
         tv_DOB.setText(mDob);
         tv_email.setText(mEmail);
 
-        if(user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null) {
-            try {
+
+//        if(user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null) {
+//            try {
+//                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+//                editor = sharedPreferences.edit();
+//                loadEducationData();
+//                loadLocationData();
+//
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
+        try {
                 sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
                 editor = sharedPreferences.edit();
                 loadEducationData();
                 loadLocationData();
-                setEducationSpinner();
-                setLocationSpinner();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
 
+        System.out.println("asdasd" + user.get(sessionManager.LOCATION_DATA));
+        System.out.println("qwewqewq" + sessionManager.LOCATION_DATA);
+
+
+        try {
+            setEducationSpinner(user.get(sessionManager.EDUCATION_DATA), user.get(sessionManager.EDUCATION_ID));
+            setLocationSpinner(user.get(sessionManager.LOCATION_DATA),user.get(sessionManager.LOCATION_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void setEducationSpinner() throws JSONException {
+    private void setEducationSpinner(String json, String id) throws JSONException {
         ArrayList<String> educationArray = new ArrayList<>();
-        JSONArray educationJSON = new JSONArray(sessionManager.EDUCATION_DATA);
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray educationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         educationArray.add("--- Choose Location ---");
         for (int i=0;i<educationJSON.length();i++){
@@ -115,12 +136,13 @@ public class EditProfile extends AppCompatActivity {
         educationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_lastEducation.setAdapter(educationArrayAdapter);
-        sp_lastEducation.setSelection(Integer.parseInt(sessionManager.EDUCATION_ID));
+        sp_lastEducation.setSelection(Integer.parseInt(id));
     }
 
-    private void setLocationSpinner() throws JSONException {
+    private void setLocationSpinner(String json, String id) throws JSONException {
         ArrayList<String> locationArray = new ArrayList<>();
-        JSONArray locationJSON = new JSONArray(sessionManager.LOCATION_DATA);
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose Location ---");
         for (int i=0;i<locationJSON.length();i++){
@@ -131,7 +153,7 @@ public class EditProfile extends AppCompatActivity {
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_location.setAdapter(locationArrayAdapter);
-        sp_location.setSelection(Integer.parseInt(sessionManager.LOCATION_ID));
+        sp_location.setSelection(Integer.parseInt(id));
     }
 
     private void loadLocationData() throws JSONException {
@@ -143,10 +165,9 @@ public class EditProfile extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-
                     if (status.equals("Success")) {
-                        JSONArray jsonArray = response.getJSONArray("data");
-                        editor.putString(LOCATION_DATA, jsonArray.toString());
+                        System.out.println(response.toString());
+                        editor.putString(LOCATION_DATA, response.toString());
                         editor.apply();
                     }
                     else {
@@ -175,7 +196,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void loadEducationData() throws JSONException {
-        String URL = "http://25.54.110.177:8095/Location/getAllEducation";
+        String URL = "http://25.54.110.177:8095/Education/getAllEducation";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email",sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -183,10 +204,8 @@ public class EditProfile extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-
                     if (status.equals("Success")) {
-                        JSONArray jsonArray = response.getJSONArray("data");
-                        editor.putString(EDUCATION_DATA, jsonArray.toString());
+                        editor.putString(EDUCATION_DATA, response.toString());
                         editor.apply();
                     }
                     else {
