@@ -43,4 +43,16 @@
     <string name="minimumSalary">Minimum salary</string>
     <string name="viewFile">View file</string>
     <string name="addPortfolio">Add portfolio</string>
+    <string name="addButton">Add</string>
+    <string name="title">Title</string>
+    <string name="address">Address</string>
+    <string name="descriptionText">Description</string>
+    <string name="addList">Add list</string>
+    <string name="editList">Edit list</string>
+    <string name="applicantList">Applicant list</string>
+    <string name="rating">Rating</string>
+    <string name="applicantProfile">Applicant profile</string>
+    <string name="call">Call</string>
+    <string name="email">Email</string>
+    <string name="premium">Premium</string>
 </resources>

@@ -10,8 +10,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ForgotPassword"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".Premium"></activity>
+        <activity
+            android:name=".ApplicantProfile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Rating"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ApplicantList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddList"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ForgotPassword"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SetRecommendation"
             android:theme="@style/AppTheme.NoActionBar" />
