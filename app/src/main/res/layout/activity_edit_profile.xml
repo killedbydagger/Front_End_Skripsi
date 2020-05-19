@@ -40,11 +40,7 @@
             android:textColor="@color/colorWhite"
             android:textSize="15sp"
             android:layout_alignParentRight="true"/>
-
-
-
     </RelativeLayout>
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -91,8 +87,6 @@
                         android:layout_alignParentRight="true"
                         app:srcCompat="@drawable/outline_add_circle_outline_black_24dp" />
                 </RelativeLayout>
-
-
             </LinearLayout>
 
             <LinearLayout
@@ -170,7 +164,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lastEducation"
+                    android:text="@string/location"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
@@ -221,6 +215,7 @@
                         android:gravity="center_vertical"
                         android:textSize="18sp"
                         android:layout_weight="0.3"
+                        android:elevation="5sp"
                         android:layout_marginRight="5sp"/>
 
                     <Button
@@ -269,10 +264,7 @@
                     android:paddingHorizontal="10sp"
                     android:layout_marginBottom="10sp"
                     android:elevation="5sp"/>
-
-
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
 </RelativeLayout>

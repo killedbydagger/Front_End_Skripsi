@@ -29,10 +29,8 @@ public class SessionManager {
     public static final String EDUCATION_NAME = "EDUCATION_NAME";
     public static final String LOCATION_ID = "LOCATION_ID";
     public static final String LOCATION_NAME = "LOCATION_NAME";
-
     public static final String LOCATION_DATA = "LOCATION_DATA";
     public static final String EDUCATION_DATA = "EDUCATION_DATA";
-
 
     public SessionManager(Context context){
         this.context = context;
@@ -59,12 +57,6 @@ public class SessionManager {
 
         editor.apply();
     }
-
-//    public void createSession(JSONArray jsonLocation, JSONArray jsonEducation){
-//        editor.putString(LOCATION_DATA, jsonLocation);
-//
-//        editor.apply();
-//    }
 
     public boolean isLogin(){
         return sharedPreferences.getBoolean(LOGIN, false);
@@ -93,6 +85,10 @@ public class SessionManager {
         user.put(EDUCATION_NAME, sharedPreferences.getString(EDUCATION_NAME,null));
         user.put(LOCATION_ID, sharedPreferences.getString(LOCATION_ID,null));
         user.put(LOCATION_NAME, sharedPreferences.getString(LOCATION_NAME,null));
+        user.put(LOCATION_ID, sharedPreferences.getString(LOCATION_ID,null));
+        user.put(LOCATION_NAME, sharedPreferences.getString(LOCATION_NAME,null));
+        user.put(LOCATION_DATA, sharedPreferences.getString(LOCATION_DATA,null));
+        user.put(EDUCATION_DATA, sharedPreferences.getString(EDUCATION_DATA,null));
         return user;
     }
 
