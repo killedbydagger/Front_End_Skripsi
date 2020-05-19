@@ -117,7 +117,7 @@
                     android:id="@+id/tv_businessLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/lokasi"
+                    android:text="@string/location"
                     android:textSize="15sp"
                     android:textStyle="bold" />
 

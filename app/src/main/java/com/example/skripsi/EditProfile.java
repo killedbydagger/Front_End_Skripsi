@@ -1,5 +1,6 @@
 package com.example.skripsi;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -24,8 +26,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class EditProfile extends AppCompatActivity {
@@ -35,10 +42,20 @@ public class EditProfile extends AppCompatActivity {
     Spinner sp_lastEducation,sp_location;
     Button btn_save;
 
+    private String tanggal;
+
     SessionManager sessionManager;
     SharedPreferences sharedPreferences;
     public SharedPreferences.Editor editor;
     public Context context;
+
+    private DatePickerDialog datePickerDialog;
+
+    private SimpleDateFormat dateFormatter, dateFormatter2;
+
+    ViewDialog viewDialog;
+
+    Map<String, Boolean> validationChecks = new HashMap<>();
 
     static int PRIVATE_MODE = 0;
     public static final String LOCATION_DATA = "LOCATION_DATA";
@@ -60,11 +77,45 @@ public class EditProfile extends AppCompatActivity {
         sp_lastEducation = findViewById(R.id.sp_lastEducation);
         sp_location = findViewById(R.id.sp_location);
 
+        viewDialog = new ViewDialog(EditProfile.this);
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+
+        dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
         btn_save = findViewById(R.id.btn_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        tv_DOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog();
+            }
+        });
+
+        et_firstName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                validateFirstName();
+            }
+        });
+
+        et_lastName.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                validateLastName();
+            }
+        });
+
+        tv_DOB.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                validateDate();
             }
         });
 
@@ -78,12 +129,16 @@ public class EditProfile extends AppCompatActivity {
         String mDob = user.get(sessionManager.DOB);
         String mEmail = user.get(sessionManager.EMAIL);
 
+        String[] splitDob = mDob.split("\\s+");
+
+        String phone = mPhone.substring(2,mPhone.length());
+
         et_firstName.setText(mFirstName);
         et_lastName.setText(mLastName);
         et_description.setText(mDescription);
-        et_phoneNumber.setText(mPhone);
+        et_phoneNumber.setText(phone);
 
-        tv_DOB.setText(mDob);
+        tv_DOB.setText(splitDob[0]);
         tv_email.setText(mEmail);
 
 
@@ -120,6 +175,102 @@ public class EditProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    private void showDateDialog(){
+
+        Calendar newCalendar = Calendar.getInstance();
+
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+
+                System.out.println(dateFormatter.format(newDate.getTime()));
+
+                tv_DOB.setText(dateFormatter.format(newDate.getTime()));
+                tanggal = dateFormatter2.format(newDate.getTime());
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.show();
+    }
+
+    private void validateFirstName(){
+        if(et_firstName.getText().toString().isEmpty()){
+            et_firstName.setError("Field can't be empty");
+            validationChecks.put("FirstName", false);
+        }
+        else{
+            validationChecks.put("FirstName", true);
+        }
+    }
+
+    private void validateLastName(){
+        if(et_lastName.getText().toString().isEmpty()){
+            et_lastName.setError("Field can't be empty");
+            validationChecks.put("LastName", false);
+        }
+        else{
+            et_lastName.setError(null);
+            validationChecks.put("LastName", true);
+        }
+    }
+
+    private void validateDate(){
+        if(tv_DOB.getText().toString().isEmpty()){
+            tv_DOB.setError("Field can't be empty");
+            validationChecks.put("DOB", false);
+        }
+        else{
+            tv_DOB.setError(null);
+            validationChecks.put("DOB", true);
+        }
+    }
+
+    private void validateEducation(){
+        if(sp_lastEducation.getSelectedItemPosition() == 0){
+            ((TextView) sp_lastEducation.getSelectedView()).setError("Please choose your last education");
+            validationChecks.put("Education", false);
+        }
+        else{
+            ((TextView) sp_lastEducation.getSelectedView()).setError(null);
+            validationChecks.put("Education", true);
+        }
+    }
+
+    private void validateLocation(){
+        if(sp_location.getSelectedItemPosition() == 0){
+            ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
+            validationChecks.put("Location", false);
+        }
+        else{
+            ((TextView) sp_location.getSelectedView()).setError(null);
+            validationChecks.put("Location", true);
+        }
+    }
+
+    private void validatePhoneNumber(){
+
+        if(et_phoneNumber.getText().toString().isEmpty()){
+            et_phoneNumber.setError("Field can't be empty");
+            validationChecks.put("Phone", false);
+        }
+        else{
+            String first = et_phoneNumber.getText().toString().substring(0,1);
+            if(first.equals("0")){
+                et_phoneNumber.setError("Phone number can't start with 0");
+                validationChecks.put("Phone", false);
+            }
+            else{
+                et_phoneNumber.setError(null);
+                validationChecks.put("Phone", true);
+            }
+        }
     }
 
     private void setEducationSpinner(String json, String id) throws JSONException {
@@ -280,4 +431,6 @@ public class EditProfile extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }
+
+
 }
