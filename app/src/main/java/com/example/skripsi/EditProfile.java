@@ -87,6 +87,21 @@ public class EditProfile extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                validateFirstName();
+                validateLastName();
+                validateDate();
+                validateLocation();
+                validateEducation();
+                validatePhoneNumber();
+
+                if (!validationChecks.containsValue(false)){
+                    viewDialog.showDialog();
+                    try {
+                        editProfile();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
 
             }
         });
@@ -130,6 +145,8 @@ public class EditProfile extends AppCompatActivity {
         String mEmail = user.get(sessionManager.EMAIL);
 
         String[] splitDob = mDob.split("\\s+");
+        String tampungTanggal = splitDob[0];
+
 
         String phone = mPhone.substring(2,mPhone.length());
 
@@ -138,7 +155,7 @@ public class EditProfile extends AppCompatActivity {
         et_description.setText(mDescription);
         et_phoneNumber.setText(phone);
 
-        tv_DOB.setText(splitDob[0]);
+        tv_DOB.setText(tampungTanggal);
         tv_email.setText(mEmail);
 
 
