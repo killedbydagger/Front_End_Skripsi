@@ -184,14 +184,18 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
+
                 <EditText
                     android:id="@+id/et_description"
                     android:layout_width="match_parent"
                     android:layout_height="120sp"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
                     android:layout_marginBottom="10sp"
                     android:background="@drawable/edit_text_card"
                     android:elevation="5sp"
-                    android:paddingHorizontal="10sp" />
+                    android:paddingHorizontal="10sp"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -238,14 +242,37 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/et_phoneNumber"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50sp"
-                    android:layout_marginBottom="10sp"
-                    android:background="@drawable/edit_text_card"
-                    android:elevation="5sp"
-                    android:paddingHorizontal="10sp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10sp">
+
+                    <LinearLayout
+                        android:layout_width="50sp"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_text_card"
+                        android:layout_marginRight="10sp"
+                        android:gravity="center"
+                        android:elevation="5sp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/nomor"
+                            android:textSize="18sp"
+                            android:textStyle="bold"/>
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/et_phoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="50sp"
+                        android:background="@drawable/edit_text_card"
+                        android:paddingHorizontal="10sp"
+                        android:inputType="phone"
+                        android:elevation="5sp"/>
+
+                </LinearLayout>
 
                 <TextView
                     android:layout_width="match_parent"

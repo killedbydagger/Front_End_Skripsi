@@ -2,6 +2,7 @@
     <string name="app_name">SKRIPSI</string>
     <string name="edt_email">Email</string>
     <string name="edt_password">Password</string>
+    <string name="changePassword">Change Password</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="signin">Sign In</string>
     <string name="signup">Sign Up</string>
@@ -55,4 +56,11 @@
     <string name="call">Call</string>
     <string name="email">Email</string>
     <string name="premium">Premium</string>
+    <string name="addBusiness">Add Business</string>
+    <string name="editBusiness">Edit Business</string>
+    <string name="businessPhoto">Business Photo</string>
+    <string name="businessName">Business name</string>
+    <string name="businessOverview">Business Overview</string>
+    <string name="businessCenter">Business Center</string>
+    <string name="logout">Logout</string>
 </resources>

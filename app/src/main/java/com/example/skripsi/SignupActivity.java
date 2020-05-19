@@ -55,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
     private DatePickerDialog datePickerDialog;
 
     private TextView mDisplayDate;
-    private DatePickerDialog.OnDateSetListener onDateSetListener;
+
     private SimpleDateFormat dateFormatter, dateFormatter2;
 
     private RequestQueue requestQueue;
@@ -168,7 +168,6 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 showDateDialog();
-
             }
         });
 

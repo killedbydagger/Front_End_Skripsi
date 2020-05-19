@@ -132,11 +132,11 @@ public class LoginActivity extends AppCompatActivity {
                             String description = object.getString("user_description");
                             String user_status = object.getString("user_status");
 
-                            JSONObject object1 = object.getJSONObject("user_lastEducation");
+                            JSONObject object1 = object.getJSONObject("education");
                             String educationId = object1.getString("education_id");
                             String educationName = object1.getString("education_name");
 
-                            JSONObject object2 = object.getJSONObject("user_location");
+                            JSONObject object2 = object.getJSONObject("location");
                             String locationId = object2.getString("location_id");
                             String locationName = object2.getString("location_name");
 
