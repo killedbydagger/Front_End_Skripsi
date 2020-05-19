@@ -98,13 +98,12 @@ public class EditProfile extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     private void setEducationSpinner() throws JSONException {
         ArrayList<String> educationArray = new ArrayList<>();
-        JSONArray educationJSON = new JSONArray(sessionManager.EDUCATION_DATA);
+        JSONObject jsonObject = new JSONObject(sessionManager.EDUCATION_DATA);
+        JSONArray educationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         educationArray.add("--- Choose Location ---");
         for (int i=0;i<educationJSON.length();i++){
@@ -120,7 +119,8 @@ public class EditProfile extends AppCompatActivity {
 
     private void setLocationSpinner() throws JSONException {
         ArrayList<String> locationArray = new ArrayList<>();
-        JSONArray locationJSON = new JSONArray(sessionManager.LOCATION_DATA);
+        JSONObject jsonObject = new JSONObject(sessionManager.LOCATION_DATA);
+        JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose Location ---");
         for (int i=0;i<locationJSON.length();i++){
@@ -143,10 +143,8 @@ public class EditProfile extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-
                     if (status.equals("Success")) {
-                        JSONArray jsonArray = response.getJSONArray("data");
-                        editor.putString(LOCATION_DATA, jsonArray.toString());
+                        editor.putString(LOCATION_DATA, response.toString());
                         editor.apply();
                     }
                     else {
@@ -175,7 +173,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void loadEducationData() throws JSONException {
-        String URL = "http://25.54.110.177:8095/Location/getAllEducation";
+        String URL = "http://25.54.110.177:8095/Education/getAllEducation";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email",sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -183,10 +181,8 @@ public class EditProfile extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-
                     if (status.equals("Success")) {
-                        JSONArray jsonArray = response.getJSONArray("data");
-                        editor.putString(EDUCATION_DATA, jsonArray.toString());
+                        editor.putString(EDUCATION_DATA, response.toString());
                         editor.apply();
                     }
                     else {
