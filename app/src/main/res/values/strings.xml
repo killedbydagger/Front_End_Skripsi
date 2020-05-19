@@ -55,4 +55,9 @@
     <string name="call">Call</string>
     <string name="email">Email</string>
     <string name="premium">Premium</string>
+    <string name="addBusiness">Add Business</string>
+    <string name="editBusiness">Edit Business</string>
+    <string name="businessPhoto">Business Photo</string>
+    <string name="businessName">Business name</string>
+    <string name="businessOverview">Business Overview</string>
 </resources>

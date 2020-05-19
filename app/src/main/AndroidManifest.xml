@@ -10,6 +10,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".AddBusiness"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".EditBusiness"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ForgotPassword"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Premium"></activity>
         <activity
             android:name=".ApplicantProfile"
@@ -25,9 +32,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddList"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".ForgotPassword"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SetRecommendation"
