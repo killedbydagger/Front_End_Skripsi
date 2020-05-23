@@ -1,13 +1,18 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,12 +33,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class EditProfile extends AppCompatActivity {
+public class EditProfile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     EditText et_firstName, et_lastName,et_description,et_phoneNumber;
     TextView tv_DOB, tv_email;
     Spinner sp_lastEducation,sp_location;
     Button btn_save;
+    ImageView img_slideMenuProfile;
 
     SessionManager sessionManager;
     SharedPreferences sharedPreferences;
@@ -67,6 +73,18 @@ public class EditProfile extends AppCompatActivity {
 
             }
         });
+
+        //masih dites
+        img_slideMenuProfile = (ImageView) findViewById(R.id.img_slideMenuProfile);
+        img_slideMenuProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         sessionManager = new SessionManager(this);
 
@@ -120,6 +138,18 @@ public class EditProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.id.menuBusinessCenter:
+                Intent businessCenterIntent = new Intent(getApplicationContext(),BusinessCenter.class);
+                startActivity(businessCenterIntent);
+                break;
+        }
+
+        return true;
     }
 
     private void setEducationSpinner(String json, String id) throws JSONException {
@@ -280,4 +310,5 @@ public class EditProfile extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }
+
 }
