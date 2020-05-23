@@ -18,11 +18,13 @@
         <activity
             android:name=".EditBusiness"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusinessCenter"></activity>
+        <activity android:name=".BusinessCenter"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Premium"></activity>
+        <activity android:name=".Premium"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ApplicantProfile"
             android:theme="@style/AppTheme.NoActionBar" />

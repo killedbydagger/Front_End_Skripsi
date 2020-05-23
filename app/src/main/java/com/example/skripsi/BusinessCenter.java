@@ -3,6 +3,7 @@ package com.example.skripsi;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -34,12 +35,25 @@ public class BusinessCenter extends AppCompatActivity {
 
     SessionManager sessionManager;
 
+    SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+    static int PRIVATE_MODE = 0;
+
+    public static final String BUSINESS_ID = "BUSINESS_ID";
+    public static final String BUSINESS_IMAGE = "BUSINESS_IMAGE";
+    public static final String BUSINESS_NAME = "BUSINESS_NAME";
+    public static final String BUSINESS_LOCATION_ID = "BUSINESS_LOCATION_ID";
+    public static final String BUSINESS_LOCATION_NAME = "BUSINESS_LOCATION_NAME";
+    public static final String BUSINESS_OVERVIEW = "BUSINESS_OVERVIEW";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_center);
 
         viewDialog = new ViewDialog(BusinessCenter.this);
+
+        viewDialog.showDialog();
 
         tv_namaPerusahaan = findViewById(R.id.tv_namaPerusahaan);
         tv_lokasiPerusahaan = findViewById(R.id.tv_lokasiPerusahaan);
@@ -54,13 +68,16 @@ public class BusinessCenter extends AppCompatActivity {
 
         if(business.get(sessionManager.BUSINESS_ID) == null) {
             try {
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                editor = sharedPreferences.edit();
                 checkBisnis(userId);
-
+                viewDialog.hideDialog();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
+        System.out.println(business.get(sessionManager.BUSINESS_NAME));
 
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
@@ -81,9 +98,32 @@ public class BusinessCenter extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     if (status.equals("Registered")) {
-                        viewDialog.hideDialog();
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for(int i = 0;i<jsonArray.length();i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String busId = object.getString("bus_id");
+                            String busName = object.getString("bus_name");
+
+                            JSONObject object1 = object.getJSONObject("location");
+                            String locationId = object1.getString("location_id");
+                            String locationName = object1.getString("location_name");
+
+                            String busOverview = object.getString("bus_overview");
+                            String busImage = object.getString("bus_image");
+
+                            editor.putString(BUSINESS_ID, busId);
+                            editor.putString(BUSINESS_NAME, busName);
+                            editor.putString(BUSINESS_LOCATION_ID, locationId);
+                            editor.putString(BUSINESS_LOCATION_NAME, locationName);
+                            editor.putString(BUSINESS_OVERVIEW, busOverview);
+                            editor.putString(BUSINESS_IMAGE, busImage);
+                            editor.apply();
+                        }
+
                     }
-                    else {
+                    else if(status.equals("Not Registered")) {
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(BusinessCenter.this);
                         alertDialog.setMessage("Your don't have any business registered. Do you want to register a new business ?").setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
