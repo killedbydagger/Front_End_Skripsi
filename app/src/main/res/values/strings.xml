@@ -38,8 +38,8 @@
     <string name="search">Search</string>
     <string name="searchKeyword">Search title, keyword or company</string>
     <string name="forgetWord1">Your email must be the same as the one</string>
-    <string name="forgetWord2">you used to be register yourself</string>
-    <string name="sendReset">Send reset password email</string>
+    <string name="forgetWord2">you used to register yourself</string>
+    <string name="sendReset">Send reset password</string>
     <string name="or">OR</string>
     <string name="minimumSalary">Minimum salary</string>
     <string name="viewFile">View file</string>
@@ -63,4 +63,7 @@
     <string name="businessOverview">Business Overview</string>
     <string name="businessCenter">Business Center</string>
     <string name="logout">Logout</string>
+    <string name="changeYourPassword">Change your password</string>
+    <string name="newPassword">New password</string>
+    <string name="oldPassword">Old password</string>
 </resources>
