@@ -66,4 +66,7 @@
     <string name="changeYourPassword">Change your password</string>
     <string name="newPassword">New password</string>
     <string name="oldPassword">Old password</string>
+    <string name="list">List</string>
+    <string name="viewRating">View Rating</string>
+    <string name="addVacancy">Add Vacancy</string>
 </resources>
