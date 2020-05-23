@@ -63,4 +63,5 @@
     <string name="businessOverview">Business Overview</string>
     <string name="businessCenter">Business Center</string>
     <string name="logout">Logout</string>
+    <string name="list">List</string>
 </resources>
