@@ -129,21 +129,48 @@ public class LoginActivity extends AppCompatActivity {
                             String phone = object.getString("user_phone");
                             String gender = object.getString("user_gender");
                             String dateOfBirth = object.getString("user_dateOfBirth");
-                            String description = object.getString("user_description");
+                            String description = "";
+
+                            if(object.isNull("user_description")){
+                                description = "";
+                            }
+                            else {
+                                description = object.getString("user_description");
+                            }
+
                             String user_status = object.getString("user_status");
 
-                            JSONObject object1 = object.getJSONObject("education");
-                            String educationId = object1.getString("education_id");
-                            String educationName = object1.getString("education_name");
+                            String educationId = "0";
+                            String educationName = "";
 
-                            JSONObject object2 = object.getJSONObject("location");
-                            String locationId = object2.getString("location_id");
-                            String locationName = object2.getString("location_name");
+                            String locationId = "0";
+                            String locationName = "";
+
+                            if(object.isNull("education")){
+                                educationId = "0";
+                                educationName = "";
+                            }
+                            else {
+                                JSONObject object1 = object.getJSONObject("education");
+                                educationId = object1.getString("education_id");
+                                educationName = object1.getString("education_name");
+                            }
+
+                            if(object.isNull("location")){
+                                locationId = "0";
+                                locationName = "";
+                            }
+                            else {
+                                JSONObject object2 = object.getJSONObject("location");
+                                locationId = object2.getString("location_id");
+                                locationName = object2.getString("location_name");
+                            }
 
                             sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName);
 
                             Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
                             startActivity(singinIntent);
+                            finish();
                         }
                     }
                     else {

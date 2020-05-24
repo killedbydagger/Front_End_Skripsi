@@ -32,9 +32,16 @@ public class SessionManager {
     public static final String LOCATION_DATA = "LOCATION_DATA";
     public static final String EDUCATION_DATA = "EDUCATION_DATA";
 
+    public static final String BUSINESS_ID = "BUSINESS_ID";
+    public static final String BUSINESS_IMAGE = "BUSINESS_IMAGE";
+    public static final String BUSINESS_NAME = "BUSINESS_NAME";
+    public static final String BUSINESS_LOCATION_ID = "BUSINESS_LOCATION_ID";
+    public static final String BUSINESS_LOCATION_NAME = "BUSINESS_LOCATION_NAME";
+    public static final String BUSINESS_OVERVIEW = "BUSINESS_OVERVIEW";
+
     public SessionManager(Context context){
         this.context = context;
-        sharedPreferences = context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+        sharedPreferences = context.getSharedPreferences(PREF_NAME,PRIVATE_MODE);
         editor = sharedPreferences.edit();
     }
 
@@ -64,7 +71,7 @@ public class SessionManager {
 
     public void checkLogin(){
         if (!this.isLogin()){
-            Intent i = new Intent(context, LoginActivity.class);
+            Intent i = new Intent(context, SplashActivity.class);
             context.startActivity(i);
             ((MainMenu) context).finish();
         }
@@ -92,12 +99,23 @@ public class SessionManager {
         return user;
     }
 
+    public HashMap<String, String> getBusinessDetail(){
+        HashMap<String, String> business = new HashMap<>();
+        business.put(BUSINESS_ID, sharedPreferences.getString(BUSINESS_ID,null));
+        business.put(BUSINESS_IMAGE, sharedPreferences.getString(BUSINESS_IMAGE,null));
+        business.put(BUSINESS_NAME, sharedPreferences.getString(BUSINESS_NAME,null));
+        business.put(BUSINESS_LOCATION_ID, sharedPreferences.getString(BUSINESS_LOCATION_ID,null));
+        business.put(BUSINESS_LOCATION_NAME, sharedPreferences.getString(BUSINESS_LOCATION_NAME,null));
+        business.put(BUSINESS_OVERVIEW, sharedPreferences.getString(BUSINESS_OVERVIEW,null));
+        return business;
+    }
+
     public void logout(){
 
         editor.clear();
         editor.commit();
         Intent i = new Intent(context, LoginActivity.class);
-        context.startActivity(i);
-        ((MainMenu) context).finish();
+//        context.startActivity(i);
+//        ((MainMenu) context).finish();
     }
 }

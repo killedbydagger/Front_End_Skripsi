@@ -10,14 +10,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddBusiness"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".EditBusiness"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".AddBusiness"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".EditBusiness"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".BusinessCenter"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ForgotPassword"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Premium"></activity>
+        <activity android:name=".Premium"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ApplicantProfile"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -41,10 +48,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".loading" />
         <activity
-            android:name=".MainMenu"
+            android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".MainMenu"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -146,6 +146,8 @@ public class EditProfile extends AppCompatActivity {
 
         String[] splitDob = mDob.split("\\s+");
         String tampungTanggal = splitDob[0];
+
+
         String phone = mPhone.substring(2,mPhone.length());
 
         et_firstName.setText(mFirstName);
@@ -163,10 +165,15 @@ public class EditProfile extends AppCompatActivity {
                 editor = sharedPreferences.edit();
                 loadEducationData();
                 loadLocationData();
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
+
+        System.out.println("asdasd" + user.get(sessionManager.LOCATION_DATA));
+        System.out.println("qwewqewq" + sessionManager.LOCATION_DATA);
+
 
         try {
             setEducationSpinner(user.get(sessionManager.EDUCATION_DATA), user.get(sessionManager.EDUCATION_ID));
@@ -178,7 +185,9 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void showDateDialog(){
+
         Calendar newCalendar = Calendar.getInstance();
+
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             @Override
