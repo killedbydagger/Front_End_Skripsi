@@ -48,10 +48,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".loading" />
         <activity
-            android:name=".MainMenu"
+            android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".MainMenu"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

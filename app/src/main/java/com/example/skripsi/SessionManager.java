@@ -41,7 +41,7 @@ public class SessionManager {
 
     public SessionManager(Context context){
         this.context = context;
-        sharedPreferences = context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+        sharedPreferences = context.getSharedPreferences(PREF_NAME,PRIVATE_MODE);
         editor = sharedPreferences.edit();
     }
 
@@ -71,7 +71,7 @@ public class SessionManager {
 
     public void checkLogin(){
         if (!this.isLogin()){
-            Intent i = new Intent(context, LoginActivity.class);
+            Intent i = new Intent(context, SplashActivity.class);
             context.startActivity(i);
             ((MainMenu) context).finish();
         }
@@ -115,7 +115,7 @@ public class SessionManager {
         editor.clear();
         editor.commit();
         Intent i = new Intent(context, LoginActivity.class);
-        context.startActivity(i);
-        ((MainMenu) context).finish();
+//        context.startActivity(i);
+//        ((MainMenu) context).finish();
     }
 }

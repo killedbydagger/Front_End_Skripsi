@@ -51,9 +51,6 @@ public class BusinessCenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_center);
 
-        viewDialog = new ViewDialog(BusinessCenter.this);
-
-        viewDialog.showDialog();
 
         tv_namaPerusahaan = findViewById(R.id.tv_namaPerusahaan);
         tv_lokasiPerusahaan = findViewById(R.id.tv_lokasiPerusahaan);
@@ -71,18 +68,14 @@ public class BusinessCenter extends AppCompatActivity {
                 sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
                 editor = sharedPreferences.edit();
                 checkBisnis(userId);
-                viewDialog.hideDialog();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        System.out.println(business.get(sessionManager.BUSINESS_NAME));
-
+        premiumTag.setText(user.get(sessionManager.STATUS));
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
-        premiumTag.setText(user.get(sessionManager.STATUS));
-
     }
 
     private void checkBisnis(String id) throws JSONException {
@@ -120,6 +113,9 @@ public class BusinessCenter extends AppCompatActivity {
                             editor.putString(BUSINESS_OVERVIEW, busOverview);
                             editor.putString(BUSINESS_IMAGE, busImage);
                             editor.apply();
+                            HashMap<String, String> business = sessionManager.getBusinessDetail();
+                            tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
+                            tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
                         }
 
                     }
@@ -143,7 +139,6 @@ public class BusinessCenter extends AppCompatActivity {
                         AlertDialog alert = alertDialog.create();
                         alert.setTitle("Create new business");
                         alert.show();
-                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
