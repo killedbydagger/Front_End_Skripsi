@@ -66,7 +66,7 @@ public class AddBusiness extends AppCompatActivity {
         try {
             sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
             editor = sharedPreferences.edit();
-            setLocationSpinner(user.get(sessionManager.LOCATION_DATA),user.get(sessionManager.LOCATION_ID));
+            setLocationSpinner(user.get(sessionManager.LOCATION_DATA));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -105,7 +105,7 @@ public class AddBusiness extends AppCompatActivity {
         }
     }
 
-    private void setLocationSpinner(String json, String id) throws JSONException {
+    private void setLocationSpinner(String json) throws JSONException {
         ArrayList<String> locationArray = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(json);
         JSONArray locationJSON = jsonObject.getJSONArray("data");
@@ -119,7 +119,6 @@ public class AddBusiness extends AppCompatActivity {
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_location.setAdapter(locationArrayAdapter);
-        sp_location.setSelection(Integer.parseInt(id));
     }
 
     private void createBisnis(String id, String imageURL, String namaBisnis, String locationId, String overview) throws JSONException {
