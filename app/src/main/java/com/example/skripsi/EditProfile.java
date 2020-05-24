@@ -159,21 +159,6 @@ public class EditProfile extends AppCompatActivity {
         tv_email.setText(mEmail);
 
 
-        if(user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null) {
-            try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
-                editor = sharedPreferences.edit();
-                loadEducationData();
-                loadLocationData();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println("asdasd" + user.get(sessionManager.LOCATION_DATA));
-        System.out.println("qwewqewq" + sessionManager.LOCATION_DATA);
-
 
         try {
             setEducationSpinner(user.get(sessionManager.EDUCATION_DATA), user.get(sessionManager.EDUCATION_ID));
@@ -285,7 +270,7 @@ public class EditProfile extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject(json);
         JSONArray educationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
-        educationArray.add("--- Choose Location ---");
+        educationArray.add("--- Choose Education ---");
         for (int i=0;i<educationJSON.length();i++){
             object = educationJSON.getJSONObject(i);
             educationArray.add(object.getString("education_name"));
@@ -312,83 +297,6 @@ public class EditProfile extends AppCompatActivity {
                 .simple_spinner_dropdown_item);
         sp_location.setAdapter(locationArrayAdapter);
         sp_location.setSelection(Integer.parseInt(id));
-    }
-
-    private void loadLocationData() throws JSONException {
-        String URL = "http://25.54.110.177:8095/Location/getAllLocation";
-        final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        System.out.println(response.toString());
-                        editor.putString(LOCATION_DATA, response.toString());
-                        editor.apply();
-                    }
-                    else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    private void loadEducationData() throws JSONException {
-        String URL = "http://25.54.110.177:8095/Education/getAllEducation";
-        final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        editor.putString(EDUCATION_DATA, response.toString());
-                        editor.apply();
-                    }
-                    else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
     }
 
     private void editProfile() throws JSONException {
