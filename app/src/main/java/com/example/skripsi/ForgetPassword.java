@@ -31,12 +31,12 @@ public class ForgetPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forget_password);
 
         et_email = findViewById(R.id.et_email);
-        et_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                validateEmail();
-            }
-        });
+//        et_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View view, boolean b) {
+//                validateEmail();
+//            }
+//        });
         btn_resetPassword = findViewById(R.id.btn_resetPassword);
         btn_resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,11 +54,11 @@ public class ForgetPassword extends AppCompatActivity {
         });
     }
 
-    public void validateEmail() {
-        if(et_email.getText().toString().isEmpty()){
-            et_email.setError("Field can't be empty");
-        }
-    }
+//    public void validateEmail() {
+//        if(et_email.getText().toString().isEmpty()){
+//            et_email.setError("Field can't be empty");
+//        }
+//    }
 
     public void reset_password(String email) throws JSONException {
         String URL = "http://25.54.110.177:8095/User/forgetPasswordUser";
