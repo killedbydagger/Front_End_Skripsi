@@ -45,6 +45,8 @@ public class EditProfile extends AppCompatActivity {
     Spinner sp_lastEducation,sp_location;
     Button btn_save;
 
+    static int PRIVATE_MODE = 0;
+
     private String tanggal;
 
     SessionManager sessionManager;
@@ -172,6 +174,8 @@ public class EditProfile extends AppCompatActivity {
 
 
         try {
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+            editor = sharedPreferences.edit();
             setEducationSpinner(user.get(sessionManager.EDUCATION_DATA), user.get(sessionManager.EDUCATION_ID));
             setLocationSpinner(user.get(sessionManager.LOCATION_DATA),user.get(sessionManager.LOCATION_ID));
         } catch (JSONException e) {

@@ -195,7 +195,8 @@
                     android:layout_marginBottom="10sp"
                     android:background="@drawable/edit_text_card"
                     android:elevation="5sp"
-                    android:paddingHorizontal="10sp"/>
+                    android:paddingHorizontal="10sp"
+                    android:paddingVertical="10sp"/>
 
                 <TextView
                     android:layout_width="match_parent"

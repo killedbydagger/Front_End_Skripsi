@@ -32,6 +32,8 @@ public class EditBusiness extends AppCompatActivity {
 
     SessionManager sessionManager;
     public SharedPreferences.Editor editor;
+    SharedPreferences sharedPreferences;
+    static int PRIVATE_MODE = 0;
 
     EditText et_businessName, et_businessOverview;
 
@@ -57,6 +59,7 @@ public class EditBusiness extends AppCompatActivity {
         et_businessOverview = findViewById(R.id.et_businessOverview);
         sp_location = findViewById(R.id.sp_location);
 
+
         sessionManager = new SessionManager(this);
         HashMap<String, String> business = sessionManager.getBusinessDetail();
         final String business_id = business.get(sessionManager.BUSINESS_ID);
@@ -66,15 +69,17 @@ public class EditBusiness extends AppCompatActivity {
         et_businessName.setText(businessName);
         et_businessOverview.setText(businessOverview);
 
-        try {
-            setLocationSpinner(business.get(sessionManager.LOCATION_DATA),business.get(sessionManager.LOCATION_ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
+
+        try {
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+            editor = sharedPreferences.edit();
+            setLocationSpinner(user.get(sessionManager.LOCATION_DATA),business.get(sessionManager.BUSINESS_LOCATION_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         btn_save = findViewById(R.id.btn_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
@@ -167,15 +172,17 @@ public class EditBusiness extends AppCompatActivity {
                         for(int i = 0;i<jsonArray.length();i++){
                             JSONObject object = jsonArray.getJSONObject(i);
 
-                            String businessName = object.getString("bus_name");
+                            String business_Name = object.getString("bus_name");
 
                             JSONObject object1 = object.getJSONObject("location");
-                            String locationId = object1.getString("location_id");
-                            String locationName = object1.getString("location_name");
+                            String location_Id = object1.getString("location_id");
+                            String location_Name = object1.getString("location_name");
 
-                            editor.putString(BUSINESS_NAME, businessName);
-                            editor.putString(BUSINESS_LOCATION_ID, locationId);
-                            editor.putString(BUSINESS_LOCATION_NAME, locationName);
+                            System.out.println(business_Name + " " + location_Id + " " + location_Name);
+
+                            editor.putString(BUSINESS_NAME, business_Name);
+                            editor.putString(BUSINESS_LOCATION_ID, location_Id);
+                            editor.putString(BUSINESS_LOCATION_NAME, location_Name);
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
