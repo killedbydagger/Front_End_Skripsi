@@ -9,21 +9,24 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.HashMap;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
+    private DrawerLayout drawer;
 
     Button btn_edit;
-
+    ImageView img_slideMenuProfile;
     TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc;
-
     SessionManager sessionManager;
 
     @Nullable
@@ -32,6 +35,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
         btn_edit = (Button) v.findViewById(R.id.btn_edit);
         btn_edit.setOnClickListener(this);
+
+        drawer = v.findViewById(R.id.drawer_layout);
+        img_slideMenuProfile = v.findViewById(R.id.img_slideMenuProfile);
+        img_slideMenuProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                drawer.openDrawer(Gravity.END);
+            }
+        });
 
         tv_nama = v.findViewById(R.id.tv_nama);
         tv_dob = v.findViewById(R.id.tv_dob);
