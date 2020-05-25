@@ -362,7 +362,7 @@ public class EditProfile extends AppCompatActivity {
                             editor.putString(EDUCATION_NAME, educationName);
                             editor.apply();
 
-                            Toast.makeText(getApplicationContext(), "Edit profile success ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Edit profile success", Toast.LENGTH_LONG).show();
                             finish();
 
                         }

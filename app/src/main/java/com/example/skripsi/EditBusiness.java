@@ -1,11 +1,15 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,11 +31,22 @@ import java.util.Map;
 public class EditBusiness extends AppCompatActivity {
 
     SessionManager sessionManager;
+    public SharedPreferences.Editor editor;
 
     EditText et_businessName, et_businessOverview;
 
     Spinner sp_location;
 
+    Button btn_save;
+
+    Map<String, Boolean> validationChecks = new HashMap<>();
+
+    public static final String BUSINESS_ID = "BUSINESS_ID";
+    public static final String BUSINESS_IMAGE = "BUSINESS_IMAGE";
+    public static final String BUSINESS_NAME = "BUSINESS_NAME";
+    public static final String BUSINESS_LOCATION_ID = "BUSINESS_LOCATION_ID";
+    public static final String BUSINESS_LOCATION_NAME = "BUSINESS_LOCATION_NAME";
+    public static final String BUSINESS_OVERVIEW = "BUSINESS_OVERVIEW";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +59,7 @@ public class EditBusiness extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         HashMap<String, String> business = sessionManager.getBusinessDetail();
+        final String business_id = business.get(sessionManager.BUSINESS_ID);
         String businessName = business.get(sessionManager.BUSINESS_NAME);
         String businessOverview = business.get(sessionManager.BUSINESS_OVERVIEW);
 
@@ -56,6 +72,59 @@ public class EditBusiness extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        sessionManager = new SessionManager(this);
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
+
+        btn_save = findViewById(R.id.btn_save);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                validateBusinessName();
+                validateLocation();
+                validateBusinessOverview();
+                if(!validationChecks.containsValue(false)){
+                    try {
+                        editProfile(userId, business_id, "IMG_URL", et_businessName.getText().toString(), sp_location.getSelectedItemPosition(), et_businessOverview.getText().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+    }
+
+    private void validateBusinessName(){
+        if(et_businessName.getText().toString().isEmpty()){
+            et_businessName.setError("Field can't be empty");
+            validationChecks.put("BusinessName", false);
+        }
+        else{
+            validationChecks.put("BusinessName", true);
+        }
+    }
+
+    private void validateBusinessOverview(){
+        if(et_businessOverview.getText().toString().isEmpty()){
+            et_businessOverview.setError("Field can't be empty");
+            validationChecks.put("BusinessOverview", false);
+        }
+        else{
+            validationChecks.put("BusinessOverview", true);
+        }
+    }
+
+    private void validateLocation(){
+        if(sp_location.getSelectedItemPosition() == 0){
+            ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
+            validationChecks.put("Location", false);
+        }
+        else{
+            ((TextView) sp_location.getSelectedView()).setError(null);
+            validationChecks.put("Location", true);
+        }
     }
 
     private void setLocationSpinner(String json, String id) throws JSONException {
@@ -75,7 +144,7 @@ public class EditBusiness extends AppCompatActivity {
         sp_location.setSelection(Integer.parseInt(id));
     }
 
-    private void editProfile(String userId, String businessId, String imgURL,String businessName, String locationId, String businessOverview) throws JSONException {
+    private void editProfile(String userId, String businessId, String imgURL, String businessName, int locationId, String businessOverview) throws JSONException {
         Context mContext = EditBusiness.this;
         String URL = "http://25.54.110.177:8095/Business/editUserBusiness";
         final JSONObject jsonBody = new JSONObject();
@@ -98,6 +167,19 @@ public class EditBusiness extends AppCompatActivity {
                         for(int i = 0;i<jsonArray.length();i++){
                             JSONObject object = jsonArray.getJSONObject(i);
 
+                            String businessName = object.getString("bus_name");
+
+                            JSONObject object1 = object.getJSONObject("location");
+                            String locationId = object1.getString("location_id");
+                            String locationName = object1.getString("location_name");
+
+                            editor.putString(BUSINESS_NAME, businessName);
+                            editor.putString(BUSINESS_LOCATION_ID, locationId);
+                            editor.putString(BUSINESS_LOCATION_NAME, locationName);
+                            editor.apply();
+
+                            Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
+                            finish();
                         }
                     }
                     else {

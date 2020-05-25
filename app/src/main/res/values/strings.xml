@@ -3,7 +3,7 @@
     <string name="edt_email">Email</string>
     <string name="edt_password">Password</string>
     <string name="changePassword">Change Password</string>
-    <string name="forgot_password">Forgot Password</string>
+    <string name="forgot_password">Forget Password</string>
     <string name="signin">Sign In</string>
     <string name="signup">Sign Up</string>
     <string name="edt_nama">Name</string>

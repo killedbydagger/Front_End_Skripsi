@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -30,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -72,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent forgotIntent = new Intent(getApplicationContext(),ForgotPassword.class);
+                Intent forgotIntent = new Intent(getApplicationContext(), ForgetPassword.class);
                 startActivity(forgotIntent);
             }
         });
