@@ -43,7 +43,7 @@ public class ForgetPassword extends AppCompatActivity {
             public void onClick(View view) {
                 if(!et_email.getText().toString().isEmpty()) {
                     try {
-                        reset_password(et_email.getText().toString());
+                        forget_password(et_email.getText().toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -60,7 +60,7 @@ public class ForgetPassword extends AppCompatActivity {
 //        }
 //    }
 
-    public void reset_password(String email) throws JSONException {
+    public void forget_password(String email) throws JSONException {
         String URL = "http://25.54.110.177:8095/User/forgetPasswordUser";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", email);
