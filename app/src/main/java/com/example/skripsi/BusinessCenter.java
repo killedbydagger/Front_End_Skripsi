@@ -4,9 +4,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +34,9 @@ public class BusinessCenter extends AppCompatActivity {
 
     TextView tv_namaPerusahaan, tv_lokasiPerusahaan, tv_ratingPerusahaan, premiumTag;
 
-    ImageView img_Business;
+    ImageView img_Business, img_btnBack;
+
+    Button btn_editBusiness;
 
     SessionManager sessionManager;
 
@@ -56,6 +61,24 @@ public class BusinessCenter extends AppCompatActivity {
         tv_lokasiPerusahaan = findViewById(R.id.tv_lokasiPerusahaan);
         tv_ratingPerusahaan = findViewById(R.id.tv_ratingPerusahaan);
         premiumTag = findViewById(R.id.premiumTag);
+
+        img_btnBack = findViewById(R.id.img_btnBack);
+        img_btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        btn_editBusiness = findViewById(R.id.btn_editBusiness);
+        btn_editBusiness.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editBusiness = new Intent(BusinessCenter.this, EditBusiness.class);
+                startActivity(editBusiness);
+            }
+        });
 
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();

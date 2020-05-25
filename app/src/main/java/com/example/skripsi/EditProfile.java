@@ -1,8 +1,11 @@
 package com.example.skripsi;
 
 import android.app.DatePickerDialog;
+import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -57,9 +60,18 @@ public class EditProfile extends AppCompatActivity {
 
     Map<String, Boolean> validationChecks = new HashMap<>();
 
-    static int PRIVATE_MODE = 0;
-    public static final String LOCATION_DATA = "LOCATION_DATA";
-    public static final String EDUCATION_DATA = "EDUCATION_DATA";
+    public static final String EMAIL = "EMAIL";
+    public static final String FIRST_NAME = "FIRST_NAME";
+    public static final String LAST_NAME = "LAST_NAME";
+    public static final String PHONE = "PHONE";
+    public static final String DOB = "DOB";
+    public static final String DESCRIPTION = "DESCRIPTION";
+
+    public static final String EDUCATION_ID = "EDUCATION_ID";
+    public static final String EDUCATION_NAME = "EDUCATION_NAME";
+    public static final String LOCATION_ID = "LOCATION_ID";
+    public static final String LOCATION_NAME = "LOCATION_NAME";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +107,6 @@ public class EditProfile extends AppCompatActivity {
                 validatePhoneNumber();
 
                 if (!validationChecks.containsValue(false)){
-                    viewDialog.showDialog();
                     try {
                         editProfile();
                     } catch (JSONException e) {
@@ -158,21 +169,6 @@ public class EditProfile extends AppCompatActivity {
         tv_DOB.setText(tampungTanggal);
         tv_email.setText(mEmail);
 
-
-        if(user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null) {
-            try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
-                editor = sharedPreferences.edit();
-                loadEducationData();
-                loadLocationData();
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
-        System.out.println("asdasd" + user.get(sessionManager.LOCATION_DATA));
-        System.out.println("qwewqewq" + sessionManager.LOCATION_DATA);
 
 
         try {
@@ -285,7 +281,7 @@ public class EditProfile extends AppCompatActivity {
         JSONObject jsonObject = new JSONObject(json);
         JSONArray educationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
-        educationArray.add("--- Choose Location ---");
+        educationArray.add("--- Choose Education ---");
         for (int i=0;i<educationJSON.length();i++){
             object = educationJSON.getJSONObject(i);
             educationArray.add(object.getString("education_name"));
@@ -314,84 +310,8 @@ public class EditProfile extends AppCompatActivity {
         sp_location.setSelection(Integer.parseInt(id));
     }
 
-    private void loadLocationData() throws JSONException {
-        String URL = "http://25.54.110.177:8095/Location/getAllLocation";
-        final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        System.out.println(response.toString());
-                        editor.putString(LOCATION_DATA, response.toString());
-                        editor.apply();
-                    }
-                    else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
-    }
-
-    private void loadEducationData() throws JSONException {
-        String URL = "http://25.54.110.177:8095/Education/getAllEducation";
-        final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        editor.putString(EDUCATION_DATA, response.toString());
-                        editor.apply();
-                    }
-                    else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }){
-            @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
-    }
-
     private void editProfile() throws JSONException {
+        Context mContext = EditProfile.this;
         String URL = "http://25.54.110.177:8095/User/editUserProfile";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("first_name", et_firstName.getText().toString());
@@ -401,8 +321,8 @@ public class EditProfile extends AppCompatActivity {
         jsonBody.put("description", et_description.getText().toString());
         jsonBody.put("upload_file", null);
         jsonBody.put("phone", et_phoneNumber.getText().toString());
-        jsonBody.put("dateOfBirth", sessionManager.EMAIL);
-        jsonBody.put("email", sessionManager.EMAIL);
+        jsonBody.put("dateOfBirth", tv_DOB.getText().toString());
+        jsonBody.put("email", tv_email.getText().toString());
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
@@ -411,8 +331,41 @@ public class EditProfile extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
-                        editor.putString(EDUCATION_DATA, jsonArray.toString());
-                        editor.apply();
+
+                        for(int i = 0;i<jsonArray.length();i++){
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String userEmail = object.getString("user_email");
+                            String userFirstName = object.getString("user_first_name");
+                            String userLastName = object.getString("user_last_name");
+                            String userPhone = object.getString("user_phone");
+                            String userDOB = object.getString("user_dateOfBirth");
+                            String userDescription = object.getString("user_description");
+
+                            JSONObject object1 = object.getJSONObject("education");
+                            String educationId = object1.getString("education_id");
+                            String educationName = object1.getString("education_name");
+
+                            JSONObject object2 = object.getJSONObject("location");
+                            String locationId = object2.getString("location_id");
+                            String locationName = object2.getString("location_name");
+
+                            editor.putString(EMAIL, userEmail);
+                            editor.putString(FIRST_NAME, userFirstName);
+                            editor.putString(LAST_NAME, userLastName);
+                            editor.putString(PHONE, userPhone);
+                            editor.putString(DOB, userDOB);
+                            editor.putString(DESCRIPTION, userDescription);
+                            editor.putString(LOCATION_ID, locationId);
+                            editor.putString(LOCATION_NAME, locationName);
+                            editor.putString(EDUCATION_ID, educationId);
+                            editor.putString(EDUCATION_NAME, educationName);
+                            editor.apply();
+
+                            Toast.makeText(getApplicationContext(), "Edit profile success", Toast.LENGTH_LONG).show();
+                            finish();
+
+                        }
                     }
                     else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
@@ -435,7 +388,7 @@ public class EditProfile extends AppCompatActivity {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         requestQueue.add(jsonObjectRequest);
     }
 

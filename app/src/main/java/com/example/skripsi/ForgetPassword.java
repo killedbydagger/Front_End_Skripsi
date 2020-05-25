@@ -3,12 +3,12 @@ package com.example.skripsi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class ForgotPassword extends AppCompatActivity {
+public class ForgetPassword extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity_forget_password);
     }
 
 

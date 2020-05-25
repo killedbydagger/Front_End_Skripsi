@@ -21,7 +21,7 @@
         <activity android:name=".BusinessCenter"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".ForgotPassword"
+            android:name=".ForgetPassword"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Premium"
             android:theme="@style/AppTheme.NoActionBar"></activity>

@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,7 +29,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -41,6 +40,8 @@ public class LoginActivity extends AppCompatActivity {
     ViewDialog viewDialog;
 
     SessionManager sessionManager;
+
+    Map<String, Boolean> validationChecks = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         tvForgot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent forgotIntent = new Intent(getApplicationContext(),ForgotPassword.class);
+                Intent forgotIntent = new Intent(getApplicationContext(), ForgetPassword.class);
                 startActivity(forgotIntent);
             }
         });
@@ -78,11 +79,15 @@ public class LoginActivity extends AppCompatActivity {
         btSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewDialog.showDialog();
-                try {
-                    login(et_email.getText().toString(),et_password.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                validateEmail();
+                validatePassword();
+                if (!validationChecks.containsValue(false)){
+                    viewDialog.showDialog();
+                    try {
+                        login(et_email.getText().toString(),et_password.getText().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -99,6 +104,32 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void validateEmail(){
+        if(et_email.getText().toString().isEmpty()){
+            et_email.setError("Field can't be empty");
+            validationChecks.put("Email", false);
+        }
+        else if(!Patterns.EMAIL_ADDRESS.matcher(et_email.getText().toString()).matches()){
+            et_email.setError("Please enter a valid email format");
+            validationChecks.put("Email", false);
+        }
+        else {
+            et_email.setError(null);
+            validationChecks.put("Email", true);
+        }
+    }
+
+    private void validatePassword(){
+        if(et_password.getText().toString().isEmpty()){
+            et_password.setError("Field can't be empty");
+            validationChecks.put("Password", false);
+        }
+        else{
+            et_password.setError(null);
+            validationChecks.put("Password", true);
+        }
     }
 
     private void login(final String email, String password) throws JSONException {
@@ -167,7 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
 
                             sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName);
-
+                            viewDialog.hideDialog();
                             Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
                             startActivity(singinIntent);
                             finish();
