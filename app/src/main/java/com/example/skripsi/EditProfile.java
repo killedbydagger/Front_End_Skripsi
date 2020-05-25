@@ -74,7 +74,7 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         et_firstName = findViewById(R.id.et_firstName);
-        et_lastName = findViewById(R.id.et_email);
+        et_lastName = findViewById(R.id.et_lastName);
         et_description = findViewById(R.id.et_description);
         et_phoneNumber = findViewById(R.id.et_phoneNumber);
 

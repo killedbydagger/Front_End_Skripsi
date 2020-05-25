@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         mDisplayDate = (TextView) findViewById(R.id.tv_DOB);
         et_firstName = (EditText) findViewById(R.id.et_firstName);
-        et_lastName = (EditText) findViewById(R.id.et_email);
+        et_lastName = (EditText) findViewById(R.id.et_lastName);
         et_email = (EditText) findViewById(R.id.et_email);
         et_phoneNumber = (EditText) findViewById(R.id.et_phoneNumber);
         et_password = (EditText) findViewById(R.id.et_password);

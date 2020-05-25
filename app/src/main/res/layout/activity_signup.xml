@@ -43,7 +43,7 @@
                 android:inputType="textCapWords"/>
 
             <EditText
-                android:id="@+id/et_email"
+                android:id="@+id/et_lastName"
                 android:layout_width="match_parent"
                 android:layout_height="50sp"
                 android:hint="@string/edt_lastname"
