@@ -121,8 +121,8 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/et_businessLocation"
+                <Spinner
+                    android:id="@+id/sp_location"
                     android:layout_width="match_parent"
                     android:layout_height="50sp"
                     android:layout_marginBottom="10sp"

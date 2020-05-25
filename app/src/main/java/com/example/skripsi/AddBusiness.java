@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -61,7 +62,7 @@ public class AddBusiness extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
-        String userId = user.get(sessionManager.ID);
+        final String userId = user.get(sessionManager.ID);
 
         try {
             sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
@@ -75,10 +76,16 @@ public class AddBusiness extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 validateBusinessName();
+                validateLocation();
                 validateBusinessOverview();
 
                 if(!validationChecks.containsValue(false)){
-                    //createBisnis();
+                    int locationId = sp_location.getSelectedItemPosition();
+                    try {
+                        createBisnis(userId,"URL",et_businessName.getText().toString(), locationId,et_businessOverview.getText().toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -105,6 +112,17 @@ public class AddBusiness extends AppCompatActivity {
         }
     }
 
+    private void validateLocation(){
+        if(sp_location.getSelectedItemPosition() == 0){
+            ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
+            validationChecks.put("Location", false);
+        }
+        else{
+            ((TextView) sp_location.getSelectedView()).setError(null);
+            validationChecks.put("Location", true);
+        }
+    }
+
     private void setLocationSpinner(String json) throws JSONException {
         ArrayList<String> locationArray = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(json);
@@ -121,7 +139,7 @@ public class AddBusiness extends AppCompatActivity {
         sp_location.setAdapter(locationArrayAdapter);
     }
 
-    private void createBisnis(String id, String imageURL, String namaBisnis, String locationId, String overview) throws JSONException {
+    private void createBisnis(String id, String imageURL, String namaBisnis, int locationId, String overview) throws JSONException {
         Context mContext = AddBusiness.this;
         String URL = "http://25.54.110.177:8095/Business/createNewBusiness";
         JSONObject jsonBody = new JSONObject();
@@ -139,8 +157,6 @@ public class AddBusiness extends AppCompatActivity {
                     String status = response.getString("status");
                     if(status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "New business has been created", Toast.LENGTH_LONG).show();
-                        viewDialog.hideDialog();
-
                     }else {
                         Toast.makeText(getApplicationContext(), "Failed to create new business", Toast.LENGTH_LONG).show();
                     }
