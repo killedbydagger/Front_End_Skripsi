@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddList">
+    tools:context=".AddVacancy">
 
     <RelativeLayout
         android:id="@+id/action"
@@ -25,7 +25,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text= "@string/addList"
+            android:text= "@string/addVacancy"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_centerInParent="true"
@@ -126,7 +126,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/et_deskripsi"
             android:layout_width="match_parent"
             android:layout_height="300sp"
             android:ems="10"
@@ -135,7 +135,8 @@
             android:layout_marginBottom="10sp"
             android:background="@drawable/edit_text_card"
             android:elevation="5sp"
-            android:paddingHorizontal="10sp"/>
+            android:paddingHorizontal="10sp"
+            android:paddingVertical="10sp"/>
     </LinearLayout>
 
 

@@ -29,8 +29,10 @@ public class SessionManager {
     public static final String EDUCATION_NAME = "EDUCATION_NAME";
     public static final String LOCATION_ID = "LOCATION_ID";
     public static final String LOCATION_NAME = "LOCATION_NAME";
+
     public static final String LOCATION_DATA = "LOCATION_DATA";
     public static final String EDUCATION_DATA = "EDUCATION_DATA";
+    public static final String CATEGORY_DATA = "CATEGORY_DATA";
 
     public static final String BUSINESS_ID = "BUSINESS_ID";
     public static final String BUSINESS_IMAGE = "BUSINESS_IMAGE";
@@ -61,7 +63,6 @@ public class SessionManager {
         editor.putString(EDUCATION_NAME,education_name);
         editor.putString(LOCATION_ID,location_id);
         editor.putString(LOCATION_NAME,location_name);
-
         editor.apply();
     }
 
@@ -71,9 +72,12 @@ public class SessionManager {
 
     public void checkLogin(){
         if (!this.isLogin()){
-            Intent i = new Intent(context, SplashActivity.class);
+            Intent i = new Intent(context, LoginActivity.class);
             context.startActivity(i);
-            ((MainMenu) context).finish();
+        }
+        else {
+            Intent i = new Intent(context, MainMenu.class);
+            context.startActivity(i);
         }
     }
 
@@ -94,8 +98,10 @@ public class SessionManager {
         user.put(LOCATION_NAME, sharedPreferences.getString(LOCATION_NAME,null));
         user.put(LOCATION_ID, sharedPreferences.getString(LOCATION_ID,null));
         user.put(LOCATION_NAME, sharedPreferences.getString(LOCATION_NAME,null));
+
         user.put(LOCATION_DATA, sharedPreferences.getString(LOCATION_DATA,null));
         user.put(EDUCATION_DATA, sharedPreferences.getString(EDUCATION_DATA,null));
+        user.put(CATEGORY_DATA, sharedPreferences.getString(CATEGORY_DATA,null));
         return user;
     }
 

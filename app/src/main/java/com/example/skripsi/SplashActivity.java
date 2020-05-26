@@ -8,6 +8,8 @@ import android.os.Bundle;
 public class SplashActivity extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 3000;
 
+    SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -16,8 +18,8 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                Intent splashIntent = new Intent(SplashActivity.this,LoginActivity.class);
-                startActivity(splashIntent);
+                sessionManager = new SessionManager(SplashActivity.this);
+                sessionManager.checkLogin();
                 finish();
             }
         },SPLASH_TIME_OUT);

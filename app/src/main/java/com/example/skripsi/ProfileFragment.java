@@ -75,6 +75,25 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        String mFirstName = user.get(sessionManager.FIRST_NAME);
+        String mLastName = user.get(sessionManager.LAST_NAME);
+        String mDob = user.get(sessionManager.DOB);
+        String mPendidikanTerakhir = user.get(sessionManager.EDUCATION_NAME);
+        String mLokasi = user.get(sessionManager.LOCATION_NAME);
+        String mDescription = user.get(sessionManager.DESCRIPTION);
+
+        tv_nama.setText(mFirstName + " " + mLastName);
+        tv_dob.setText(mDob);
+        tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
+        tv_lokasi.setText(mLokasi);
+        tv_desc.setText(mDescription);
+
+    }
+
+    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.menuBusinessCenter:

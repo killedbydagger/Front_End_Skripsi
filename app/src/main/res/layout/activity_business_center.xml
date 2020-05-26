@@ -165,7 +165,7 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/btn_edit"
+                        android:id="@+id/btn_viewRating"
                         android:layout_width="match_parent"
                         android:layout_height="35sp"
                         android:layout_marginHorizontal="5sp"
@@ -176,7 +176,7 @@
                         android:textSize="15sp" />
 
                     <Button
-                        android:id="@+id/btn_addPortfolio"
+                        android:id="@+id/btn_addVacancy"
                         android:layout_width="match_parent"
                         android:layout_height="35sp"
                         android:layout_marginLeft="5sp"

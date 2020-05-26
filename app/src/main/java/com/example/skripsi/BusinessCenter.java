@@ -36,7 +36,7 @@ public class BusinessCenter extends AppCompatActivity {
 
     ImageView img_Business, img_btnBack;
 
-    Button btn_editBusiness;
+    Button btn_editBusiness, btn_addVacancy;
 
     SessionManager sessionManager;
 
@@ -80,6 +80,15 @@ public class BusinessCenter extends AppCompatActivity {
             }
         });
 
+        btn_addVacancy = findViewById(R.id.btn_addVacancy);
+        btn_addVacancy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent addVacancy = new Intent(BusinessCenter.this, AddVacancy.class);
+                startActivity(addVacancy);
+            }
+        });
+
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
@@ -99,6 +108,15 @@ public class BusinessCenter extends AppCompatActivity {
         premiumTag.setText(user.get(sessionManager.STATUS));
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        HashMap<String, String> business = sessionManager.getBusinessDetail();
+        tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
+        tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+
     }
 
     private void checkBisnis(String id) throws JSONException {

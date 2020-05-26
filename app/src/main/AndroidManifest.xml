@@ -35,10 +35,10 @@
             android:name=".ApplicantList"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".EditList"
+            android:name=".EditVacancy"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".AddList"
+            android:name=".AddVacancy"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SetRecommendation"
@@ -48,10 +48,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".loading" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".MainMenu"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".MainMenu"
+            android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

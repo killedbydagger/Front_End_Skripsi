@@ -1,6 +1,7 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -186,7 +187,10 @@ public class EditBusiness extends AppCompatActivity {
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
+//                            Intent businessIntent = new Intent(getApplicationContext(),BusinessCenter.class);
+//                            startActivity(businessIntent);
                             finish();
+
                         }
                     }
                     else {
