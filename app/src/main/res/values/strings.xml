@@ -69,4 +69,5 @@
     <string name="list">List</string>
     <string name="viewRating">View Rating</string>
     <string name="addVacancy">Add Vacancy</string>
+    <string name="listVacancy">List vacancy</string>
 </resources>

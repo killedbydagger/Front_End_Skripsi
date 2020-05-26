@@ -39,7 +39,7 @@ public class AddVacancy extends AppCompatActivity {
 
     EditText et_title, et_alamat, et_gaji, et_deskripsi;
 
-    Spinner sp_kategori;
+    Spinner sp_kategori, sp_location;
 
     Button btn_add;
 
@@ -56,6 +56,7 @@ public class AddVacancy extends AppCompatActivity {
         setContentView(R.layout.activity_add_vacancy);
 
         sp_kategori = findViewById(R.id.sp_kategori);
+        sp_location = findViewById(R.id.sp_location);
 
         et_title = findViewById(R.id.et_title);
         et_alamat = findViewById(R.id.et_alamat);
@@ -70,6 +71,7 @@ public class AddVacancy extends AppCompatActivity {
             sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
             editor = sharedPreferences.edit();
             setCategorySpinner(user.get(sessionManager.CATEGORY_DATA));
+            setLocationSpinner(user.get(sessionManager.LOCATION_DATA));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -104,13 +106,13 @@ public class AddVacancy extends AppCompatActivity {
             public void onClick(View v) {
                 validateCategory();
                 validateTitle();
-                validateAddress();
+                validateLocation();
                 validateSalary();
                 validateDescription();
 
                 if(!validationChecks.containsValue(false)){
                     try {
-                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), businessLocationId);
+                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), sp_location.getSelectedItemPosition());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -141,13 +143,14 @@ public class AddVacancy extends AppCompatActivity {
         }
     }
 
-    private void validateAddress(){
-        if(et_alamat.getText().toString().isEmpty()){
-            et_alamat.setError("Field can't be empty");
-            validationChecks.put("Address", false);
+    private void validateLocation(){
+        if(sp_location.getSelectedItemPosition() == 0){
+            ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
+            validationChecks.put("Location", false);
         }
         else{
-            validationChecks.put("Address", true);
+            ((TextView) sp_location.getSelectedView()).setError(null);
+            validationChecks.put("Location", true);
         }
     }
     private void validateSalary(){
@@ -170,6 +173,22 @@ public class AddVacancy extends AppCompatActivity {
         }
     }
 
+    private void setLocationSpinner(String json) throws JSONException {
+        ArrayList<String> locationArray = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(json);
+        JSONArray locationJSON = jsonObject.getJSONArray("data");
+        JSONObject object;
+        locationArray.add("--- Choose Location ---");
+        for (int i=0;i<locationJSON.length();i++){
+            object = locationJSON.getJSONObject(i);
+            locationArray.add(object.getString("location_name"));
+        }
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, locationArray);
+        locationArrayAdapter.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+        sp_location.setAdapter(locationArrayAdapter);
+    }
+
     private void setCategorySpinner(String json) throws JSONException {
         ArrayList<String> locationArray = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(json);
@@ -186,7 +205,7 @@ public class AddVacancy extends AppCompatActivity {
         sp_kategori.setAdapter(locationArrayAdapter);
     }
 
-    private void add(String businessId, int categoryId, String title, String description, String salary, String locationId) throws JSONException {
+    private void add(String businessId, int categoryId, String title, String description, String salary, int locationId) throws JSONException {
         Context mContext = AddVacancy.this;
         String URL = "http://25.54.110.177:8095/Vacancy/addNewVacancy";
         JSONObject jsonBody = new JSONObject();

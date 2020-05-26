@@ -88,12 +88,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/address"
+            android:text="@string/location"
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/et_alamat"
+        <Spinner
+            android:id="@+id/sp_location"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:layout_marginBottom="10sp"

@@ -8,9 +8,13 @@ import android.media.Image;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -26,7 +31,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BusinessCenter extends AppCompatActivity {
@@ -50,6 +57,12 @@ public class BusinessCenter extends AppCompatActivity {
     public static final String BUSINESS_LOCATION_ID = "BUSINESS_LOCATION_ID";
     public static final String BUSINESS_LOCATION_NAME = "BUSINESS_LOCATION_NAME";
     public static final String BUSINESS_OVERVIEW = "BUSINESS_OVERVIEW";
+
+    private RecyclerView mList;
+    private LinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+    private List<Vacancy> vacancyList;
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +121,26 @@ public class BusinessCenter extends AppCompatActivity {
         premiumTag.setText(user.get(sessionManager.STATUS));
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+
+        mList = findViewById(R.id.rv_listVacancy);
+
+        vacancyList = new ArrayList<>();
+        adapter = new VacancyAdapter(getApplicationContext(), vacancyList);
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        mList.setHasFixedSize(true);
+        mList.setLayoutManager(linearLayoutManager);
+        mList.addItemDecoration(dividerItemDecoration);
+        mList.setAdapter(adapter);
+
+        try {
+            loadVacancyData(business.get(sessionManager.BUSINESS_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -117,6 +150,62 @@ public class BusinessCenter extends AppCompatActivity {
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
 
+    }
+
+    private void loadVacancyData(String id) throws JSONException {
+        String URL = "http://25.54.110.177:8095/Vacancy/viewAllVacancyByBusID";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("business_id", id);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for(int i = 0;i<jsonArray.length();i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Vacancy vacancy = new Vacancy();
+
+                            JSONObject object1 = object.getJSONObject("category");
+                            vacancy.setCategory(object1.getString("category_name"));
+
+                            vacancy.setTitle(object.getString("vac_title"));
+
+                            JSONObject object2 = object.getJSONObject("location");
+                            vacancy.setLocationName(object2.getString("location_name"));
+
+                            vacancy.setSalary(object.getString("vac_salary"));
+
+                            vacancyList.add(vacancy);
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
     }
 
     private void checkBisnis(String id) throws JSONException {
@@ -203,4 +292,7 @@ public class BusinessCenter extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
 
     }
+
+
+
 }
