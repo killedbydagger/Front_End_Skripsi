@@ -48,6 +48,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent = new Intent (v.getContext(), ApplicantList.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", vacancy.getId());
                 v.getContext().startActivity(intent);
             }
         });
