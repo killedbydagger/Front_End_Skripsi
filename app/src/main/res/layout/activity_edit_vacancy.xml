@@ -25,7 +25,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text= "@string/editList"
+            android:text= "@string/editVacancy"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_centerInParent="true"
@@ -61,7 +61,7 @@
             android:textStyle="bold" />
 
         <Spinner
-            android:id="@+id/sp_kategori"
+            android:id="@+id/sp_category"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:layout_marginBottom="10sp"
@@ -88,12 +88,12 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/address"
+            android:text="@string/location"
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/et_alamat"
+        <Spinner
+            android:id="@+id/sp_location"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:layout_marginBottom="10sp"
@@ -109,7 +109,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/et_gaji"
+            android:id="@+id/et_salary"
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:layout_marginBottom="10sp"
@@ -126,7 +126,7 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/et_description"
             android:layout_width="match_parent"
             android:layout_height="300sp"
             android:ems="10"
@@ -135,7 +135,8 @@
             android:layout_marginBottom="10sp"
             android:background="@drawable/edit_text_card"
             android:elevation="5sp"
-            android:paddingHorizontal="10sp"/>
+            android:paddingHorizontal="10sp"
+            android:paddingVertical="10sp"/>
     </LinearLayout>
 
 </RelativeLayout>

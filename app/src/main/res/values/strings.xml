@@ -49,7 +49,7 @@
     <string name="address">Address</string>
     <string name="descriptionText">Description</string>
     <string name="addList">Add list</string>
-    <string name="editList">Edit list</string>
+    <string name="editVacancy">Edit vacancy</string>
     <string name="applicantList">Applicant list</string>
     <string name="rating">Rating</string>
     <string name="applicantProfile">Applicant profile</string>

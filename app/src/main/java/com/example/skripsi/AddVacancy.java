@@ -37,7 +37,7 @@ public class AddVacancy extends AppCompatActivity {
 
     private RequestQueue requestQueue;
 
-    EditText et_title, et_alamat, et_gaji, et_deskripsi;
+    EditText et_title, et_gaji, et_deskripsi;
 
     Spinner sp_kategori, sp_location;
 
@@ -59,7 +59,6 @@ public class AddVacancy extends AppCompatActivity {
         sp_location = findViewById(R.id.sp_location);
 
         et_title = findViewById(R.id.et_title);
-        et_alamat = findViewById(R.id.et_alamat);
         et_gaji = findViewById(R.id.et_gaji);
         et_deskripsi = findViewById(R.id.et_deskripsi);
         btn_add = findViewById(R.id.btn_add);

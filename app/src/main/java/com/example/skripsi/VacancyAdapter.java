@@ -1,11 +1,16 @@
 package com.example.skripsi;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
@@ -28,13 +33,29 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        Vacancy vacancy = list.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
+        final Vacancy vacancy = list.get(position);
 
         viewHolder.textTitle.setText(vacancy.getTitle());
         viewHolder.textCategory.setText(vacancy.getCategory());
         viewHolder.textLocation.setText(vacancy.getLocationName());
         viewHolder.textSalary.setText(vacancy.getSalary());
+        viewHolder.imgEdit.setImageResource(R.drawable.icon_edit);
+        viewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), EditVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", vacancy.getId());
+                intent.putExtra("LOCATION_ID",vacancy.getLocationId());
+                intent.putExtra("CATEGORY_ID",vacancy.getCategoryId());
+                intent.putExtra("TITLE",vacancy.getTitle());
+                intent.putExtra("SALARY",vacancy.getSalary());
+                intent.putExtra("DESCRIPTION",vacancy.getDescription());
+                v.getContext().startActivity(intent);
+            }
+        });
+        viewHolder.imgDelete.setImageResource(R.drawable.icon_dusbin);
     }
 
     @Override
@@ -44,6 +65,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView textTitle, textCategory, textSalary, textLocation;
+        public ImageView imgEdit,imgDelete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -52,6 +74,8 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             textCategory = itemView.findViewById(R.id.tv_category);
             textSalary = itemView.findViewById(R.id.tv_salary);
             textLocation = itemView.findViewById(R.id.tv_location);
+            imgEdit = itemView.findViewById(R.id.img_edit);
+            imgDelete = itemView.findViewById(R.id.img_delete);
         }
     }
 }

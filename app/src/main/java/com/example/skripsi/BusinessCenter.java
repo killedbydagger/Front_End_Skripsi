@@ -1,5 +1,6 @@
 package com.example.skripsi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -150,6 +151,11 @@ public class BusinessCenter extends AppCompatActivity {
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
 
+        try {
+            loadVacancyData(business.get(sessionManager.BUSINESS_ID));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadVacancyData(String id) throws JSONException {
@@ -160,6 +166,7 @@ public class BusinessCenter extends AppCompatActivity {
             @Override
             public void onResponse(JSONObject response) {
                 try {
+                    vacancyList.clear();
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
@@ -168,15 +175,21 @@ public class BusinessCenter extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Vacancy vacancy = new Vacancy();
 
+                            vacancy.setId(object.getString("vac_id"));
+
                             JSONObject object1 = object.getJSONObject("category");
+                            vacancy.setCategoryId(object1.getString("category_id"));
                             vacancy.setCategory(object1.getString("category_name"));
 
                             vacancy.setTitle(object.getString("vac_title"));
 
                             JSONObject object2 = object.getJSONObject("location");
+                            vacancy.setLocationId(object2.getString("location_id"));
                             vacancy.setLocationName(object2.getString("location_name"));
 
                             vacancy.setSalary(object.getString("vac_salary"));
+
+                            vacancy.setDescription(object.getString("vac_description"));
 
                             vacancyList.add(vacancy);
                         }
