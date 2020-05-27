@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -41,6 +42,16 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
         viewHolder.textLocation.setText(vacancy.getLocationName());
         viewHolder.textSalary.setText(vacancy.getSalary());
         viewHolder.imgEdit.setImageResource(R.drawable.icon_edit);
+
+        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), ApplicantList.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+            }
+        });
+
         viewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +77,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView textTitle, textCategory, textSalary, textLocation;
         public ImageView imgEdit,imgDelete;
+        public LinearLayout layout_data;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -76,6 +88,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             textLocation = itemView.findViewById(R.id.tv_location);
             imgEdit = itemView.findViewById(R.id.img_edit);
             imgDelete = itemView.findViewById(R.id.img_delete);
+            layout_data = itemView.findViewById(R.id.layout_data);
         }
     }
 }
