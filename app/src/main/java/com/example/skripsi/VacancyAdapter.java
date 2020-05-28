@@ -68,6 +68,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             public void onClick(View v) {
                 Intent intent = new Intent (v.getContext(), ApplicantList.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("TITLE",vacancy.getTitle());
                 intent.putExtra("VACANCY_ID", vacancy.getId());
                 v.getContext().startActivity(intent);
             }
@@ -95,9 +96,12 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             public void onClick(final View v) {
 
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
-                alertDialog.setMessage("Are your sure to delete this vacancy?").setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
+
+                alertDialog.setMessage("Are you sure to delete this vacancy?").setCancelable(false);
+
+                alertDialog.setPositiveButton(
+                        "Delete",
+                        new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
                                     deleteVacancy(v.getContext(), business.get(sessionManager.BUSINESS_ID), vacancy.getId());
@@ -105,16 +109,10 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                                     e.printStackTrace();
                                 }
                             }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-
+                        }
+                );
                 AlertDialog alert = alertDialog.create();
-                alert.setTitle("Delete vacancy");
+                alert.setTitle("Create new business");
                 alert.show();
             }
         });
@@ -144,7 +142,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     }
 
     private void deleteVacancy(final Context mContext , String id, String vacId) throws JSONException {
-        String URL = "http://25.54.110.177:8095/Vacancy/editVacancy";
+        String URL = "http://25.54.110.177:8095/Vacancy/deleteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
         jsonBody.put("vac_id", vacId);
@@ -156,6 +154,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(mContext, "Delete vacancy success", Toast.LENGTH_LONG).show();
+
                     }
                     else {
                         Toast.makeText(mContext, "Delete vacancy failed", Toast.LENGTH_LONG).show();
