@@ -1,0 +1,142 @@
+package com.example.skripsi;
+
+import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.ViewHolder> {
+
+    private Context context;
+    private List<Applicant> list;
+
+    SessionManager sessionManager;
+
+    public ApplicantAdapter(Context context, List<Applicant> list) {
+        this.context = context;
+        this.list = list;
+
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(context).inflate(R.layout.applicantlist_item, viewGroup, false);
+        return new ViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        final Applicant applicant = list.get(i);
+
+        sessionManager = new SessionManager(context);
+        final HashMap<String, String> user = sessionManager.getUserDetail();
+        final HashMap<String, String> business = sessionManager.getBusinessDetail();
+
+        viewHolder.textName.setText(applicant.getName());
+        viewHolder.textEmail.setText(applicant.getEmail());
+
+        viewHolder.btn_accepted.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    respondApplicant(view.getContext(), user.get(sessionManager.ID), applicant.getVac_id(), business.get(sessionManager.BUSINESS_ID), "ACCEPTED");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        viewHolder.btn_rejected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    respondApplicant(view.getContext(), user.get(sessionManager.ID), applicant.getVac_id(), business.get(sessionManager.BUSINESS_ID), "REJECTED");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView textName, textEmail;
+        public Button btn_accepted, btn_rejected;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            textName = itemView.findViewById(R.id.tv_applicantName);
+            textEmail = itemView.findViewById(R.id.tv_applicantPhone);
+
+            btn_accepted = itemView.findViewById(R.id.btn_accept);
+            btn_rejected = itemView.findViewById(R.id.btn_reject);
+        }
+    }
+
+    private void respondApplicant(final Context mContext , String userId, String vacId, String businessId, String respond) throws JSONException {
+        String URL = "http://25.54.110.177:8095/VacancyApplicant/respondVacancyApplicant";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", userId);
+        jsonBody.put("vac_id", vacId);
+        jsonBody.put("business_id", businessId);
+        jsonBody.put("respond", respond);
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        Toast.makeText(mContext, "Success to respond", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(mContext, "Failed to respond", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonObjectRequest);
+    }
+}

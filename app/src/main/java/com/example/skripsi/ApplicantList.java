@@ -1,12 +1,12 @@
 package com.example.skripsi;
 
-import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -14,7 +14,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -29,13 +28,10 @@ import java.util.Map;
 
 public class ApplicantList extends AppCompatActivity {
 
-    private String url = "http://25.54.110.177:8095/VacancyApplicant/getVacancyApplicant";
-
     private RecyclerView rv_applicantList;
-
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
-    private List<ListApplicant> applicantLists;
+    private List<Applicant> applicantLists;
     private RecyclerView.Adapter adapter;
 
     @Override
@@ -43,10 +39,19 @@ public class ApplicantList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applicant_list);
 
+        Intent intent = getIntent();
+        String jobTitle = intent.getStringExtra("TITLE");
+
+        Applicant applicant = new Applicant();
+        applicant.setVac_id(getIntent().getExtras().getString("VACANCY_ID"));
+
+        TextView textView = findViewById(R.id.tv_jobTitle);
+        textView.setText(jobTitle);
+
         rv_applicantList = findViewById(R.id.rv_applicantList);
 
         applicantLists = new ArrayList<>();
-        adapter = new ListApplicantAdapter(getApplicationContext(), applicantLists);
+        adapter = new ApplicantAdapter(getApplicationContext(), applicantLists);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(rv_applicantList.getContext(), linearLayoutManager.getOrientation());
@@ -78,13 +83,13 @@ public class ApplicantList extends AppCompatActivity {
 
                         for(int i = 0;i<jsonArray.length();i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            ListApplicant listApplicant = new ListApplicant();
+                            Applicant applicant = new Applicant();
 
                             JSONObject object1 = object.getJSONObject("user");
-                            listApplicant.setName(object1.getString("user_first_name") + " " + object1.getString("user_last_name"));
-                            listApplicant.setEmail(object1.getString("user_email"));
+                            applicant.setName(object1.getString("user_first_name") + " " + object1.getString("user_last_name"));
+                            applicant.setEmail(object1.getString("user_email"));
 
-                            applicantLists.add(listApplicant);
+                            applicantLists.add(applicant);
                         }
 
                         adapter.notifyDataSetChanged();

@@ -1,16 +1,25 @@
 package com.example.skripsi;
 
-public class ListApplicant {
+public class Applicant {
 
-    public String name, email;
+    public String name, email, vac_id;
 
-    public ListApplicant(){
+    public Applicant(){
 
     }
 
-    public ListApplicant(String name, String email) {
+    public Applicant(String name, String email, String vac_id) {
         this.name = name;
         this.email = email;
+        this.vac_id = vac_id;
+    }
+
+    public String getVac_id() {
+        return vac_id;
+    }
+
+    public void setVac_id(String vac_id) {
+        this.vac_id = vac_id;
     }
 
     public String getName() {
