@@ -46,13 +46,14 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final Applicant applicant = list.get(i);
 
         sessionManager = new SessionManager(context);
         final HashMap<String, String> user = sessionManager.getUserDetail();
         final HashMap<String, String> business = sessionManager.getBusinessDetail();
 
+        System.out.println();
         viewHolder.textName.setText(applicant.getName());
         viewHolder.textEmail.setText(applicant.getEmail());
 
@@ -60,7 +61,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
             @Override
             public void onClick(View view) {
                 try {
-                    respondApplicant(view.getContext(), user.get(sessionManager.ID), applicant.getVac_id(), business.get(sessionManager.BUSINESS_ID), "ACCEPTED");
+                    respondApplicant(view.getContext(), applicant.getApplicant_id(), applicant.getVac_id(), business.get(sessionManager.BUSINESS_ID), "ACCEPTED", i);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -71,7 +72,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
             @Override
             public void onClick(View view) {
                 try {
-                    respondApplicant(view.getContext(), user.get(sessionManager.ID), applicant.getVac_id(), business.get(sessionManager.BUSINESS_ID), "REJECTED");
+                    respondApplicant(view.getContext(), applicant.getApplicant_id(), applicant.getVac_id(), business.get(sessionManager.BUSINESS_ID), "REJECTED", i);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -99,7 +100,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
         }
     }
 
-    private void respondApplicant(final Context mContext , String userId, String vacId, String businessId, String respond) throws JSONException {
+    private void respondApplicant(final Context mContext , String userId, String vacId, String businessId, String respond, final int index) throws JSONException {
         String URL = "http://25.54.110.177:8095/VacancyApplicant/respondVacancyApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
@@ -114,6 +115,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(mContext, "Success to respond", Toast.LENGTH_LONG).show();
+                        list.remove(index);
                     }
                     else {
                         Toast.makeText(mContext, "Failed to respond", Toast.LENGTH_LONG).show();

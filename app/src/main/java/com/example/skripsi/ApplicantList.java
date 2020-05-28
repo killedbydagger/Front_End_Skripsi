@@ -42,9 +42,6 @@ public class ApplicantList extends AppCompatActivity {
         Intent intent = getIntent();
         String jobTitle = intent.getStringExtra("TITLE");
 
-        Applicant applicant = new Applicant();
-        applicant.setVac_id(getIntent().getExtras().getString("VACANCY_ID"));
-
         TextView textView = findViewById(R.id.tv_jobTitle);
         textView.setText(jobTitle);
 
@@ -88,6 +85,10 @@ public class ApplicantList extends AppCompatActivity {
                             JSONObject object1 = object.getJSONObject("user");
                             applicant.setName(object1.getString("user_first_name") + " " + object1.getString("user_last_name"));
                             applicant.setEmail(object1.getString("user_email"));
+                            applicant.setApplicant_id(object1.getString("user_id"));
+
+                            JSONObject object2 = object.getJSONObject("vacancy");
+                            applicant.setVac_id(object2.getString("vac_id"));
 
                             applicantLists.add(applicant);
                         }
