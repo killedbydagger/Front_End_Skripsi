@@ -70,4 +70,7 @@
     <string name="viewRating">View Rating</string>
     <string name="addVacancy">Add Vacancy</string>
     <string name="listVacancy">List vacancy</string>
+    <string name="favorite">Favorites</string>
+    <string name="applicationHistory">Application history</string>
+    <string name="rateCompany">Rate company</string>
 </resources>

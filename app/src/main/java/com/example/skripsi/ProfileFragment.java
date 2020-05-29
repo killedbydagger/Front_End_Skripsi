@@ -5,10 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -25,7 +22,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     private DrawerLayout drawer;
 
     Button btn_edit;
-    ImageView img_slideMenuProfile;
+    ImageView img_slideMenuProfile, img_history;
     TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc;
     SessionManager sessionManager;
 
@@ -69,6 +66,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
+
+        img_history = v.findViewById(R.id.img_history);
+        img_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent historyIntent = new Intent(v.getContext(), ApplicationHistory.class);
+                startActivity(historyIntent);
+            }
+        });
 
         return v;
 
