@@ -2,6 +2,7 @@ package com.example.skripsi;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +47,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         final Applicant applicant = list.get(i);
 
         sessionManager = new SessionManager(context);
@@ -65,6 +66,11 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                viewHolder.btn_accepted.setVisibility(View.GONE);
+                viewHolder.btn_rejected.setVisibility(View.GONE);
+                viewHolder.applicantStatus.setVisibility(View.VISIBLE);
+                viewHolder.applicantStatus.setText("ACCEPTED");
+                viewHolder.applicantStatus.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
             }
         });
 
@@ -76,6 +82,11 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                viewHolder.btn_accepted.setVisibility(View.GONE);
+                viewHolder.btn_rejected.setVisibility(View.GONE);
+                viewHolder.applicantStatus.setVisibility(View.VISIBLE);
+                viewHolder.applicantStatus.setText("REJECTED");
+                viewHolder.applicantStatus.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));
             }
         });
     }
@@ -86,7 +97,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textName, textEmail;
+        public TextView textName, textEmail, applicantStatus;
         public Button btn_accepted, btn_rejected;
 
         public ViewHolder(@NonNull View itemView) {
@@ -94,6 +105,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
 
             textName = itemView.findViewById(R.id.tv_applicantName);
             textEmail = itemView.findViewById(R.id.tv_applicantPhone);
+            applicantStatus = itemView.findViewById(R.id.tv_applicantStatus);
 
             btn_accepted = itemView.findViewById(R.id.btn_accept);
             btn_rejected = itemView.findViewById(R.id.btn_reject);
@@ -115,7 +127,6 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(mContext, "Success to respond", Toast.LENGTH_LONG).show();
-                        list.remove(index);
                     }
                     else {
                         Toast.makeText(mContext, "Failed to respond", Toast.LENGTH_LONG).show();
