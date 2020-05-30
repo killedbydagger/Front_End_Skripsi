@@ -90,6 +90,7 @@ public class ApplicantList extends AppCompatActivity {
                             JSONObject object2 = object.getJSONObject("vacancy");
                             applicant.setVac_id(object2.getString("vac_id"));
 
+                            applicant.setStatusName(object.getString("status"));
                             applicantLists.add(applicant);
                         }
 
@@ -119,4 +120,5 @@ public class ApplicantList extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }
+
 }

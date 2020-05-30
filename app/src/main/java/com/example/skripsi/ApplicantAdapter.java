@@ -1,6 +1,7 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,9 +56,36 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
         final HashMap<String, String> user = sessionManager.getUserDetail();
         final HashMap<String, String> business = sessionManager.getBusinessDetail();
 
-        System.out.println();
         viewHolder.textName.setText(applicant.getName());
         viewHolder.textEmail.setText(applicant.getEmail());
+
+        viewHolder.applicantData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ApplicantProfile.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("user_email", applicant.getEmail());
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        if (applicant.getStatusName().equals("ACCEPTED")){
+            viewHolder.btn_accepted.setVisibility(View.GONE);
+            viewHolder.btn_rejected.setVisibility(View.GONE);
+            viewHolder.applicantStatus.setVisibility(View.VISIBLE);
+            viewHolder.applicantStatus.setText("ACCEPTED");
+            viewHolder.applicantStatus.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
+        }else if (applicant.getStatusName().equals("REJECTED")){
+            viewHolder.btn_accepted.setVisibility(View.GONE);
+            viewHolder.btn_rejected.setVisibility(View.GONE);
+            viewHolder.applicantStatus.setVisibility(View.VISIBLE);
+            viewHolder.applicantStatus.setText("REJECTED");
+            viewHolder.applicantStatus.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));
+        }else{
+            viewHolder.applicantStatus.setVisibility(View.GONE);
+            viewHolder.btn_accepted.setVisibility(View.VISIBLE);
+            viewHolder.btn_rejected.setVisibility(View.VISIBLE);
+        }
 
         viewHolder.btn_accepted.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +128,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textName, textEmail, applicantStatus;
         public Button btn_accepted, btn_rejected;
+        public LinearLayout applicantData;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +136,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
             textName = itemView.findViewById(R.id.tv_applicantName);
             textEmail = itemView.findViewById(R.id.tv_applicantPhone);
             applicantStatus = itemView.findViewById(R.id.tv_applicantStatus);
+            applicantData = itemView.findViewById(R.id.applicantData);
 
             btn_accepted = itemView.findViewById(R.id.btn_accept);
             btn_rejected = itemView.findViewById(R.id.btn_reject);
