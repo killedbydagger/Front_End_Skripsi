@@ -10,21 +10,26 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChangePassword"
+        <activity android:name=".ApplicationHistory"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ChangePassword"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AddBusiness"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".EditBusiness"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".BusinessCenter"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".BusinessCenter"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ForgetPassword"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Premium"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".Premium"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ApplicantProfile"
             android:theme="@style/AppTheme.NoActionBar" />

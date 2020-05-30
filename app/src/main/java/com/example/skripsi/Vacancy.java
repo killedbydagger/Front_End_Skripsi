@@ -9,18 +9,22 @@ public class Vacancy {
 
     public String title;
     public String category;
-    public String salary;
+    public int salary;
     public String locationName;
     public String id;
     public String locationId;
     public String categoryId;
     public String description;
+    public String position;
+    public String dueDate;
 
     public Vacancy(){
 
     }
 
-    public Vacancy(String title, String category, String salary, String locationName, String id, String locationId, String categoryId, String description){
+
+
+    public Vacancy(String title, String category, int salary, String locationName, String id, String locationId, String categoryId, String description, String position, String dueDate){
         this.title = title;
         this.category = category;
         this.salary = salary;
@@ -29,6 +33,8 @@ public class Vacancy {
         this.locationId = locationId;
         this.categoryId = categoryId;
         this.description = description;
+        this.position = position;
+        this.dueDate = dueDate;
     }
 
     public String getTitle(){
@@ -47,11 +53,11 @@ public class Vacancy {
         this.category = category;
     }
 
-    public String getSalary(){
+    public int getSalary(){
         return salary;
     }
 
-    public void setSalary(String salary){
+    public void setSalary(int salary){
         this.salary = salary;
     }
 
@@ -95,4 +101,19 @@ public class Vacancy {
         this.description = description;
     }
 
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
 }
