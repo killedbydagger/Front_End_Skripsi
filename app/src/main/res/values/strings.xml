@@ -73,4 +73,6 @@
     <string name="favorite">Favorites</string>
     <string name="applicationHistory">Application history</string>
     <string name="rateCompany">Rate company</string>
+    <string name="position">Position</string>
+    <string name="dueDate">Due Date</string>
 </resources>

@@ -62,7 +62,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mDescription = user.get(sessionManager.DESCRIPTION);
 
         tv_nama.setText(mFirstName + " " + mLastName);
-        tv_dob.setText(mDob);
+
+        String[] splitDob = mDob.split("\\s+");
+        System.out.println(splitDob[0]);
+        tv_dob.setText(splitDob[0]);
+
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
@@ -92,7 +96,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mDescription = user.get(sessionManager.DESCRIPTION);
 
         tv_nama.setText(mFirstName + " " + mLastName);
-        tv_dob.setText(mDob);
+        String[] splitDob = mDob.split("\\s+");
+        System.out.println(splitDob[0]);
+        tv_dob.setText(splitDob[0]);
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
