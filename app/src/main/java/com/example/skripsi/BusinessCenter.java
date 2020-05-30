@@ -187,9 +187,14 @@ public class BusinessCenter extends AppCompatActivity {
                             vacancy.setLocationId(object2.getString("location_id"));
                             vacancy.setLocationName(object2.getString("location_name"));
 
-                            vacancy.setSalary(object.getString("vac_salary"));
+                            vacancy.setSalary(object.getInt("vac_salary"));
 
                             vacancy.setDescription(object.getString("vac_description"));
+
+                            vacancy.setDueDate(object.getString("due_date"));
+
+                            JSONObject object3 = object.getJSONObject("position");
+                            vacancy.setPosition(object3.getString("position_name"));
 
                             vacancyList.add(vacancy);
                         }

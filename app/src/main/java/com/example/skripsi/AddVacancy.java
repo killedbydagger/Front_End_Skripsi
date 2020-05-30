@@ -1,5 +1,6 @@
 package com.example.skripsi;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v4.content.ContextCompat;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
@@ -29,8 +31,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class AddVacancy extends AppCompatActivity {
@@ -39,11 +44,18 @@ public class AddVacancy extends AppCompatActivity {
 
     EditText et_title, et_gaji, et_deskripsi;
 
-    Spinner sp_kategori, sp_location;
+    TextView tv_dueDate;
+
+    private SimpleDateFormat dateFormatter, dateFormatter2;
+
+    Spinner sp_kategori, sp_location, sp_position;
 
     Button btn_add;
 
     Map<String, Boolean> validationChecks = new HashMap<>();
+
+    private DatePickerDialog datePickerDialog;
+    private String tanggal;
 
     static int PRIVATE_MODE = 0;
     SessionManager sessionManager;
@@ -57,6 +69,18 @@ public class AddVacancy extends AppCompatActivity {
 
         sp_kategori = findViewById(R.id.sp_kategori);
         sp_location = findViewById(R.id.sp_location);
+        sp_position = findViewById(R.id.sp_position);
+
+        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
+        dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+        tv_dueDate = findViewById(R.id.tv_dueDate);
+        tv_dueDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog();
+            }
+        });
 
         et_title = findViewById(R.id.et_title);
         et_gaji = findViewById(R.id.et_gaji);
@@ -108,17 +132,50 @@ public class AddVacancy extends AppCompatActivity {
                 validateLocation();
                 validateSalary();
                 validateDescription();
+                validateDate();
 
                 if(!validationChecks.containsValue(false)){
-                    try {
-                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), sp_location.getSelectedItemPosition());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+//                    try {
+//                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), sp_location.getSelectedItemPosition());
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
                 }
             }
         });
 
+    }
+
+    private void showDateDialog(){
+
+        Calendar newCalendar = Calendar.getInstance();
+
+        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, monthOfYear, dayOfMonth);
+
+                tv_dueDate.setText(dateFormatter.format(newDate.getTime()));
+                tanggal = dateFormatter2.format(newDate.getTime());
+            }
+
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        datePickerDialog.show();
+    }
+
+    private void validateDate(){
+        if(tv_dueDate.getText().toString().isEmpty()){
+            tv_dueDate.setError("Field can't be empty");
+            validationChecks.put("Due_Date", false);
+        }
+        else{
+            tv_dueDate.setError(null);
+            validationChecks.put("Due_Date", true);
+        }
     }
 
     private void validateCategory(){
@@ -204,7 +261,44 @@ public class AddVacancy extends AppCompatActivity {
         sp_kategori.setAdapter(locationArrayAdapter);
     }
 
-    private void add(String businessId, int categoryId, String title, String description, String salary, int locationId) throws JSONException {
+    private void loadPositionData(int categoryId) throws JSONException {
+        String URL = "http://25.54.110.177:8095/CategoryPosition/getCategoryPosition";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("category_id",categoryId);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void add(String businessId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
         Context mContext = AddVacancy.this;
         String URL = "http://25.54.110.177:8095/Vacancy/addNewVacancy";
         JSONObject jsonBody = new JSONObject();
@@ -215,6 +309,8 @@ public class AddVacancy extends AppCompatActivity {
         jsonBody.put("description", description);
         jsonBody.put("salary", salary);
         jsonBody.put("location_id", locationId);
+        jsonBody.put("position_id", positionId);
+        jsonBody.put("due_date", date);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override

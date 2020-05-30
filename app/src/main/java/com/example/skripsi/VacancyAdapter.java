@@ -28,8 +28,11 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHolder>{
@@ -56,9 +59,20 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
         final Vacancy vacancy = list.get(position);
 
         viewHolder.textTitle.setText(vacancy.getTitle());
+        viewHolder.textPosition.setText(vacancy.getPosition());
         viewHolder.textCategory.setText(vacancy.getCategory());
         viewHolder.textLocation.setText(vacancy.getLocationName());
-        viewHolder.textSalary.setText(vacancy.getSalary());
+
+        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.ENGLISH);
+        Locale localeID = new Locale("in", "ID");
+
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+
+        viewHolder.textSalary.setText(formatRupiah.format((double)vacancy.getSalary()));
+
+
+        String[] splitDob = vacancy.getDueDate().split("\\s+");
+        viewHolder.textDueDate.setText(splitDob[0]);
 
         sessionManager = new SessionManager(context);
         final HashMap<String, String> business = sessionManager.getBusinessDetail();
@@ -124,7 +138,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public TextView textTitle, textCategory, textSalary, textLocation;
+        public TextView textTitle, textPosition, textCategory, textSalary, textLocation, textDueDate;
         public ImageView imgEdit,imgDelete;
         public LinearLayout layout_data;
 
@@ -132,12 +146,14 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             super(itemView);
 
             textTitle = itemView.findViewById(R.id.tv_title);
+            textPosition = itemView.findViewById(R.id.tv_position);
             textCategory = itemView.findViewById(R.id.tv_category);
             textSalary = itemView.findViewById(R.id.tv_salary);
             textLocation = itemView.findViewById(R.id.tv_location);
             imgEdit = itemView.findViewById(R.id.img_edit);
             imgDelete = itemView.findViewById(R.id.img_delete);
             layout_data = itemView.findViewById(R.id.layout_data);
+            textDueDate = itemView.findViewById(R.id.tv_dueDate);
         }
     }
 

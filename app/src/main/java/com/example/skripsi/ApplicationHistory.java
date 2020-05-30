@@ -2,16 +2,11 @@ package com.example.skripsi;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,28 +26,28 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class FavoriteFragment extends Fragment {
+public class ApplicationHistory extends AppCompatActivity {
 
     private RecyclerView mList;
 
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
-    private List<Favorite> favoriteList;
+    private List<History> historyList;
     private RecyclerView.Adapter adapter;
 
     SessionManager sessionManager;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_favorite, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_application_history);
 
-        mList = v.findViewById(R.id.rv_listFavorite);
+        mList = findViewById(R.id.rv_applicantHistory);
 
-        favoriteList = new ArrayList<>();
-        adapter = new FavoriteAdapter(v.getContext(),favoriteList);
+        historyList = new ArrayList<>();
+        adapter = new HistoryAdapter(getApplicationContext(),historyList);
 
-        linearLayoutManager = new LinearLayoutManager(v.getContext());
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
 
@@ -61,56 +56,51 @@ public class FavoriteFragment extends Fragment {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        sessionManager = new SessionManager(v.getContext());
+        sessionManager = new SessionManager(getApplicationContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
 
         try {
-            loadFavorite(v.getContext(), userId);
+            loadFavorite(userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        return v;
     }
 
-    private void loadFavorite(final Context context, String id) throws JSONException {
-        String URL = "http://25.54.110.177:8095/FavoriteVacancy/getFavoriteVacancy";
+    private void loadFavorite(String id) throws JSONException {
+        String URL = "http://25.54.110.177:8095/VacancyApplicant/getUserApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-                    favoriteList.clear();
+                    historyList.clear();
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
                         for(int i = 0;i<jsonArray.length();i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
-                            Favorite favorite = new Favorite();
+                            History history = new History();
 
-                            JSONObject object1 = object.getJSONObject("vac");
-
+                            JSONObject object1 = object.getJSONObject("vacancy");
                             JSONObject object2 = object1.getJSONObject("category");
-                            favorite.setCategory(object2.getString("category_name"));
+                            history.setCategory(object2.getString("category_name"));
 
-                            favorite.setTitle(object1.getString("vac_title"));
+                            history.setTitle(object1.getString("vac_title"));
 
                             JSONObject object3 = object1.getJSONObject("business");
-                            favorite.setCompanyName(object3.getString("bus_name"));
+                            history.setCompanyName(object3.getString("bus_name"));
 
                             JSONObject object4 = object1.getJSONObject("location");
-                            favorite.setLocation(object4.getString("location_name"));
+                            history.setLocation(object4.getString("location_name"));
 
-                            favorite.setSalary(object1.getString("vac_salary"));
+                            history.setSalary(object1.getString("vac_salary"));
 
-                            JSONObject object5 = object1.getJSONObject("business");
-                            JSONObject object6 = object5.getJSONObject("user");
-                            favorite.setStatus(object6.getString("user_status"));
+                            history.setStatus(object.getString("status"));
 
-                            favoriteList.add(favorite);
+                            historyList.add(history);
                         }
 
                         adapter.notifyDataSetChanged();
@@ -125,7 +115,7 @@ public class FavoriteFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }){
             @Override
@@ -136,7 +126,7 @@ public class FavoriteFragment extends Fragment {
             }
         };
 
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(jsonObjectRequest);
     }
 }

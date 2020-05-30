@@ -70,6 +70,9 @@
     <string name="viewRating">View Rating</string>
     <string name="addVacancy">Add Vacancy</string>
     <string name="listVacancy">List vacancy</string>
-    <string name="accept">Accept</string>
-    <string name="reject">Reject</string>
+    <string name="favorite">Favorites</string>
+    <string name="applicationHistory">Application history</string>
+    <string name="rateCompany">Rate company</string>
+    <string name="position">Position</string>
+    <string name="dueDate">Due Date</string>
 </resources>
