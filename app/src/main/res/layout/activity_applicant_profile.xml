@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/img_close"
             android:layout_width="50sp"
             android:layout_height="50sp"
             app:srcCompat="@drawable/ic_close_white_24dp"
@@ -72,7 +72,7 @@
                         android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/tv_nama"
+                            android:id="@+id/tv_applicantName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5sp"
@@ -81,21 +81,21 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/tv_dob"
+                            android:id="@+id/tv_applicantDOB"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
                             android:textSize="15sp"/>
 
                         <TextView
-                            android:id="@+id/tv_pendidikanTerakhir"
+                            android:id="@+id/tv_applicantEducation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
                             android:textSize="15sp"/>
 
                         <TextView
-                            android:id="@+id/tv_lokasi"
+                            android:id="@+id/tv_applicantLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
@@ -111,7 +111,7 @@
                     android:layout_marginVertical="5sp">
 
                     <TextView
-                        android:id="@+id/tv_desc"
+                        android:id="@+id/tv_applicantDesc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="TextView"

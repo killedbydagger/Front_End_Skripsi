@@ -64,7 +64,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), ApplicantProfile.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("user_email", applicant.getEmail());
+                intent.putExtra("applicantEmail", applicant.getEmail());
                 view.getContext().startActivity(intent);
             }
         });
