@@ -104,8 +104,8 @@ public class AddVacancy extends AppCompatActivity {
         sp_kategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 6){
-                    et_gaji.setText("0");
+                if(position == 0 || position == 6){
+                    et_gaji.setText("");
                     et_gaji.setEnabled(false);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
                 }
@@ -273,7 +273,6 @@ public class AddVacancy extends AppCompatActivity {
         compared_position.clear();
         positionArray.clear();
         positionArray.add("--- Choose position ---");
-        sp_position.setSelection(0);
         System.out.println(categoryId);
         if(sp_position.getSelectedItemPosition() != 0) {
             String URL = "http://25.54.110.177:8095/CategoryPosition/getCategoryPosition";
