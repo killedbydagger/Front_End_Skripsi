@@ -194,6 +194,7 @@ public class BusinessCenter extends AppCompatActivity {
                             vacancy.setDueDate(object.getString("due_date"));
 
                             JSONObject object3 = object.getJSONObject("position");
+                            vacancy.setPositionId(object3.getString("position_id"));
                             vacancy.setPosition(object3.getString("position_name"));
 
                             vacancyList.add(vacancy);

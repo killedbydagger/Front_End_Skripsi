@@ -54,7 +54,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:layout_marginHorizontal="10sp"
-            android:layout_marginTop="10sp">
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -169,7 +170,6 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
-                android:layout_marginBottom="10sp"
                 android:background="@drawable/edit_text_card"
                 android:elevation="5sp"
                 android:paddingHorizontal="10sp"

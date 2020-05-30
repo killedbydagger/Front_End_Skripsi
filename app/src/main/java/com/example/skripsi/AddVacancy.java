@@ -104,21 +104,34 @@ public class AddVacancy extends AppCompatActivity {
         sp_kategori.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position == 0 || position == 6){
+                compared_position.clear();
+                positionArray.clear();
+                sp_position.setAdapter(null);
+                if(position == 0){
                     et_gaji.setText("");
                     et_gaji.setEnabled(false);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
+                    sp_position.setEnabled(false);
+                    sp_position.setBackgroundResource(R.drawable.edit_text_card_gray);
+                }
+                else if(position == 6){
+                    et_gaji.setText("0");
+                    et_gaji.setEnabled(false);
+                    et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
+                    sp_position.setEnabled(false);
+                    sp_position.setBackgroundResource(R.drawable.edit_text_card_gray);
                 }
                 else{
                     et_gaji.setText("");
                     et_gaji.setEnabled(true);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card);
-                }
-
-                try {
-                    loadPositionData(position);
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    sp_position.setEnabled(true);
+                    sp_position.setBackgroundResource(R.drawable.edit_text_card);
+                    try {
+                        loadPositionData(position);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -130,7 +143,6 @@ public class AddVacancy extends AppCompatActivity {
 
         HashMap<String, String> business = sessionManager.getBusinessDetail();
         final String businessId = business.get(sessionManager.BUSINESS_ID);
-        final String businessLocationId = business.get(sessionManager.BUSINESS_LOCATION_ID);
 
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,13 +154,20 @@ public class AddVacancy extends AppCompatActivity {
                 validateDescription();
                 validateDate();
 
-//                if(!validationChecks.containsValue(false)){
-//                    try {
-//                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), sp_location.getSelectedItemPosition(), compared_position.get(sp_position.getSelectedItem().toString()), );
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
+                if(!validationChecks.containsValue(false)){
+                    int tampung;
+                    if(sp_kategori.getSelectedItemPosition() !=6){
+                        tampung = compared_position.get(sp_position.getSelectedItem().toString());
+                    }
+                    else{
+                        tampung = 7;
+                    }
+                    try {
+                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -168,11 +187,23 @@ public class AddVacancy extends AppCompatActivity {
 
                 tv_dueDate.setText(dateFormatter.format(newDate.getTime()));
                 tanggal = dateFormatter2.format(newDate.getTime());
+                validateDate();
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
+    }
+
+    private void validatePosition(){
+        if(sp_position.getSelectedItemPosition() ==  0){
+            ((TextView) sp_position.getSelectedView()).setError("Please choose your position");
+            validationChecks.put("Position", false);
+        }
+        else{
+            ((TextView) sp_position.getSelectedView()).setError(null);
+            validationChecks.put("Position", true);
+        }
     }
 
     private void validateDate(){
@@ -194,6 +225,10 @@ public class AddVacancy extends AppCompatActivity {
         else{
             ((TextView) sp_kategori.getSelectedView()).setError(null);
             validationChecks.put("Category", true);
+
+            if(sp_kategori.getSelectedItemPosition() != 6){
+                validatePosition();
+            }
         }
     }
 
@@ -270,14 +305,12 @@ public class AddVacancy extends AppCompatActivity {
     }
 
     private void loadPositionData(int categoryId) throws JSONException {
-        compared_position.clear();
-        positionArray.clear();
-        positionArray.add("--- Choose position ---");
         System.out.println(categoryId);
         if(sp_position.getSelectedItemPosition() != 0) {
             String URL = "http://25.54.110.177:8095/CategoryPosition/getCategoryPosition";
             final JSONObject jsonBody = new JSONObject();
             jsonBody.put("category_id",categoryId);
+
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -285,12 +318,14 @@ public class AddVacancy extends AppCompatActivity {
                         String status = response.getString("status");
                         if (status.equals("Success")) {
                             System.out.println("MASUK SUKSES");
+                            positionArray.add("--- Choose position ---");
                             JSONArray positionJSON = response.getJSONArray("data");
                             JSONObject object;
                             for (int i=0;i<positionJSON.length();i++){
                                 object = positionJSON.getJSONObject(i);
-                                positionArray.add(object.getString("position_name"));
-                                compared_position.put(object.getString("position_name"), object.getInt("position_id"));
+                                JSONObject object1 = object.getJSONObject("position");
+                                positionArray.add(object1.getString("position_name"));
+                                compared_position.put(object1.getString("position_name"), object1.getInt("position_id"));
                             }
                             ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_spinner_item, positionArray);
                             positionArrayAdapter.setDropDownViewResource(android.R.layout

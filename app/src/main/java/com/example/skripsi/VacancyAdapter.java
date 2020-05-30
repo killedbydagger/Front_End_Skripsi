@@ -100,6 +100,8 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                 intent.putExtra("TITLE",vacancy.getTitle());
                 intent.putExtra("SALARY",vacancy.getSalary());
                 intent.putExtra("DESCRIPTION",vacancy.getDescription());
+                intent.putExtra("DUE_DATE",vacancy.getDueDate());
+                intent.putExtra("POSITION",vacancy.getPosition());
                 v.getContext().startActivity(intent);
             }
         });
