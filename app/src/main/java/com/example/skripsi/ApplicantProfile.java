@@ -64,7 +64,6 @@ public class ApplicantProfile extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    System.out.println(status);
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
