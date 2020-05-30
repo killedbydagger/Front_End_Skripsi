@@ -274,6 +274,7 @@ public class AddVacancy extends AppCompatActivity {
         positionArray.clear();
         positionArray.add("--- Choose position ---");
         sp_position.setSelection(0);
+        System.out.println(categoryId);
         if(sp_position.getSelectedItemPosition() != 0) {
             String URL = "http://25.54.110.177:8095/CategoryPosition/getCategoryPosition";
             final JSONObject jsonBody = new JSONObject();
@@ -284,6 +285,7 @@ public class AddVacancy extends AppCompatActivity {
                     try {
                         String status = response.getString("status");
                         if (status.equals("Success")) {
+                            System.out.println("MASUK SUKSES");
                             JSONArray positionJSON = response.getJSONArray("data");
                             JSONObject object;
                             for (int i=0;i<positionJSON.length();i++){
@@ -291,6 +293,10 @@ public class AddVacancy extends AppCompatActivity {
                                 positionArray.add(object.getString("position_name"));
                                 compared_position.put(object.getString("position_name"), object.getInt("position_id"));
                             }
+                            ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_spinner_item, positionArray);
+                            positionArrayAdapter.setDropDownViewResource(android.R.layout
+                                    .simple_spinner_dropdown_item);
+                            sp_position.setAdapter(positionArrayAdapter);
                         }
                         else {
                             // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
