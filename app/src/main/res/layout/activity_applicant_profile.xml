@@ -135,7 +135,7 @@
                     android:layout_marginTop="5sp">
 
                     <Button
-                        android:id="@+id/btn_edit"
+                        android:id="@+id/btn_applicantViewFile"
                         android:layout_width="match_parent"
                         android:layout_height="35sp"
                         android:background="@drawable/button_login_card"
@@ -146,7 +146,7 @@
                         android:layout_marginRight="5sp"/>
 
                     <Button
-                        android:id="@+id/btn_viewfile"
+                        android:id="@+id/btn_applicantCall"
                         android:layout_width="match_parent"
                         android:layout_height="35sp"
                         android:background="@drawable/button_login_card"
@@ -157,7 +157,7 @@
                         android:layout_marginHorizontal="5sp"/>
 
                     <Button
-                        android:id="@+id/btn_addPortfolio"
+                        android:id="@+id/btn_applicantEmail"
                         android:layout_width="match_parent"
                         android:layout_height="35sp"
                         android:background="@drawable/button_login_card"
