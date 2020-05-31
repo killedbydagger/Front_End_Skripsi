@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
 
@@ -40,15 +42,19 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.tv_title.setText(history.getTitle());
         viewHolder.tv_companyName.setText(history.getCompanyName());
         viewHolder.tv_location.setText(history.getLocation());
-        viewHolder.tv_salary.setText(history.getSalary());
-        viewHolder.tv_rating.setText("rating");
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        viewHolder.tv_salary.setText(formatRupiah.format((double)history.getSalary()));
+        viewHolder.tv_rating.setText(history.getRating());
         viewHolder.tv_status.setText(history.getStatus());
 
         if(history.getStatus().equals("PENDING")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
+            viewHolder.btn_rate.setVisibility(View.GONE);
         }
         else if(history.getStatus().equals("ACCEPTED")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
+            viewHolder.btn_rate.setVisibility(View.VISIBLE);
         }
         else if(history.getStatus().equals("REJECTED")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));

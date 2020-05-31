@@ -59,6 +59,8 @@ public class EditVacancy extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     public SharedPreferences.Editor editor;
 
+    int flag = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +98,8 @@ public class EditVacancy extends AppCompatActivity {
 
         String[] splitDob = getIntent().getExtras().getString("DUE_DATE").split("\\s+");
         tv_dueDate.setText(splitDob[0]);
+
+        tanggal = splitDob[0];
 
         tv_dueDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,16 +147,7 @@ public class EditVacancy extends AppCompatActivity {
             }
         });
 
-//        et_salary.setText(String.valueOf(getIntent().getExtras().getInt("SALARY")));
-//        String compareValue = getIntent().getExtras().getString("POSITION");
-//        ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_spinner_item, positionArray);
-//        positionArrayAdapter.setDropDownViewResource(android.R.layout
-//                .simple_spinner_dropdown_item);
-//        sp_position.setAdapter(positionArrayAdapter);
-//        if (compareValue != null) {
-//            int spinnerPosition = positionArrayAdapter.getPosition(compareValue);
-//            sp_position.setSelection(spinnerPosition);
-//        }
+        et_salary.setText(String.valueOf(getIntent().getExtras().getInt("SALARY")));
 
         final HashMap<String, String> business = sessionManager.getBusinessDetail();
         final String businessId = business.get(sessionManager.BUSINESS_ID);
@@ -176,7 +171,8 @@ public class EditVacancy extends AppCompatActivity {
                         tampung = 7;
                     }
                     try {
-                        editVacancy(businessId, sp_category.getSelectedItemPosition(), et_title.getText().toString(), et_description.getText().toString(), et_salary.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
+                        //System.out.println(businessId + " " + sp_category.getSelectedItemPosition() + " " + et_title.getText().toString() + " " + et_description.getText().toString() + " " + et_salary.getText().toString() + " " + sp_location.getSelectedItemPosition() + " " + tampung + " " + tanggal);
+                        editVacancy(businessId, getIntent().getExtras().getString("VACANCY_ID"),sp_category.getSelectedItemPosition(), et_title.getText().toString(), et_description.getText().toString(), et_salary.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -329,6 +325,13 @@ public class EditVacancy extends AppCompatActivity {
                             positionArrayAdapter.setDropDownViewResource(android.R.layout
                                     .simple_spinner_dropdown_item);
                             sp_position.setAdapter(positionArrayAdapter);
+
+                            if(flag == 0){
+                                String compareValue = getIntent().getExtras().getString("POSITION");
+                                int integerValue = positionArrayAdapter.getPosition(compareValue);
+                                sp_position.setSelection(integerValue);
+                            }
+                            flag++;
                         }
                         else {
                             // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
@@ -356,11 +359,12 @@ public class EditVacancy extends AppCompatActivity {
         }
     }
 
-    private void editVacancy(String businessId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
+    private void editVacancy(String businessId, String vacId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
         Context mContext = EditVacancy.this;
         String URL = "http://25.54.110.177:8095/Vacancy/editVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", businessId);
+        jsonBody.put("vac_id", vacId);
         jsonBody.put("category_id", categoryId);
         jsonBody.put("title", title);
         jsonBody.put("description", description);

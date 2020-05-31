@@ -44,7 +44,7 @@ public class BusinessCenter extends AppCompatActivity {
 
     ImageView img_Business, img_btnBack;
 
-    Button btn_editBusiness, btn_addVacancy;
+    Button btn_editBusiness, btn_addVacancy, btn_viewRating;
 
     SessionManager sessionManager;
 
@@ -103,6 +103,17 @@ public class BusinessCenter extends AppCompatActivity {
             }
         });
 
+        btn_viewRating = findViewById(R.id.btn_viewRating);
+        btn_viewRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent rating = new Intent(BusinessCenter.this, Rating.class);
+                rating.putExtra("NAMA", tv_namaPerusahaan.getText().toString());
+                rating.putExtra("RATING",tv_ratingPerusahaan.getText().toString());
+                startActivity(rating);
+            }
+        });
+
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
@@ -138,6 +149,7 @@ public class BusinessCenter extends AppCompatActivity {
         mList.setAdapter(adapter);
 
         try {
+            viewRating(business.get(sessionManager.BUSINESS_ID));
             loadVacancyData(business.get(sessionManager.BUSINESS_ID));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -152,6 +164,7 @@ public class BusinessCenter extends AppCompatActivity {
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
 
         try {
+            viewRating(business.get(sessionManager.BUSINESS_ID));
             loadVacancyData(business.get(sessionManager.BUSINESS_ID));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -312,6 +325,42 @@ public class BusinessCenter extends AppCompatActivity {
 
     }
 
+    private void viewRating(String id) throws JSONException {
+        String URL = "http://25.54.110.177:8095/BusinessRating/getBusinessRateValue";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("business_id", id);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    vacancyList.clear();
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        tv_ratingPerusahaan.setText(response.getString("rating"));
+                    }
+                    else {
+                        tv_ratingPerusahaan.setText("0.0");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
 
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
 
 }
