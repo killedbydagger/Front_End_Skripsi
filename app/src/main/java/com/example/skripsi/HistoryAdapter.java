@@ -54,10 +54,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
         else if(history.getStatus().equals("ACCEPTED")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
+            viewHolder.btn_rate.setVisibility(View.VISIBLE);
         }
         else if(history.getStatus().equals("REJECTED")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));
-            viewHolder.btn_rate.setVisibility(View.INVISIBLE);
         }
 
         viewHolder.img_bintang.setImageResource(R.drawable.star);
