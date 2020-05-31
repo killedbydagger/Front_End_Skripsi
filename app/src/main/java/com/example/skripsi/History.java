@@ -1,13 +1,14 @@
 package com.example.skripsi;
 
 public class History {
-    public String category, position, title, companyName, location, salary, vacId, status, rating;
+    public String category, position, title, companyName, location, vacId, status, rating;
+    public int salary;
 
     public History(){
 
     }
 
-    public History(String category, String position, String title, String companyName, String location, String salary, String vacId, String status, String rating){
+    public History(String category, String position, String title, String companyName, String location, int salary, String vacId, String status, String rating){
         this.category = category;
         this.position = position;
         this.title = title;
@@ -39,7 +40,7 @@ public class History {
         this.location = location;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 
@@ -75,7 +76,7 @@ public class History {
         return location;
     }
 
-    public String getSalary() {
+    public int getSalary() {
         return salary;
     }
 

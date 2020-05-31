@@ -8,13 +8,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     private Context context;
     private List<Favorite> list;
+    SessionManager sessionManager;
 
     public FavoriteAdapter(Context context, List<Favorite> list) {
         this.context = context;
@@ -29,7 +46,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Favorite favorite = list.get(i);
+        final Favorite favorite = list.get(i);
 
         viewHolder.tv_category.setText(favorite.getCategory());
         viewHolder.pembatas.setText("-");
@@ -37,11 +54,29 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         viewHolder.tv_title.setText(favorite.getTitle());
         viewHolder.tv_companyName.setText(favorite.getCompanyName());
         viewHolder.tv_location.setText(favorite.getLocation());
-        viewHolder.tv_salary.setText(favorite.getSalary());
-        viewHolder.tv_rating.setText("rating");
+
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        viewHolder.tv_salary.setText(formatRupiah.format((double)favorite.getSalary()));
+
+        viewHolder.tv_rating.setText(favorite.getRating());
         viewHolder.tv_status.setText(favorite.getStatus());
 
+        sessionManager = new SessionManager(context);
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
+
         viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
+        viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    unFavorite(userId,favorite.getVacId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
         viewHolder.img_bintang.setImageResource(R.drawable.star);
     }
 
@@ -73,4 +108,44 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             img_bintang = itemView.findViewById(R.id.img_bintang);
         }
     }
+
+    private void unFavorite(String userId, String vacId) throws JSONException {
+        String URL = "http://25.54.110.177:8095/FavoriteVacancy/removeFavoriteVacancy";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", userId);
+        jsonBody.put("vac_id", vacId);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        Toast.makeText(context, "Unfavorite vacancy success", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(context, "Unfavorite vacancy failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+
 }

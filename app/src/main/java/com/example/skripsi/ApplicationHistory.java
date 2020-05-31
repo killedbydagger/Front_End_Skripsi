@@ -92,13 +92,17 @@ public class ApplicationHistory extends AppCompatActivity {
 
                             JSONObject object3 = object1.getJSONObject("business");
                             history.setCompanyName(object3.getString("bus_name"));
+                            history.setRating(object3.getString("rating"));
 
                             JSONObject object4 = object1.getJSONObject("location");
                             history.setLocation(object4.getString("location_name"));
 
-                            history.setSalary(object1.getString("vac_salary"));
+                            history.setSalary(object1.getInt("vac_salary"));
 
                             history.setStatus(object.getString("status"));
+
+                            JSONObject object5 = object1.getJSONObject("position");
+                            history.setPosition(object5.getString("position_name"));
 
                             historyList.add(history);
                         }

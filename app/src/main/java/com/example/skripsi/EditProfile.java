@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class EditProfile extends AppCompatActivity {
     TextView tv_DOB, tv_email;
     Spinner sp_lastEducation,sp_location;
     Button btn_save;
+    ImageView btn_close;
 
     static int PRIVATE_MODE = 0;
 
@@ -91,6 +93,14 @@ public class EditProfile extends AppCompatActivity {
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+
+        btn_close = findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         btn_save = findViewById(R.id.btn_save);
         btn_save.setOnClickListener(new View.OnClickListener() {
