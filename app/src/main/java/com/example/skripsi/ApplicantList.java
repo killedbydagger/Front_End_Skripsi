@@ -98,7 +98,7 @@ public class ApplicantList extends AppCompatActivity {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Applicant applicant = new Applicant();
 
@@ -115,8 +115,7 @@ public class ApplicantList extends AppCompatActivity {
                         }
 
                         adapter.notifyDataSetChanged();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -128,11 +127,11 @@ public class ApplicantList extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

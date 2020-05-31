@@ -69,19 +69,19 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
             }
         });
 
-        if (applicant.getStatusName().equals("ACCEPTED")){
+        if (applicant.getStatusName().equals("ACCEPTED")) {
             viewHolder.btn_accepted.setVisibility(View.GONE);
             viewHolder.btn_rejected.setVisibility(View.GONE);
             viewHolder.applicantStatus.setVisibility(View.VISIBLE);
             viewHolder.applicantStatus.setText("ACCEPTED");
             viewHolder.applicantStatus.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
-        }else if (applicant.getStatusName().equals("REJECTED")){
+        } else if (applicant.getStatusName().equals("REJECTED")) {
             viewHolder.btn_accepted.setVisibility(View.GONE);
             viewHolder.btn_rejected.setVisibility(View.GONE);
             viewHolder.applicantStatus.setVisibility(View.VISIBLE);
             viewHolder.applicantStatus.setText("REJECTED");
             viewHolder.applicantStatus.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));
-        }else{
+        } else {
             viewHolder.applicantStatus.setVisibility(View.GONE);
             viewHolder.btn_accepted.setVisibility(View.VISIBLE);
             viewHolder.btn_rejected.setVisibility(View.VISIBLE);
@@ -143,7 +143,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
         }
     }
 
-    private void respondApplicant(final Context mContext , String userId, String vacId, String businessId, String respond, final int index) throws JSONException {
+    private void respondApplicant(final Context mContext, String userId, String vacId, String businessId, String respond, final int index) throws JSONException {
         String URL = "http://25.54.110.177:8095/VacancyApplicant/respondVacancyApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
@@ -158,8 +158,7 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(mContext, "Success to respond", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, "Failed to respond", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -171,11 +170,11 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

@@ -67,7 +67,7 @@ public class ApplicantProfile extends AppCompatActivity {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(0);
 
                             String applicantName = object.getString("user_first_name") + " " + object.getString("user_last_name");
@@ -81,17 +81,18 @@ public class ApplicantProfile extends AppCompatActivity {
                             String applicantLocation = object2.getString("location_name");
 
                             tv_applicantName.setText(applicantName);
-                            tv_applicantDOB.setText(applicantDOB);
+                            String[] splitDob = applicantDOB.split("\\s+");
+                            System.out.println(splitDob[0]);
+                            tv_applicantDOB.setText(splitDob[0]);
                             tv_applicantDesc.setText(applicantDesc);
                             tv_applicantEducation.setText(applicantEducation);
                             tv_applicantLocation.setText(applicantLocation);
 
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
+                    }
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
@@ -100,11 +101,11 @@ public class ApplicantProfile extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
