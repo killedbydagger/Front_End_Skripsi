@@ -17,6 +17,7 @@ public class Vacancy {
     public String description;
     public String position;
     public String dueDate;
+    public String positionId;
 
     public Vacancy(){
 
@@ -24,7 +25,7 @@ public class Vacancy {
 
 
 
-    public Vacancy(String title, String category, int salary, String locationName, String id, String locationId, String categoryId, String description, String position, String dueDate){
+    public Vacancy(String title, String category, int salary, String locationName, String id, String locationId, String categoryId, String description, String position, String dueDate, String positionId){
         this.title = title;
         this.category = category;
         this.salary = salary;
@@ -35,6 +36,7 @@ public class Vacancy {
         this.description = description;
         this.position = position;
         this.dueDate = dueDate;
+        this.positionId = positionId;
     }
 
     public String getTitle(){
@@ -115,5 +117,13 @@ public class Vacancy {
 
     public void setDueDate(String dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 }

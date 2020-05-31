@@ -114,13 +114,6 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        mDisplayDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                validateDate();
-            }
-        });
-
         et_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -305,6 +298,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 mDisplayDate.setText(dateFormatter.format(newDate.getTime()));
                 tanggal = dateFormatter2.format(newDate.getTime());
+                validateDate();
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
