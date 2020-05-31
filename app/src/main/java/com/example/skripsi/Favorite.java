@@ -1,13 +1,14 @@
 package com.example.skripsi;
 
 public class Favorite {
-    public String category, position, title, companyName, location, salary, vacId, status, rating;
+    public String category, position, title, companyName, location, vacId, status, rating, companyId;
+    public int salary;
 
     public Favorite(){
 
     }
 
-    public Favorite(String category, String position, String title, String companyName, String location, String salary, String vacId, String status, String rating){
+    public Favorite(String category, String position, String title, String companyName, String location, int salary, String vacId, String status, String rating, String companyId){
         this.category = category;
         this.position = position;
         this.title = title;
@@ -17,6 +18,7 @@ public class Favorite {
         this.vacId = vacId;
         this.status = status;
         this.rating = rating;
+        this.companyId = companyId;
     }
 
     public void setCategory(String category) {
@@ -39,7 +41,7 @@ public class Favorite {
         this.location = location;
     }
 
-    public void setSalary(String salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 
@@ -53,6 +55,10 @@ public class Favorite {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
     }
 
     public String getCategory() {
@@ -75,7 +81,7 @@ public class Favorite {
         return location;
     }
 
-    public String getSalary() {
+    public int getSalary() {
         return salary;
     }
 
@@ -91,4 +97,7 @@ public class Favorite {
         return rating;
     }
 
+    public String getCompanyId() {
+        return companyId;
+    }
 }

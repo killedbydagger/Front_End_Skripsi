@@ -77,4 +77,6 @@
     <string name="rateCompany">Rate company</string>
     <string name="position">Position</string>
     <string name="dueDate">Due Date</string>
+    <string name="listRating">List rating</string>
+    <string name="dataNotFound">Data not found</string>
 </resources>

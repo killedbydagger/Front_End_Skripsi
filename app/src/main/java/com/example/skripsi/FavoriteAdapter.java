@@ -8,8 +8,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
@@ -37,8 +53,12 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         viewHolder.tv_title.setText(favorite.getTitle());
         viewHolder.tv_companyName.setText(favorite.getCompanyName());
         viewHolder.tv_location.setText(favorite.getLocation());
-        viewHolder.tv_salary.setText(favorite.getSalary());
-        viewHolder.tv_rating.setText("rating");
+
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        viewHolder.tv_salary.setText(formatRupiah.format((double)favorite.getSalary()));
+
+        viewHolder.tv_rating.setText(favorite.getRating());
         viewHolder.tv_status.setText(favorite.getStatus());
 
         viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
@@ -73,4 +93,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             img_bintang = itemView.findViewById(R.id.img_bintang);
         }
     }
+
+
 }

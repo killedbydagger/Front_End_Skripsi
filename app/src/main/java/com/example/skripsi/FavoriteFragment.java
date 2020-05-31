@@ -42,10 +42,15 @@ public class FavoriteFragment extends Fragment {
 
     SessionManager sessionManager;
 
+    //ViewDialog viewDialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
+
+        //viewDialog = new ViewDialog(getActivity());
+        //viewDialog.showDialog();
 
         mList = v.findViewById(R.id.rv_listFavorite);
 
@@ -89,6 +94,7 @@ public class FavoriteFragment extends Fragment {
 
                         for(int i = 0;i<jsonArray.length();i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
+
                             Favorite favorite = new Favorite();
 
                             JSONObject object1 = object.getJSONObject("vac");
@@ -99,21 +105,27 @@ public class FavoriteFragment extends Fragment {
                             favorite.setTitle(object1.getString("vac_title"));
 
                             JSONObject object3 = object1.getJSONObject("business");
+                            favorite.setCompanyId(object3.getString("bus_id"));
                             favorite.setCompanyName(object3.getString("bus_name"));
+                            favorite.setRating(object3.getString("rating"));
 
                             JSONObject object4 = object1.getJSONObject("location");
                             favorite.setLocation(object4.getString("location_name"));
 
-                            favorite.setSalary(object1.getString("vac_salary"));
+                            favorite.setSalary(object1.getInt("vac_salary"));
 
                             JSONObject object5 = object1.getJSONObject("business");
                             JSONObject object6 = object5.getJSONObject("user");
                             favorite.setStatus(object6.getString("user_status"));
 
+                            JSONObject object7 = object1.getJSONObject("position");
+                            favorite.setPosition(object7.getString("position_name"));
+
+
                             favoriteList.add(favorite);
                         }
-
                         adapter.notifyDataSetChanged();
+                        //viewDialog.hideDialog();
                     }
                     else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
@@ -139,4 +151,5 @@ public class FavoriteFragment extends Fragment {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(jsonObjectRequest);
     }
+
 }
