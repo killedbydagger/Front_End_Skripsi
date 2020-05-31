@@ -79,6 +79,19 @@ public class FavoriteFragment extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        sessionManager = new SessionManager(getContext());
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        String userId = user.get(sessionManager.ID);
+        try {
+            loadFavorite(getContext(), userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void loadFavorite(final Context context, String id) throws JSONException {
         String URL = "http://25.54.110.177:8095/FavoriteVacancy/getFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
@@ -98,6 +111,8 @@ public class FavoriteFragment extends Fragment {
                             Favorite favorite = new Favorite();
 
                             JSONObject object1 = object.getJSONObject("vac");
+
+                            favorite.setVacId(object1.getString("vac_id"));
 
                             JSONObject object2 = object1.getJSONObject("category");
                             favorite.setCategory(object2.getString("category_name"));
