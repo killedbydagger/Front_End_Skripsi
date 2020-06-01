@@ -155,10 +155,10 @@ public class DetailVacancy extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
-
+                        Toast.makeText(getApplicationContext(), "Success to apply", Toast.LENGTH_LONG).show();
                     }
                     else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "failed to apply", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
