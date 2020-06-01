@@ -1,5 +1,9 @@
 package com.example.skripsi;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,32 +13,247 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class HomeFragment extends Fragment {
 
+    private RecyclerView rv_listRecommended;
+    SessionManager sessionManager;
+
+    SharedPreferences sharedPreferences;
+    public SharedPreferences.Editor editor;
+    static int PRIVATE_MODE = 0;
+
+    public static final String RECOMMENDATION = "RECOMMENDATION";
+    public static final String RECOMMENDATION_LOCATION = "RECOMMENDATION LOCATION";
+
+    private LinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+    private List<Recommended> recommendeds;
+    private RecyclerView.Adapter adapter;
+
+    Button btn_setRecommendation;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        rv_listRecommended = v.findViewById(R.id.rv_listRecommended);
+        btn_setRecommendation = v.findViewById(R.id.btn_setRecommendation);
+        btn_setRecommendation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SetRecommendation.class);
+                startActivity(intent);
+            }
+        });
+
+        recommendeds = new ArrayList<>();
+        adapter = new RecommendedAdapter(v.getContext(), recommendeds);
+        linearLayoutManager = new LinearLayoutManager(v.getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(rv_listRecommended.getContext(), linearLayoutManager.getOrientation());
+
+        rv_listRecommended.setHasFixedSize(true);
+        rv_listRecommended.setLayoutManager(linearLayoutManager);
+        rv_listRecommended.setAdapter(adapter);
+        rv_listRecommended.addItemDecoration(dividerItemDecoration);
+
+        sessionManager = new SessionManager(getContext());
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
+        if (user.get(sessionManager.RECOMMENDATION) == null){
+            try {
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                editor = sharedPreferences.edit();
+                getUserRecommendation(Integer.parseInt(userId));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else {
+            try {
+                loadRecommendation(user.get(sessionManager.RECOMMENDATION), Integer.parseInt(user.get(sessionManager.RECOMMENDATION_LOCATION)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println(sessionManager.RECOMMENDATION);
+        System.out.println(sessionManager.RECOMMENDATION_LOCATION);
+
+        return v;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        sessionManager = new SessionManager(getContext());
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
+
+        try {
+            getUserRecommendation(Integer.parseInt(userId));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void getUserRecommendation(int id) throws JSONException {
+        String URL = "http://25.54.110.177:8095/Recommendation/getUserRecommendation";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", id);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    recommendeds.clear();
+                    String status = response.getString("status");
+                    System.out.println(status);
+                    if (status.equals("Not Found")) {
+                        btn_setRecommendation.setVisibility(View.VISIBLE);
+                    }
+                    else if (status.equals("Success")){
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for(int i = 0;i<jsonArray.length();i++) {
+
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            editor.putString(RECOMMENDATION, object.getString("categories"));
+                            editor.putString(RECOMMENDATION_LOCATION, object.getString("location_id"));
+                            editor.apply();
+
+                            loadRecommendation(object.getString("recom_categories"), Integer.parseInt(object.getString("location_id")));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void loadRecommendation(String categories, int locationid) throws JSONException {
+        String URL = "http://25.54.110.177:8095/Vacancy/recommendVacancy";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("categories", categories);
+        jsonBody.put("location_id", locationid);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    recommendeds.clear();
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for(int i = 0;i<jsonArray.length();i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            Recommended recommended = new Recommended();
+
+                            recommended.setVacancyId(object.getString("vac_id"));
+                            recommended.setVacancyTitle(object.getString("vac_title"));
+                            recommended.setVacancySalary(object.getString("vac_salary"));
+
+                            JSONObject object1 = object.getJSONObject("category");
+                            recommended.setVacancyCategory(object1.getString("category_name"));
+
+                            JSONObject object2 = object.getJSONObject("position");
+                            recommended.setVacancyPosition(object2.getString("position_name"));
+
+                            JSONObject object3 = object.getJSONObject("business");
+                            recommended.setVacancyCompanyName(object3.getString("bus_name"));
+                            recommended.setVacancyCompanyRating(object3.getString("rating"));
+
+                            JSONObject object4 = object3.getJSONObject("location");
+                            recommended.setVacancyLocation(object4.getString("location_name"));
+
+                            JSONObject object5 = object3.getJSONObject("user");
+                            recommended.setVacancyStatus(object5.getString("user_status"));
+
+                            recommendeds.add(recommended);
+                        }
+                        adapter.notifyDataSetChanged();
+                        //viewDialog.hideDialog();
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonObjectRequest);
     }
 
 //    private void setupViewPager (ViewPager viewPager){

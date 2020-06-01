@@ -23,12 +23,25 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/listRecommended"
+        android:id="@+id/rv_listRecommended"
         android:layout_below="@+id/action"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_setRecommendation"
+        android:layout_width="match_parent"
+        android:layout_height="35sp"
+        android:layout_margin="20sp"
+        android:layout_weight="1"
+        android:background="@drawable/button_login_card"
+        android:text="@string/setRecommendation"
+        android:textColor="@color/colorWhite"
+        android:textSize="15sp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

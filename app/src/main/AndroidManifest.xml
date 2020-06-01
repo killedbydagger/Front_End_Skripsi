@@ -72,6 +72,9 @@
         <activity
             android:name=".LoginActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PopUpRating"
+            android:theme="@style/AppTheme.popTheme"/>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
