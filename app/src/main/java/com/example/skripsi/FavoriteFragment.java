@@ -42,7 +42,7 @@ public class FavoriteFragment extends Fragment {
 
     SessionManager sessionManager;
 
-    //ViewDialog viewDialog;
+    ViewDialog viewDialog;
 
     @Nullable
     @Override
@@ -79,18 +79,6 @@ public class FavoriteFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        sessionManager = new SessionManager(getContext());
-        HashMap<String, String> user = sessionManager.getUserDetail();
-        String userId = user.get(sessionManager.ID);
-        try {
-            loadFavorite(getContext(), userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void loadFavorite(final Context context, String id) throws JSONException {
         String URL = "http://25.54.110.177:8095/FavoriteVacancy/getFavoriteVacancy";
@@ -102,7 +90,9 @@ public class FavoriteFragment extends Fragment {
                 try {
                     favoriteList.clear();
                     String status = response.getString("status");
+                    System.out.println(status);
                     if (status.equals("Success")) {
+                        System.out.println("masuk pak haji");
                         JSONArray jsonArray = response.getJSONArray("data");
 
                         for(int i = 0;i<jsonArray.length();i++) {

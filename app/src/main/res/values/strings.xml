@@ -79,4 +79,6 @@
     <string name="dueDate">Due Date</string>
     <string name="listRating">List rating</string>
     <string name="dataNotFound">Data not found</string>
+    <string name="detailVacancy">Detail vacancy</string>
+    <string name="apply">Apply</string>
 </resources>

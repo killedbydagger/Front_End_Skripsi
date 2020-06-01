@@ -1,0 +1,184 @@
+package com.example.skripsi;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class DetailVacancy extends AppCompatActivity {
+
+    String vacancyId;
+
+    TextView tv_category, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
+
+    ImageView img_favorite;
+
+    Button btn_rate, btn_apply;
+
+    EditText et_description;
+
+    SessionManager sessionManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail_vacancy);
+        vacancyId = getIntent().getExtras().getString("VACANCY_ID");
+
+        tv_category = findViewById(R.id.tv_category);
+        tv_position = findViewById(R.id.tv_position);
+        tv_title = findViewById(R.id.tv_title);
+        tv_companyName = findViewById(R.id.tv_companyName);
+        tv_location = findViewById(R.id.tv_location);
+        tv_salary = findViewById(R.id.tv_salary);
+        tv_rating = findViewById(R.id.tv_rating);
+        tv_status = findViewById(R.id.tv_status);
+        img_favorite = findViewById(R.id.img_favorite);
+        btn_rate = findViewById(R.id.btn_rate);
+        btn_apply = findViewById(R.id.btn_apply);
+        et_description = findViewById(R.id.et_description);
+
+        try {
+            loadDetail(vacancyId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
+
+        btn_apply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    apply(userId ,vacancyId);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    private void loadDetail(String id) throws JSONException {
+        String URL = "http://25.54.110.177:8095/Vacancy/viewVacancyDetail";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("vac_id", id);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for(int i = 0;i<jsonArray.length();i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            JSONObject object1 = object.getJSONObject("category");
+                            tv_category.setText(object1.getString("category_name"));
+
+                            JSONObject object2 = object.getJSONObject("position");
+                            tv_position.setText(object2.getString("position_name"));
+
+                            tv_title.setText(object.getString("vac_title"));
+
+                            JSONObject object3 = object.getJSONObject("business");
+                            tv_companyName.setText(object3.getString("bus_name"));
+                            tv_rating.setText(object3.getString("rating"));
+
+                            JSONObject object4 = object.getJSONObject("location");
+                            tv_location.setText(object4.getString("location_name"));
+
+                            tv_salary.setText(object.getString("vac_salary"));
+
+                            JSONObject object5 = object3.getJSONObject("user");
+                            tv_status.setText(object5.getString("user_status"));
+
+                            et_description.setText(object.getString("vac_description"));
+
+                        }
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void apply(String userId, String vacId) throws JSONException {
+        String URL = "http://25.54.110.177:8095/VacancyApplicant/applyVacancy";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", userId);
+        jsonBody.put("vac_id", vacId);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
+    }
+}
