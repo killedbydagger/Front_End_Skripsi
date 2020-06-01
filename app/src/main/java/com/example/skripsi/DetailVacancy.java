@@ -165,8 +165,11 @@ public class DetailVacancy extends AppCompatActivity {
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Success to apply", Toast.LENGTH_LONG).show();
                     }
+                    else if(status.equals("Not Eligible")){
+                        Toast.makeText(getApplicationContext(), "Please update your profile before applying", Toast.LENGTH_LONG).show();
+                    }
                     else {
-                        Toast.makeText(getApplicationContext(), "failed to apply", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), status, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
