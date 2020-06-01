@@ -30,11 +30,11 @@ public class DetailVacancy extends AppCompatActivity {
 
     TextView tv_category, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
-    ImageView img_favorite;
+    ImageView img_favorite, btn_close;
 
     Button btn_rate, btn_apply;
 
-    EditText et_description;
+    TextView tv_description;
 
     SessionManager sessionManager;
 
@@ -55,7 +55,15 @@ public class DetailVacancy extends AppCompatActivity {
         img_favorite = findViewById(R.id.img_favorite);
         btn_rate = findViewById(R.id.btn_rate);
         btn_apply = findViewById(R.id.btn_apply);
-        et_description = findViewById(R.id.et_description);
+        tv_description = findViewById(R.id.tv_description);
+        btn_close = findViewById(R.id.btn_close);
+
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         try {
             loadDetail(vacancyId);
@@ -115,7 +123,7 @@ public class DetailVacancy extends AppCompatActivity {
                             JSONObject object5 = object3.getJSONObject("user");
                             tv_status.setText(object5.getString("user_status"));
 
-                            et_description.setText(object.getString("vac_description"));
+                            tv_description.setText(object.getString("vac_description"));
 
                         }
                     }

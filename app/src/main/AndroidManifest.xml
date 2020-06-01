@@ -10,7 +10,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailVacancy"></activity>
+        <activity android:name=".DetailVacancy"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".ApplicationHistory"
             android:theme="@style/AppTheme.NoActionBar" />

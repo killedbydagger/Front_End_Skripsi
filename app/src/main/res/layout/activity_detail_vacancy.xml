@@ -213,20 +213,19 @@
         </LinearLayout>
 
 
-    <EditText
-        android:id="@+id/et_description"
+    <TextView
+        android:id="@+id/tv_description"
+        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
         android:background="@drawable/edit_text_card"
         android:layout_below="@id/layout_vacancy"
         android:layout_above="@id/btn_apply"
         android:layout_marginHorizontal="10sp"
         android:layout_marginBottom="10sp"
         android:focusable="false"
-        android:padding="10sp"/>
+        android:padding="10sp"
+        android:scrollbars = "vertical"/>
 
     <Button
         android:id="@+id/btn_apply"
