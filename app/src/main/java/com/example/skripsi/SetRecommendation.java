@@ -63,14 +63,12 @@ public class SetRecommendation extends AppCompatActivity {
                 validateCategory();
                 if (!validationChecks.containsValue(false)) {
                     String kategori = sp_kategori1.getSelectedItemPosition() + ", " + sp_kategori2.getSelectedItemPosition() + ", " + sp_kategori3.getSelectedItemPosition();
-                    System.out.println(kategori);
                     try {
                         setRecommendation(Integer.parseInt(userId), sp_lokasi.getSelectedItemPosition(), kategori);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-
             }
         });
     }
@@ -120,11 +118,11 @@ public class SetRecommendation extends AppCompatActivity {
         JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose Location ---");
-        for (int i=0;i<locationJSON.length();i++){
+        for (int i = 0; i < locationJSON.length(); i++) {
             object = locationJSON.getJSONObject(i);
             locationArray.add(object.getString("location_name"));
         }
-        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, locationArray);
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationArray);
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_lokasi.setAdapter(locationArrayAdapter);

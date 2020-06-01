@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.ViewHolder>{
 
@@ -38,11 +40,15 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         viewHolder.tv_title.setText(recommended.getVacancyTitle());
         viewHolder.tv_companyName.setText(recommended.getVacancyCompanyName());
         viewHolder.tv_location.setText(recommended.getVacancyLocation());
-        viewHolder.tv_salary.setText(recommended.getVacancySalary());
-        viewHolder.tv_rating.setText("rating");
+
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        viewHolder.tv_salary.setText(formatRupiah.format((double)recommended.getVacancySalary()));
+
+        viewHolder.tv_rating.setText(recommended.getVacancyCompanyRating());
         viewHolder.tv_status.setText(recommended.getVacancyStatus());
 
-        viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
+        viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         viewHolder.img_bintang.setImageResource(R.drawable.star);
     }
 

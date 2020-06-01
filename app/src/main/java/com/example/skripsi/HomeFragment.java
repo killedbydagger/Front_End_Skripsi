@@ -95,24 +95,21 @@ public class HomeFragment extends Fragment {
         sessionManager = new SessionManager(getContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
-        if (user.get(sessionManager.RECOMMENDATION) == null){
+        if (user.get(sessionManager.RECOMMENDATION) == null) {
             try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
                 editor = sharedPreferences.edit();
                 getUserRecommendation(Integer.parseInt(userId));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }else {
+        } else {
             try {
                 loadRecommendation(user.get(sessionManager.RECOMMENDATION), Integer.parseInt(user.get(sessionManager.RECOMMENDATION_LOCATION)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-
-        System.out.println(sessionManager.RECOMMENDATION);
-        System.out.println(sessionManager.RECOMMENDATION_LOCATION);
 
         return v;
     }
@@ -124,17 +121,27 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         sessionManager = new SessionManager(getContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
 
-        try {
-            getUserRecommendation(Integer.parseInt(userId));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (user.get(sessionManager.RECOMMENDATION) == null) {
+            try {
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
+                editor = sharedPreferences.edit();
+                getUserRecommendation(Integer.parseInt(userId));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                loadRecommendation(user.get(sessionManager.RECOMMENDATION), Integer.parseInt(user.get(sessionManager.RECOMMENDATION_LOCATION)));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -148,18 +155,18 @@ public class HomeFragment extends Fragment {
                 try {
                     recommendeds.clear();
                     String status = response.getString("status");
-                    System.out.println(status);
                     if (status.equals("Not Found")) {
                         btn_setRecommendation.setVisibility(View.VISIBLE);
-                    }
-                    else if (status.equals("Success")){
+                    } else if (status.equals("Success")) {
+                        btn_setRecommendation.setVisibility(View.GONE);
+
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
 
                             JSONObject object = jsonArray.getJSONObject(i);
 
-                            editor.putString(RECOMMENDATION, object.getString("categories"));
+                            editor.putString(RECOMMENDATION, object.getString("recom_categories"));
                             editor.putString(RECOMMENDATION_LOCATION, object.getString("location_id"));
                             editor.apply();
 
@@ -175,11 +182,11 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -202,13 +209,13 @@ public class HomeFragment extends Fragment {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Recommended recommended = new Recommended();
 
                             recommended.setVacancyId(object.getString("vac_id"));
                             recommended.setVacancyTitle(object.getString("vac_title"));
-                            recommended.setVacancySalary(object.getString("vac_salary"));
+                            recommended.setVacancySalary(object.getInt("vac_salary"));
 
                             JSONObject object1 = object.getJSONObject("category");
                             recommended.setVacancyCategory(object1.getString("category_name"));
@@ -230,8 +237,7 @@ public class HomeFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         //viewDialog.hideDialog();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -243,11 +249,11 @@ public class HomeFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

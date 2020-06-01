@@ -1,9 +1,10 @@
 package com.example.skripsi;
 
 public class Recommended {
-    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancySalary, vacancyId, vacancyStatus, vacancyCompanyRating;
+    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating;
+    int vacancySalary;
 
-    public Recommended(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating) {
+    public Recommended(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, int vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating) {
         this.vacancyCategory = vacancyCategory;
         this.vacancyPosition = vacancyPosition;
         this.vacancyTitle = vacancyTitle;
@@ -59,11 +60,11 @@ public class Recommended {
         this.vacancyLocation = vacancyLocation;
     }
 
-    public String getVacancySalary() {
+    public int getVacancySalary() {
         return vacancySalary;
     }
 
-    public void setVacancySalary(String vacancySalary) {
+    public void setVacancySalary(int vacancySalary) {
         this.vacancySalary = vacancySalary;
     }
 
