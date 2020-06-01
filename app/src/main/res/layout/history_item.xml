@@ -166,7 +166,7 @@
             android:textSize="15sp"
             android:layout_marginHorizontal="10sp"
             android:layout_marginBottom="10sp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
     </LinearLayout>
 
 

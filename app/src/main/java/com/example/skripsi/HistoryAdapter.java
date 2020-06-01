@@ -2,6 +2,7 @@ package com.example.skripsi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +48,15 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.tv_salary.setText(formatRupiah.format((double)history.getSalary()));
         viewHolder.tv_rating.setText(history.getRating());
         viewHolder.tv_status.setText(history.getStatus());
+
+        viewHolder.btn_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PopUpRating.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+            }
+        });
 
         if(history.getStatus().equals("PENDING")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
