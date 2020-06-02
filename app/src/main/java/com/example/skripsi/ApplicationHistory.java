@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -30,6 +33,12 @@ public class ApplicationHistory extends AppCompatActivity {
 
     private RecyclerView mList;
 
+    ViewDialog viewDialog;
+
+    TextView empty;
+
+    ImageView btn_close;
+
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<History> historyList;
@@ -41,6 +50,19 @@ public class ApplicationHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application_history);
+
+        viewDialog = new ViewDialog(ApplicationHistory.this);
+        viewDialog.showDialog();
+
+        btn_close = findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        empty = findViewById(R.id.empty);
 
         mList = findViewById(R.id.rv_applicantHistory);
 
@@ -108,9 +130,12 @@ public class ApplicationHistory extends AppCompatActivity {
                         }
 
                         adapter.notifyDataSetChanged();
+                        viewDialog.hideDialog();
                     }
                     else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        empty.setVisibility(View.VISIBLE);
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

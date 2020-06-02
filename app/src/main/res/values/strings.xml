@@ -83,4 +83,5 @@
     <string name="apply">Apply</string>
     <string name="FavoriteEmpty">Favorite is empty</string>
     <string name="callCustomerService">Call Customer Service</string>
+    <string name="applicationEmpty">Application history is empty</string>
 </resources>

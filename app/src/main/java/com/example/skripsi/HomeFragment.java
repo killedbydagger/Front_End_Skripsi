@@ -250,7 +250,7 @@ public class HomeFragment extends Fragment {
                             recommendeds.add(recommended);
                         }
                         adapter.notifyDataSetChanged();
-                        //viewDialog.hideDialog();
+                        viewDialog.hideDialog();
                     } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
