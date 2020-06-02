@@ -1,8 +1,10 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +49,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final Favorite favorite = list.get(i);
 
         viewHolder.tv_category.setText(favorite.getCategory());
@@ -71,12 +73,33 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
         viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                try {
-                    unFavorite(userId,favorite.getVacId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onClick(final View v) {
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getRootView().getContext());
+
+                alertDialog.setMessage("Are you sure to unfavorite this vacancy?").setCancelable(false);
+
+                alertDialog.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    unFavorite(userId,favorite.getVacId());
+                                    dialog.dismiss();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                ).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = alertDialog.create();
+                alert.setTitle("Unfavorite vacancy");
+                alert.show();
             }
         });
         viewHolder.img_bintang.setImageResource(R.drawable.star);

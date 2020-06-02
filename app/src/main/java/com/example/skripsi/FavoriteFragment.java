@@ -84,7 +84,6 @@ public class FavoriteFragment extends Fragment {
         return v;
     }
 
-
     private void loadFavorite(final Context context, String id) throws JSONException {
         String URL = "http://25.54.110.177:8095/FavoriteVacancy/getFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
