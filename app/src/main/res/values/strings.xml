@@ -81,4 +81,5 @@
     <string name="dataNotFound">Data not found</string>
     <string name="detailVacancy">Detail vacancy</string>
     <string name="apply">Apply</string>
+    <string name="FavoriteEmpty">Favorite is empty</string>
 </resources>

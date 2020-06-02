@@ -66,11 +66,16 @@ public class HomeFragment extends Fragment {
 
     Button btn_setRecommendation;
 
+    ViewDialog viewDialog;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+
+        viewDialog = new ViewDialog(getActivity());
+        viewDialog.showDialog();
+
         rv_listRecommended = v.findViewById(R.id.rv_listRecommended);
         btn_setRecommendation = v.findViewById(R.id.btn_setRecommendation);
         btn_setRecommendation.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +162,7 @@ public class HomeFragment extends Fragment {
                     String status = response.getString("status");
                     if (status.equals("Not Found")) {
                         btn_setRecommendation.setVisibility(View.VISIBLE);
+                        viewDialog.hideDialog();
                     } else if (status.equals("Success")) {
                         btn_setRecommendation.setVisibility(View.GONE);
 
@@ -176,6 +182,7 @@ public class HomeFragment extends Fragment {
 
                             loadRecommendation(userId,object.getString("recom_categories"), Integer.parseInt(object.getString("location_id")));
                         }
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

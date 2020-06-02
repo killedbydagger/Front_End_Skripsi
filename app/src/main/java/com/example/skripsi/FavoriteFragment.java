@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -44,13 +45,17 @@ public class FavoriteFragment extends Fragment {
 
     ViewDialog viewDialog;
 
+    TextView empty;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
-        //viewDialog = new ViewDialog(getActivity());
-        //viewDialog.showDialog();
+        viewDialog = new ViewDialog(getActivity());
+        viewDialog.showDialog();
+
+        empty = v.findViewById(R.id.empty);
 
         mList = v.findViewById(R.id.rv_listFavorite);
 
@@ -92,7 +97,6 @@ public class FavoriteFragment extends Fragment {
                     String status = response.getString("status");
                     System.out.println(status);
                     if (status.equals("Success")) {
-                        System.out.println("masuk pak haji");
                         JSONArray jsonArray = response.getJSONArray("data");
 
                         for(int i = 0;i<jsonArray.length();i++) {
@@ -130,10 +134,12 @@ public class FavoriteFragment extends Fragment {
                             favoriteList.add(favorite);
                         }
                         adapter.notifyDataSetChanged();
-                        //viewDialog.hideDialog();
+                        viewDialog.hideDialog();
                     }
                     else {
+                        empty.setVisibility(View.VISIBLE);
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
