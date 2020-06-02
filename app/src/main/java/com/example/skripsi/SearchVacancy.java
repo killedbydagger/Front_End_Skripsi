@@ -1,18 +1,19 @@
 package com.example.skripsi;
 
 public class SearchVacancy {
-    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancySalary, vacancyId, vacancyStatus, vacancyCompanyRating;
+    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating;
+    public int vacancySalary;
 
-    public SearchVacancy(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating) {
+    public SearchVacancy(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancyId, String vacancyStatus, String vacancyCompanyRating, int vacancySalary) {
         this.vacancyCategory = vacancyCategory;
         this.vacancyPosition = vacancyPosition;
         this.vacancyTitle = vacancyTitle;
         this.vacancyCompanyName = vacancyCompanyName;
         this.vacancyLocation = vacancyLocation;
-        this.vacancySalary = vacancySalary;
         this.vacancyId = vacancyId;
         this.vacancyStatus = vacancyStatus;
         this.vacancyCompanyRating = vacancyCompanyRating;
+        this.vacancySalary = vacancySalary;
     }
 
     public SearchVacancy() {
@@ -59,11 +60,11 @@ public class SearchVacancy {
         this.vacancyLocation = vacancyLocation;
     }
 
-    public String getVacancySalary() {
+    public int getVacancySalary() {
         return vacancySalary;
     }
 
-    public void setVacancySalary(String vacancySalary) {
+    public void setVacancySalary(int vacancySalary) {
         this.vacancySalary = vacancySalary;
     }
 

@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdapter.ViewHolder> {
 
@@ -24,7 +26,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.applicantlist_item, viewGroup, false);
+        View v = LayoutInflater.from(context).inflate(R.layout.searchvacancy_item, viewGroup, false);
         return new ViewHolder(v);
     }
 
@@ -38,11 +40,13 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
         viewHolder.tv_title.setText(searchVacancy.getVacancyTitle());
         viewHolder.tv_companyName.setText(searchVacancy.getVacancyCompanyName());
         viewHolder.tv_location.setText(searchVacancy.getVacancyLocation());
-        viewHolder.tv_salary.setText(searchVacancy.getVacancySalary());
-        viewHolder.tv_rating.setText("rating");
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+        viewHolder.tv_salary.setText(formatRupiah.format((double)searchVacancy.getVacancySalary()));
+        viewHolder.tv_rating.setText(searchVacancy.getVacancyCompanyRating());
         viewHolder.tv_status.setText(searchVacancy.getVacancyStatus());
 
-        viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
+        viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         viewHolder.img_bintang.setImageResource(R.drawable.star);
     }
 
