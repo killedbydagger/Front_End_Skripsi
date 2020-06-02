@@ -113,6 +113,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
                 startActivity(businessCenterIntent);
                 break;
 
+            case R.id.menuPremium:
+                Intent premiumIntent = new Intent(getView().getContext(), Premium.class);
+                startActivity(premiumIntent);
+                break;
+
+            case R.id.menuChangePassword:
+                Intent changePasswordIntent = new Intent(getView().getContext(), ChangePassword.class);
+                startActivity(changePasswordIntent);
+                break;
+
             case R.id.menuLogout:
                 sessionManager.logout();
                 Intent login = new Intent(getView().getContext(), LoginActivity.class);
