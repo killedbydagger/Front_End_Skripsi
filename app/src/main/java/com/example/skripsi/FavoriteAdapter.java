@@ -87,6 +87,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 Intent intent = new Intent (v.getContext(), DetailVacancy.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", favorite.getVacId());
+                intent.putExtra("BUSINESS_ID", favorite.getCompanyId());
+                intent.putExtra("FLAG", "Y");
                 v.getContext().startActivity(intent);
             }
         });

@@ -1,22 +1,42 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.ViewHolder>{
 
     private Context context;
     private List<Recommended> list;
+
+    String favoriteIndicator;
+
+    SessionManager sessionManager;
 
     public RecommendedAdapter(Context context, List<Recommended> list) {
         this.context = context;
@@ -31,8 +51,8 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Recommended recommended = list.get(i);
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
+        final Recommended recommended = list.get(i);
 
         viewHolder.tv_category.setText(recommended.getVacancyCategory());
         viewHolder.pembatas.setText("-");
@@ -48,8 +68,50 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         viewHolder.tv_rating.setText(recommended.getVacancyCompanyRating());
         viewHolder.tv_status.setText(recommended.getVacancyStatus());
 
+        sessionManager = new SessionManager(context);
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
+
         viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        favoriteIndicator = "n";
+        viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(favoriteIndicator.equals("n")){
+                    try {
+                        favoriteVacancy(userId, recommended.getVacancyId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    favoriteIndicator = "y";
+                    viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
+                }
+                else{
+                    try {
+                        unFavorite(userId, recommended.getVacancyId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    favoriteIndicator = "n";
+                    viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                }
+
+            }
+        });
+
         viewHolder.img_bintang.setImageResource(R.drawable.star);
+
+        viewHolder.layout_recommended.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", recommended.getVacancyId());
+                intent.putExtra("BUSINESS_ID", recommended.getBusinessId());
+                intent.putExtra("FLAG", "RECOMMENDED");
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -61,6 +123,8 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         public TextView tv_category, pembatas, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
         ImageView img_company, img_favorite, img_bintang;
+
+        LinearLayout layout_recommended;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,6 +142,84 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             img_company = itemView.findViewById(R.id.img_company);
             img_favorite = itemView.findViewById(R.id.img_favorite);
             img_bintang = itemView.findViewById(R.id.img_bintang);
+
+            layout_recommended = itemView.findViewById(R.id.layout_recommended);
         }
+    }
+
+    private void favoriteVacancy(String userId, String vacId) throws JSONException {
+        String URL = "http://25.54.110.177:8095/FavoriteVacancy/addFavoriteVacancy";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", userId);
+        jsonBody.put("vac_id", vacId);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        Toast.makeText(context, "Favorite vacancy success", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(context, "Favorite vacancy failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void unFavorite(String userId, String vacId) throws JSONException {
+        String URL = "http://25.54.110.177:8095/FavoriteVacancy/removeFavoriteVacancy";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", userId);
+        jsonBody.put("vac_id", vacId);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        Toast.makeText(context, "Unfavorite vacancy success", Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(context, "Unfavorite vacancy failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(jsonObjectRequest);
     }
 }

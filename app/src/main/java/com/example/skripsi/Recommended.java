@@ -1,10 +1,10 @@
 package com.example.skripsi;
 
 public class Recommended {
-    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating;
+    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating, businessId;
     int vacancySalary;
 
-    public Recommended(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, int vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating) {
+    public Recommended(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, int vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating, String businessId) {
         this.vacancyCategory = vacancyCategory;
         this.vacancyPosition = vacancyPosition;
         this.vacancyTitle = vacancyTitle;
@@ -14,6 +14,7 @@ public class Recommended {
         this.vacancyId = vacancyId;
         this.vacancyStatus = vacancyStatus;
         this.vacancyCompanyRating = vacancyCompanyRating;
+        this.businessId = businessId;
     }
 
     public Recommended() {
@@ -90,5 +91,13 @@ public class Recommended {
 
     public void setVacancyCompanyRating(String vacancyCompanyRating) {
         this.vacancyCompanyRating = vacancyCompanyRating;
+    }
+
+    public String getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(String businessId) {
+        this.businessId = businessId;
     }
 }

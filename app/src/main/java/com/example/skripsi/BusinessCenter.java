@@ -109,6 +109,7 @@ public class BusinessCenter extends AppCompatActivity {
             public void onClick(View v) {
                 Intent rating = new Intent(BusinessCenter.this, Rating.class);
                 rating.putExtra("NAMA", tv_namaPerusahaan.getText().toString());
+                rating.putExtra("IDENTIFIER","BUSINESS_CENTER");
                 rating.putExtra("RATING",tv_ratingPerusahaan.getText().toString());
                 startActivity(rating);
             }

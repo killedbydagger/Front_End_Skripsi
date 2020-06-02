@@ -41,6 +41,8 @@ public class Rating extends AppCompatActivity {
 
     SessionManager sessionManager;
 
+    String identifier, businessId;
+
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<RatingData> ratingList;
@@ -50,6 +52,9 @@ public class Rating extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rating);
+
+        identifier = getIntent().getExtras().getString("IDENTIFIER");
+        businessId = getIntent().getExtras().getString("BUSINESS_ID");
 
         btn_close = findViewById(R.id.btn_close);
         btn_close.setOnClickListener(new View.OnClickListener() {
@@ -88,10 +93,21 @@ public class Rating extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         HashMap<String, String> business = sessionManager.getBusinessDetail();
 
-        try {
-            loadRating(business.get(sessionManager.BUSINESS_ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        System.out.println(businessId);
+
+        if(identifier.equals("BUSINESS_CENTER")){
+            try {
+                loadRating(business.get(sessionManager.BUSINESS_ID));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            try {
+                loadRating(businessId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }
