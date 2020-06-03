@@ -49,7 +49,7 @@ public class SetRecommendation extends AppCompatActivity {
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
         try {
-            setCategotySpinner(user.get(sessionManager.CATEGORY_DATA));
+            setCategorySpinner(user.get(sessionManager.CATEGORY_DATA));
             setLocationSpinner(user.get(sessionManager.LOCATION_DATA));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class SetRecommendation extends AppCompatActivity {
         }
     }
 
-    private void setCategotySpinner(String json) throws JSONException {
+    private void setCategorySpinner(String json) throws JSONException {
         JSONObject jsonObject = new JSONObject(json);
         JSONArray kategoriJson = jsonObject.getJSONArray("data");
         JSONObject object;
