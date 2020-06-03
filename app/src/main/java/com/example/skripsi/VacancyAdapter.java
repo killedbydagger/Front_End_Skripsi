@@ -111,7 +111,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             @Override
             public void onClick(final View v) {
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getRootView().getContext());
 
                 alertDialog.setMessage("Are you sure to delete this vacancy?").setCancelable(false);
 
@@ -126,9 +126,14 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                                 }
                             }
                         }
-                );
+                ).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 AlertDialog alert = alertDialog.create();
-                alert.setTitle("Create new business");
+                alert.setTitle("Delete business");
                 alert.show();
             }
         });

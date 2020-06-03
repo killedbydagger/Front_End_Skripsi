@@ -21,6 +21,8 @@ import java.util.HashMap;
 public class ProfileFragment extends Fragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
 
+    ViewDialog viewDialog;
+
     Button btn_edit;
     ImageView img_slideMenuProfile, img_history;
     TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc;
@@ -30,6 +32,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        viewDialog = new ViewDialog(getActivity());
+        viewDialog.showDialog();
+
         btn_edit = (Button) v.findViewById(R.id.btn_edit);
         btn_edit.setOnClickListener(this);
 
@@ -80,6 +86,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
             }
         });
 
+        viewDialog.hideDialog();
+
         return v;
 
     }
@@ -102,6 +110,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
+
+        viewDialog.hideDialog();
 
     }
 

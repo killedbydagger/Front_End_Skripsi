@@ -73,17 +73,17 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         final String userId = user.get(sessionManager.ID);
 
         viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-        favoriteIndicator = "n";
+        favoriteIndicator = "N";
         viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(favoriteIndicator.equals("n")){
+                if(favoriteIndicator.equals("N")){
                     try {
                         favoriteVacancy(userId, recommended.getVacancyId());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    favoriteIndicator = "y";
+                    favoriteIndicator = "Y";
                     viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
                 }
                 else{
@@ -92,7 +92,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    favoriteIndicator = "n";
+                    favoriteIndicator = "N";
                     viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
                 }
 
@@ -108,7 +108,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", recommended.getVacancyId());
                 intent.putExtra("BUSINESS_ID", recommended.getBusinessId());
-                intent.putExtra("FLAG", "RECOMMENDED");
+                intent.putExtra("FLAG", favoriteIndicator);
                 v.getContext().startActivity(intent);
             }
         });

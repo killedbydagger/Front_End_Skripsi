@@ -70,6 +70,9 @@ public class BusinessCenter extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_center);
 
+        viewDialog = new ViewDialog(BusinessCenter.this);
+        viewDialog.showDialog();
+
 
         tv_namaPerusahaan = findViewById(R.id.tv_namaPerusahaan);
         tv_lokasiPerusahaan = findViewById(R.id.tv_lokasiPerusahaan);
@@ -121,16 +124,6 @@ public class BusinessCenter extends AppCompatActivity {
 
         HashMap<String, String> business = sessionManager.getBusinessDetail();
 
-        if(business.get(sessionManager.BUSINESS_ID) == null) {
-            try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
-                editor = sharedPreferences.edit();
-                checkBisnis(userId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-
         premiumTag.setText(user.get(sessionManager.STATUS));
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
@@ -149,11 +142,22 @@ public class BusinessCenter extends AppCompatActivity {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        try {
-            viewRating(business.get(sessionManager.BUSINESS_ID));
-            loadVacancyData(business.get(sessionManager.BUSINESS_ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(business.get(sessionManager.BUSINESS_ID) == null) {
+            try {
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                editor = sharedPreferences.edit();
+                checkBisnis(userId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            try {
+                viewRating(business.get(sessionManager.BUSINESS_ID));
+                loadVacancyData(business.get(sessionManager.BUSINESS_ID));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -164,11 +168,26 @@ public class BusinessCenter extends AppCompatActivity {
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
 
-        try {
-            viewRating(business.get(sessionManager.BUSINESS_ID));
-            loadVacancyData(business.get(sessionManager.BUSINESS_ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
+        sessionManager = new SessionManager(this);
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        String userId = user.get(sessionManager.ID);
+
+        if(business.get(sessionManager.BUSINESS_ID) == null) {
+            try {
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                editor = sharedPreferences.edit();
+                checkBisnis(userId);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            try {
+                viewRating(business.get(sessionManager.BUSINESS_ID));
+                loadVacancyData(business.get(sessionManager.BUSINESS_ID));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -215,6 +234,7 @@ public class BusinessCenter extends AppCompatActivity {
                         }
 
                         adapter.notifyDataSetChanged();
+                        viewDialog.hideDialog();
                     }
                     else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
@@ -256,6 +276,8 @@ public class BusinessCenter extends AppCompatActivity {
                     if (status.equals("Registered")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
+                        String tampungId = null;
+
                         for(int i = 0;i<jsonArray.length();i++){
                             JSONObject object = jsonArray.getJSONObject(i);
 
@@ -279,10 +301,16 @@ public class BusinessCenter extends AppCompatActivity {
                             HashMap<String, String> business = sessionManager.getBusinessDetail();
                             tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
                             tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+
+                            tampungId = busId;
                         }
+
+                        viewRating(tampungId);
+                        loadVacancyData(tampungId);
 
                     }
                     else if(status.equals("Not Registered")) {
+                        viewDialog.hideDialog();
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(BusinessCenter.this);
                         alertDialog.setMessage("Your don't have any business registered. Do you want to register a new business ?").setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
