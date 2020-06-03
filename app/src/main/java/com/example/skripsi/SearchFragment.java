@@ -112,6 +112,7 @@ public class SearchFragment extends Fragment {
 
         sessionManager = new SessionManager(getContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
+        final String userId = user.get(sessionManager.ID);
 
         try {
             sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
@@ -166,7 +167,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    loadSearchVacancy(sp_kategori.getSelectedItemPosition(), sp_kategoriJabatan.getSelectedItemPosition(), sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
+                    loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), sp_kategoriJabatan.getSelectedItemPosition(), sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -262,9 +263,10 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    private void loadSearchVacancy(int category, int position, CharSequence keyword, int location, Editable salary) throws JSONException {
+    private void loadSearchVacancy(int userId, int category, int position, CharSequence keyword, int location, Editable salary) throws JSONException {
         String URL = "http://25.54.110.177:8095/Vacancy/searchVacancy";
         final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", userId);
         jsonBody.put("category_id", category);
         jsonBody.put("position_id", position);
         jsonBody.put("keyword", keyword);
