@@ -246,6 +246,8 @@ public class HomeFragment extends Fragment {
                             JSONObject object5 = object3.getJSONObject("user");
                             recommended.setVacancyStatus(object5.getString("user_status"));
 
+                            recommended.setFavoriteFlag(object.getString("favoriteFlag"));
+
 
                             recommendeds.add(recommended);
                         }
