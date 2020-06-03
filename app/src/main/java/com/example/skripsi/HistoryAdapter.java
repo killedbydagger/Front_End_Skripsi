@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -35,7 +36,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        History history = list.get(i);
+        final History history = list.get(i);
 
         viewHolder.tv_category.setText(history.getCategory());
         viewHolder.pembatas.setText("-");
@@ -60,7 +61,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         if(history.getStatus().equals("PENDING")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
-            viewHolder.btn_rate.setVisibility(View.GONE);
         }
         else if(history.getStatus().equals("ACCEPTED")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
@@ -71,6 +71,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
 
         viewHolder.img_bintang.setImageResource(R.drawable.star);
+
+        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", history.getVacId());
+                intent.putExtra("BUSINESS_ID", history.getBusId());
+                intent.putExtra("FLAG", history.getFavoriteFlag());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
 
@@ -85,6 +97,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         ImageView img_company, img_bintang;
 
         Button btn_rate;
+
+        LinearLayout layout_data;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,6 +117,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             img_bintang = itemView.findViewById(R.id.img_bintang);
 
             btn_rate = itemView.findViewById(R.id.btn_rate);
+
+            layout_data = itemView.findViewById(R.id.layout_data);
         }
     }
 }

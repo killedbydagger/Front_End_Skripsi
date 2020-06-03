@@ -34,8 +34,6 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
     private Context context;
     private List<Recommended> list;
 
-    String favoriteIndicator;
-
     SessionManager sessionManager;
 
     public RecommendedAdapter(Context context, List<Recommended> list) {
@@ -73,27 +71,26 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         final String userId = user.get(sessionManager.ID);
 
         viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-        favoriteIndicator = "N";
         viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(favoriteIndicator.equals("N")){
-                    try {
-                        favoriteVacancy(userId, recommended.getVacancyId());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    favoriteIndicator = "Y";
-                    viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
-                }
-                else{
+                if(recommended.getFavoriteFlag().equals("Y")){
                     try {
                         unFavorite(userId, recommended.getVacancyId());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    favoriteIndicator = "N";
+                    recommended.setFavoriteFlag("N");
                     viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                }
+                else{
+                    try {
+                        favoriteVacancy(userId, recommended.getVacancyId());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    recommended.setFavoriteFlag("Y");
+                    viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
                 }
 
             }
@@ -108,7 +105,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", recommended.getVacancyId());
                 intent.putExtra("BUSINESS_ID", recommended.getBusinessId());
-                intent.putExtra("FLAG", favoriteIndicator);
+                intent.putExtra("FLAG", recommended.getFavoriteFlag());
                 v.getContext().startActivity(intent);
             }
         });

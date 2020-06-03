@@ -1,10 +1,10 @@
 package com.example.skripsi;
 
 public class SearchVacancy {
-    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating;
+    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating, favoriteFlag, vacancyBusId;
     public int vacancySalary;
 
-    public SearchVacancy(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancyId, String vacancyStatus, String vacancyCompanyRating, int vacancySalary) {
+    public SearchVacancy(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancyId, String vacancyStatus, String vacancyCompanyRating, int vacancySalary, String favoriteFlag, String vacancyBusId) {
         this.vacancyCategory = vacancyCategory;
         this.vacancyPosition = vacancyPosition;
         this.vacancyTitle = vacancyTitle;
@@ -14,6 +14,8 @@ public class SearchVacancy {
         this.vacancyStatus = vacancyStatus;
         this.vacancyCompanyRating = vacancyCompanyRating;
         this.vacancySalary = vacancySalary;
+        this.favoriteFlag = favoriteFlag;
+        this.vacancyBusId = vacancyBusId;
     }
 
     public SearchVacancy() {
@@ -90,5 +92,21 @@ public class SearchVacancy {
 
     public void setVacancyCompanyRating(String vacancyCompanyRating) {
         this.vacancyCompanyRating = vacancyCompanyRating;
+    }
+
+    public String getFavoriteFlag() {
+        return favoriteFlag;
+    }
+
+    public void setFavoriteFlag(String favoriteFlag) {
+        this.favoriteFlag = favoriteFlag;
+    }
+
+    public String getVacancyBusId() {
+        return vacancyBusId;
+    }
+
+    public void setVacancyBusId(String vacancyBusId) {
+        this.vacancyBusId = vacancyBusId;
     }
 }

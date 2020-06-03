@@ -135,6 +135,7 @@ public class SearchFragment extends Fragment {
                     et_salary.setBackgroundResource(R.drawable.edit_text_card);
                     sp_kategoriJabatan.setEnabled(true);
                     sp_kategoriJabatan.setBackgroundResource(R.drawable.edit_text_card);
+                    sp_kategoriJabatan.setVisibility(View.GONE);
                 }
                 else if(position == 6){
                     et_salary.setText("0");
@@ -142,6 +143,7 @@ public class SearchFragment extends Fragment {
                     et_salary.setBackgroundResource(R.drawable.edit_text_card_gray);
                     sp_kategoriJabatan.setEnabled(false);
                     sp_kategoriJabatan.setBackgroundResource(R.drawable.edit_text_card_gray);
+                    sp_kategoriJabatan.setVisibility(View.GONE);
                 }
                 else{
                     et_salary.setText("");
@@ -149,6 +151,7 @@ public class SearchFragment extends Fragment {
                     et_salary.setBackgroundResource(R.drawable.edit_text_card);
                     sp_kategoriJabatan.setEnabled(true);
                     sp_kategoriJabatan.setBackgroundResource(R.drawable.edit_text_card);
+                    sp_kategoriJabatan.setVisibility(View.VISIBLE);
                     try {
                         loadPositionData(position);
                     } catch (JSONException e) {
@@ -166,11 +169,17 @@ public class SearchFragment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), sp_kategoriJabatan.getSelectedItemPosition(), sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(sp_kategori.getSelectedItemPosition() == 0 && sv_keyword.getQuery().toString().equals("") && sp_lokasi.getSelectedItemPosition() == 0 && et_salary.getText().toString().equals("")){
+                    Toast.makeText(getContext(), "Need to feel atleast one Filter", Toast.LENGTH_LONG).show();
                 }
+                else {
+                    try {
+                        loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), sp_kategoriJabatan.getSelectedItemPosition(), sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         });
         return v;
@@ -303,6 +312,7 @@ public class SearchFragment extends Fragment {
                             JSONObject object3 = object.getJSONObject("business");
                             searchVacancy.setVacancyCompanyName(object3.getString("bus_name"));
                             searchVacancy.setVacancyCompanyRating(object3.getString("rating"));
+                            searchVacancy.setVacancyBusId(object3.getString("bus_id"));
 
                             JSONObject object4 = object3.getJSONObject("location");
                             searchVacancy.setVacancyLocation(object4.getString("location_name"));
@@ -310,6 +320,7 @@ public class SearchFragment extends Fragment {
                             JSONObject object5 = object3.getJSONObject("user");
                             searchVacancy.setVacancyStatus(object5.getString("user_status"));
 
+                            searchVacancy.setFavoriteFlag(object.getString("favoriteFlag"));
 
                             searchVacancies.add(searchVacancy);
                         }
