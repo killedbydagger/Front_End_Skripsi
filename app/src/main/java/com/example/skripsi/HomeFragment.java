@@ -150,7 +150,6 @@ public class HomeFragment extends Fragment {
 //                                        finish();
 //                                    }
 //                                });
-
                         AlertDialog alert = alertDialog.create();
                         alert.setTitle("Set Recommendation");
                         alert.show();
