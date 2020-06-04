@@ -158,6 +158,7 @@ public class AddBusiness extends AppCompatActivity {
                     String status = response.getString("status");
                     if(status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "New business has been created", Toast.LENGTH_LONG).show();
+                        finish();
                     }else {
                         Toast.makeText(getApplicationContext(), "Failed to create new business", Toast.LENGTH_LONG).show();
                     }

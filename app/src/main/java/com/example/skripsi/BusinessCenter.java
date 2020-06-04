@@ -142,23 +142,23 @@ public class BusinessCenter extends AppCompatActivity {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
-        if(business.get(sessionManager.BUSINESS_ID) == null) {
-            try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
-                editor = sharedPreferences.edit();
-                checkBisnis(userId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-            try {
-                viewRating(business.get(sessionManager.BUSINESS_ID));
-                loadVacancyData(business.get(sessionManager.BUSINESS_ID));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(business.get(sessionManager.BUSINESS_ID) == null) {
+//            try {
+//                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+//                editor = sharedPreferences.edit();
+//                checkBisnis(userId);
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        else{
+//            try {
+//                viewRating(business.get(sessionManager.BUSINESS_ID));
+//                loadVacancyData(business.get(sessionManager.BUSINESS_ID));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
