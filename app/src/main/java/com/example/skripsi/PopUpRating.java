@@ -3,7 +3,6 @@ package com.example.skripsi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -25,6 +24,8 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.Nullable;
 
 public class PopUpRating extends Activity {
 
