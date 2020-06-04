@@ -2,11 +2,10 @@ package com.example.skripsi;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -26,9 +25,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class ApplicationHistory extends AppCompatActivity {
 
     private RecyclerView mList;
+
+    ViewDialog viewDialog;
+
+    TextView empty;
+
+    ImageView btn_close;
 
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
@@ -41,6 +51,19 @@ public class ApplicationHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application_history);
+
+        viewDialog = new ViewDialog(ApplicationHistory.this);
+        viewDialog.showDialog();
+
+        btn_close = findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+        empty = findViewById(R.id.empty);
 
         mList = findViewById(R.id.rv_applicantHistory);
 
@@ -93,6 +116,7 @@ public class ApplicationHistory extends AppCompatActivity {
                             JSONObject object3 = object1.getJSONObject("business");
                             history.setCompanyName(object3.getString("bus_name"));
                             history.setRating(object3.getString("rating"));
+                            history.setBusId(object3.getString("bus_id"));
 
                             JSONObject object4 = object1.getJSONObject("location");
                             history.setLocation(object4.getString("location_name"));
@@ -104,13 +128,19 @@ public class ApplicationHistory extends AppCompatActivity {
                             JSONObject object5 = object1.getJSONObject("position");
                             history.setPosition(object5.getString("position_name"));
 
+                            history.setVacId(object1.getString("vac_id"));
+                            history.setFavoriteFlag(object1.getString("favoriteFlag"));
+
                             historyList.add(history);
                         }
 
                         adapter.notifyDataSetChanged();
+                        viewDialog.hideDialog();
                     }
                     else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        empty.setVisibility(View.VISIBLE);
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

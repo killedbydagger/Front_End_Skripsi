@@ -2,19 +2,23 @@ package com.example.skripsi;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.RecyclerView;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
 
@@ -34,7 +38,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        History history = list.get(i);
+        final History history = list.get(i);
 
         viewHolder.tv_category.setText(history.getCategory());
         viewHolder.pembatas.setText("-");
@@ -48,9 +52,30 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.tv_rating.setText(history.getRating());
         viewHolder.tv_status.setText(history.getStatus());
 
+        viewHolder.btn_rate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), PopUpRating.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", history.getVacId());
+                intent.putExtra("BUSINESS_ID", history.getVacId());
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        String flag = history.getFavoriteFlag();
+        System.out.println(flag);
+
+        if (flag.equals("Y")){
+            viewHolder.btn_rate.setVisibility(View.GONE);
+            viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.btn_rate.setVisibility(View.VISIBLE);
+            viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
+        };
+
         if(history.getStatus().equals("PENDING")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
-            viewHolder.btn_rate.setVisibility(View.GONE);
         }
         else if(history.getStatus().equals("ACCEPTED")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
@@ -61,6 +86,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
 
         viewHolder.img_bintang.setImageResource(R.drawable.star);
+
+        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", history.getVacId());
+                intent.putExtra("BUSINESS_ID", history.getBusId());
+                intent.putExtra("FLAG", history.getFavoriteFlag());
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
 
@@ -75,6 +112,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         ImageView img_company, img_bintang;
 
         Button btn_rate;
+
+        RatingBar rb_ratingDariUser;
+
+        LinearLayout layout_data;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,6 +134,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             img_bintang = itemView.findViewById(R.id.img_bintang);
 
             btn_rate = itemView.findViewById(R.id.btn_rate);
+
+            rb_ratingDariUser = itemView.findViewById(R.id.rb_ratingDariUser);
+
+            layout_data = itemView.findViewById(R.id.layout_data);
         }
     }
 }

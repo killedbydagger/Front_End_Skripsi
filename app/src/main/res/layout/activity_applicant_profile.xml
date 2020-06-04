@@ -156,6 +156,12 @@
                         android:textColor="@color/colorWhite"
                         android:textSize="15sp" />
 
+                    <TextView
+                        android:id="@+id/tv_userPhoneNum"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
                     <Button
                         android:id="@+id/btn_applicantEmail"
                         android:layout_width="match_parent"
@@ -166,6 +172,12 @@
                         android:text="@string/email"
                         android:textColor="@color/colorWhite"
                         android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_userEmailAdd"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>

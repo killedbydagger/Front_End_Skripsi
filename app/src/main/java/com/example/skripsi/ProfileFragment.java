@@ -2,11 +2,6 @@ package com.example.skripsi;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -16,10 +11,20 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.HashMap;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
+
+    ViewDialog viewDialog;
 
     Button btn_edit;
     ImageView img_slideMenuProfile, img_history;
@@ -30,6 +35,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        viewDialog = new ViewDialog(getActivity());
+        viewDialog.showDialog();
+
         btn_edit = (Button) v.findViewById(R.id.btn_edit);
         btn_edit.setOnClickListener(this);
 
@@ -38,7 +47,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         img_slideMenuProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                drawer.openDrawer(Gravity.END);
+                drawer.openDrawer(GravityCompat.END);
             }
         });
 
@@ -80,6 +89,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
             }
         });
 
+        viewDialog.hideDialog();
+
         return v;
 
     }
@@ -103,6 +114,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
 
+        viewDialog.hideDialog();
+
     }
 
     @Override
@@ -111,6 +124,16 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
             case R.id.menuBusinessCenter:
                 Intent businessCenterIntent = new Intent(getView().getContext(), BusinessCenter.class);
                 startActivity(businessCenterIntent);
+                break;
+
+            case R.id.menuPremium:
+                Intent premiumIntent = new Intent(getView().getContext(), Premium.class);
+                startActivity(premiumIntent);
+                break;
+
+            case R.id.menuChangePassword:
+                Intent changePasswordIntent = new Intent(getView().getContext(), ChangePassword.class);
+                startActivity(changePasswordIntent);
                 break;
 
             case R.id.menuLogout:

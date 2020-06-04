@@ -1,12 +1,14 @@
 package com.example.skripsi;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     private Context context;
@@ -45,7 +50,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         final Favorite favorite = list.get(i);
 
         viewHolder.tv_category.setText(favorite.getCategory());
@@ -69,15 +74,48 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
         viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                try {
-                    unFavorite(userId,favorite.getVacId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+            public void onClick(final View v) {
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getRootView().getContext());
+
+                alertDialog.setMessage("Are you sure to unfavorite this vacancy?").setCancelable(false);
+
+                alertDialog.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    unFavorite(userId,favorite.getVacId());
+                                    dialog.dismiss();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                ).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = alertDialog.create();
+                alert.setTitle("Unfavorite vacancy");
+                alert.show();
             }
         });
         viewHolder.img_bintang.setImageResource(R.drawable.star);
+
+        viewHolder.layout_vacancy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", favorite.getVacId());
+                intent.putExtra("BUSINESS_ID", favorite.getCompanyId());
+                intent.putExtra("FLAG", "Y");
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -89,6 +127,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         public TextView tv_category, pembatas, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
         ImageView img_company, img_favorite, img_bintang;
+
+        LinearLayout layout_vacancy;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -106,6 +146,8 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             img_company = itemView.findViewById(R.id.img_company);
             img_favorite = itemView.findViewById(R.id.img_favorite);
             img_bintang = itemView.findViewById(R.id.img_bintang);
+
+            layout_vacancy = itemView.findViewById(R.id.layout_vacancy);
         }
     }
 

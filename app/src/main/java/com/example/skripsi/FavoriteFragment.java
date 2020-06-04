@@ -3,15 +3,10 @@ package com.example.skripsi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -31,6 +26,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 public class FavoriteFragment extends Fragment {
 
     private RecyclerView mList;
@@ -42,15 +44,19 @@ public class FavoriteFragment extends Fragment {
 
     SessionManager sessionManager;
 
-    //ViewDialog viewDialog;
+    ViewDialog viewDialog;
+
+    TextView empty;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_favorite, container, false);
 
-        //viewDialog = new ViewDialog(getActivity());
-        //viewDialog.showDialog();
+        viewDialog = new ViewDialog(getActivity());
+        viewDialog.showDialog();
+
+        empty = v.findViewById(R.id.empty);
 
         mList = v.findViewById(R.id.rv_listFavorite);
 
@@ -79,19 +85,6 @@ public class FavoriteFragment extends Fragment {
         return v;
     }
 
-    @Override
-    public void onResume(){
-        super.onResume();
-        sessionManager = new SessionManager(getContext());
-        HashMap<String, String> user = sessionManager.getUserDetail();
-        String userId = user.get(sessionManager.ID);
-        try {
-            loadFavorite(getContext(), userId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void loadFavorite(final Context context, String id) throws JSONException {
         String URL = "http://25.54.110.177:8095/FavoriteVacancy/getFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
@@ -102,6 +95,7 @@ public class FavoriteFragment extends Fragment {
                 try {
                     favoriteList.clear();
                     String status = response.getString("status");
+                    System.out.println(status);
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
@@ -140,10 +134,12 @@ public class FavoriteFragment extends Fragment {
                             favoriteList.add(favorite);
                         }
                         adapter.notifyDataSetChanged();
-                        //viewDialog.hideDialog();
+                        viewDialog.hideDialog();
                     }
                     else {
+                        empty.setVisibility(View.VISIBLE);
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

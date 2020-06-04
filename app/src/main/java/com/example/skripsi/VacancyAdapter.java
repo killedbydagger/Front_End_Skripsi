@@ -1,12 +1,10 @@
 package com.example.skripsi;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHolder>{
 
@@ -111,7 +112,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             @Override
             public void onClick(final View v) {
 
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getContext());
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(v.getRootView().getContext());
 
                 alertDialog.setMessage("Are you sure to delete this vacancy?").setCancelable(false);
 
@@ -126,9 +127,14 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                                 }
                             }
                         }
-                );
+                ).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 AlertDialog alert = alertDialog.create();
-                alert.setTitle("Create new business");
+                alert.setTitle("Delete business");
                 alert.show();
             }
         });

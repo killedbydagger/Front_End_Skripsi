@@ -1,6 +1,9 @@
 package com.example.skripsi;
 
-import android.support.v7.app.AppCompatActivity;
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,10 +26,17 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 public class ApplicantProfile extends AppCompatActivity {
+    private static final int REQUEST_CALL = 1;
+
     Button btn_applicantViewFile, btn_applicantCall, btn_applicantEmail;
     ImageView img_close;
-    TextView tv_applicantName, tv_applicantDOB, tv_applicantEducation, tv_applicantLocation, tv_applicantDesc;
+    TextView tv_applicantName, tv_applicantDOB, tv_applicantEducation, tv_applicantLocation, tv_applicantDesc, tv_userPhoneNum, tv_userEmailAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +48,24 @@ public class ApplicantProfile extends AppCompatActivity {
         tv_applicantEducation = findViewById(R.id.tv_applicantEducation);
         tv_applicantLocation = findViewById(R.id.tv_applicantLocation);
         tv_applicantDesc = findViewById(R.id.tv_applicantDesc);
+        tv_userPhoneNum = findViewById(R.id.tv_userPhoneNum);
+        tv_userEmailAdd = findViewById(R.id.tv_userEmailAdd);
+
+        btn_applicantCall = findViewById(R.id.btn_applicantCall);
+        btn_applicantCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                makePhoneCall();
+            }
+        });
+
+        btn_applicantEmail = findViewById(R.id.btn_applicantEmail);
+        btn_applicantEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendMail();
+            }
+        });
 
         img_close = findViewById(R.id.img_close);
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +80,40 @@ public class ApplicantProfile extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
 
+    private void makePhoneCall() {
+        String number = (String) tv_userPhoneNum.getText();
+        if (ContextCompat.checkSelfPermission(ApplicantProfile.this,
+                Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(ApplicantProfile.this,
+                    new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+        } else {
+            String dial = "tel:" + number;
+            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        }
+
+    }
+
+    private void sendMail() {
+        String email = (String) tv_userEmailAdd.getText();
+        String[] recipients = email.split(",");
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.putExtra(Intent.EXTRA_EMAIL, recipients);
+
+        intent.setType("message/rfc822");
+        startActivity(Intent.createChooser(intent, "Choose an email client"));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall();
+            } else {
+                Toast.makeText(this, "Permission Denied", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void showApplicantProfile() throws JSONException {
@@ -73,6 +134,8 @@ public class ApplicantProfile extends AppCompatActivity {
                             String applicantName = object.getString("user_first_name") + " " + object.getString("user_last_name");
                             String applicantDOB = object.getString("user_dateOfBirth");
                             String applicantDesc = object.getString("user_description");
+                            String applicantPhone = object.getString("user_phone");
+                            String applicantEmail = object.getString("user_email");
 
                             JSONObject object1 = object.getJSONObject("education");
                             String applicantEducation = object1.getString("education_name");
@@ -82,11 +145,12 @@ public class ApplicantProfile extends AppCompatActivity {
 
                             tv_applicantName.setText(applicantName);
                             String[] splitDob = applicantDOB.split("\\s+");
-                            System.out.println(splitDob[0]);
                             tv_applicantDOB.setText(splitDob[0]);
                             tv_applicantDesc.setText(applicantDesc);
                             tv_applicantEducation.setText(applicantEducation);
                             tv_applicantLocation.setText(applicantLocation);
+                            tv_userPhoneNum.setText(applicantPhone);
+                            tv_userEmailAdd.setText(applicantEmail);
 
                         }
                     } else {
