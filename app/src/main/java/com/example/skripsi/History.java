@@ -1,25 +1,34 @@
 package com.example.skripsi;
 
 public class History {
-    public String category, position, title, companyName, location, vacId, status, rating, favoriteFlag, busId;
+    public String category, position, title, companyName, location, vacId, status, rating, favoriteFlag, busId, flagRating;
     public int salary;
 
     public History(){
 
     }
 
-    public History(String category, String position, String title, String companyName, String location, int salary, String vacId, String status, String rating, String favoriteFlag, String busId){
+    public History(String category, String position, String title, String companyName, String location, String vacId, String status, String rating, String favoriteFlag, String busId, String flagRating, int salary) {
         this.category = category;
         this.position = position;
         this.title = title;
         this.companyName = companyName;
         this.location = location;
-        this.salary = salary;
         this.vacId = vacId;
         this.status = status;
         this.rating = rating;
         this.favoriteFlag = favoriteFlag;
         this.busId = busId;
+        this.flagRating = flagRating;
+        this.salary = salary;
+    }
+
+    public String getFlagRating() {
+        return flagRating;
+    }
+
+    public void setFlagRating(String flagRating) {
+        this.flagRating = flagRating;
     }
 
     public void setCategory(String category) {

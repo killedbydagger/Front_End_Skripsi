@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
@@ -55,9 +56,22 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), PopUpRating.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", history.getVacId());
+                intent.putExtra("BUSINESS_ID", history.getVacId());
                 view.getContext().startActivity(intent);
             }
         });
+
+        String flag = history.getFavoriteFlag();
+        System.out.println(flag);
+
+        if (flag.equals("Y")){
+            viewHolder.btn_rate.setVisibility(View.GONE);
+            viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
+        }else {
+            viewHolder.btn_rate.setVisibility(View.VISIBLE);
+            viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
+        };
 
         if(history.getStatus().equals("PENDING")){
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
@@ -98,6 +112,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         Button btn_rate;
 
+        RatingBar rb_ratingDariUser;
+
         LinearLayout layout_data;
 
         public ViewHolder(@NonNull View itemView) {
@@ -117,6 +133,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             img_bintang = itemView.findViewById(R.id.img_bintang);
 
             btn_rate = itemView.findViewById(R.id.btn_rate);
+
+            rb_ratingDariUser = itemView.findViewById(R.id.rb_ratingDariUser);
 
             layout_data = itemView.findViewById(R.id.layout_data);
         }
