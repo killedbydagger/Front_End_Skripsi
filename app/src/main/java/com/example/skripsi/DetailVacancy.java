@@ -133,7 +133,7 @@ public class DetailVacancy extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    apply(userId ,vacancyId);
+                    apply(userId ,vacancyId, businessId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -219,11 +219,12 @@ public class DetailVacancy extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void apply(String userId, String vacId) throws JSONException {
+    private void apply(String userId, String vacId, String busId) throws JSONException {
         String URL = "http://25.54.110.177:8095/VacancyApplicant/applyVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);
+        jsonBody.put("bus_id", busId);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
