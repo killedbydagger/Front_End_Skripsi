@@ -130,6 +130,7 @@ public class ApplicationHistory extends AppCompatActivity {
 
                             history.setStatus(object.getString("status"));
                             history.setFlagRating(object.getString("businessRatedFlag"));
+                            history.setRateDariUser(object.getInt("businessUserRate"));
 
                             JSONObject object5 = object1.getJSONObject("position");
                             history.setPosition(object5.getString("position_name"));
@@ -170,46 +171,4 @@ public class ApplicationHistory extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void getRatingUser(int busId, int userId) throws JSONException {
-        String URL = "http://25.54.110.177:8095/BusinessRating/getUserRatingDetail";
-        final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("business_id", busId);
-        jsonBody.put("user_id", userId);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        JSONArray jsonArray = response.getJSONArray("data");
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(0);
-
-                            JSONObject object1 = object.getJSONObject("business");
-                            int rateDariUser = object1.getInt("busrat_value");
-                            rb_ratingDariUser.setRating(rateDariUser);
-
-                        }
-                    } else {
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> params = new HashMap<String, String>();
-                params.put("Context-Type", "application/json");
-                return params;
-            }
-        };
-    }
 }

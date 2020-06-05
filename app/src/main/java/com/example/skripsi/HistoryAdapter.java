@@ -40,6 +40,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private Context context;
     private List<History> list;
 
+    SessionManager sessionManager;
+
     public HistoryAdapter(Context context, List<History> list) {
         this.context = context;
         this.list = list;
@@ -52,10 +54,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final History history = list.get(i);
 
-        int rateDariUser = 0;
+        sessionManager = new SessionManager(context);
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        String userId = user.get(sessionManager.ID);
 
         viewHolder.tv_category.setText(history.getCategory());
         viewHolder.pembatas.setText("-");
@@ -75,8 +79,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 Intent intent = new Intent(view.getContext(), PopUpRating.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", history.getVacId());
-                intent.putExtra("BUSINESS_ID", history.getVacId());
+                intent.putExtra("BUSINESS_ID", history.getBusId());
                 view.getContext().startActivity(intent);
+                notifyItemChanged(viewHolder.getAdapterPosition());
             }
         });
 
@@ -84,24 +89,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         if (history.getStatus().equals("PENDING")) {
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
-            if (flag.equals("Y")) {
-                viewHolder.btn_rate.setVisibility(View.GONE);
-                viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
-            } else {
-                viewHolder.btn_rate.setVisibility(View.VISIBLE);
-                viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
-            }
-            ;
+            viewHolder.btn_rate.setVisibility(View.GONE);
+            viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
         } else if (history.getStatus().equals("ACCEPTED")) {
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
             if (flag.equals("Y")) {
                 viewHolder.btn_rate.setVisibility(View.GONE);
                 viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
+                viewHolder.rb_ratingDariUser.setRating(history.getRateDariUser());
             } else {
                 viewHolder.btn_rate.setVisibility(View.VISIBLE);
                 viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
             }
-            ;
         } else if (history.getStatus().equals("REJECTED")) {
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));
         }
@@ -154,4 +153,47 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             layout_data = itemView.findViewById(R.id.layout_data);
         }
     }
+
+//    private void getRatingUser(int busId, int userId) throws JSONException {
+//        String URL = "http://25.54.110.177:8095/BusinessRating/getUserRatingDetail";
+//        final JSONObject jsonBody = new JSONObject();
+//        jsonBody.put("business_id", busId);
+//        jsonBody.put("user_id", userId);
+//        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    String status = response.getString("status");
+//                    if (status.equals("Success")) {
+//                        JSONArray jsonArray = response.getJSONArray("data");
+//
+//                        for (int i = 0; i < jsonArray.length(); i++) {
+//                            JSONObject object = jsonArray.getJSONObject(0);
+//
+//                            JSONObject object1 = object.getJSONObject("business");
+//                            int rateDariUser = object1.getInt("busrat_value");
+//
+//
+//                        }
+//                    } else {
+//
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                final Map<String, String> params = new HashMap<String, String>();
+//                params.put("Context-Type", "application/json");
+//                return params;
+//            }
+//        };
+//    }
 }
