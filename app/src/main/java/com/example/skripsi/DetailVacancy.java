@@ -179,7 +179,9 @@ public class DetailVacancy extends AppCompatActivity {
                             JSONObject object5 = object3.getJSONObject("user");
                             tv_status.setText(object5.getString("user_status"));
 
-                            tv_description.setText(object.getString("vac_description"));
+                            String tampung = object.getString("vac_description");
+                            tampung = tampung.replace("/n", System.getProperty("line.separator"));
+                            tv_description.setText(tampung);
 
                             active = object.getString("vac_activeYN");
                         }
