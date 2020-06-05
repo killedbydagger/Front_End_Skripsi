@@ -38,7 +38,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     public void showNotification(String title,String message){
         Intent intent=new Intent(this, SplashActivity.class);
-        String channel_id="web_app_channel";
+        String channel_id="hire_me_channel";
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent=PendingIntent.getActivity(this,0,intent,PendingIntent.FLAG_ONE_SHOT);
         Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -61,7 +61,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            NotificationChannel notificationChannel=new NotificationChannel(channel_id,"web_app",NotificationManager.IMPORTANCE_HIGH);
+            NotificationChannel notificationChannel=new NotificationChannel(channel_id,"hire_me",NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.setSound(uri,null);
             notificationManager.createNotificationChannel(notificationChannel);
         }

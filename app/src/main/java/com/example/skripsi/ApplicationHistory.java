@@ -89,14 +89,13 @@ public class ApplicationHistory extends AppCompatActivity {
         String userId = user.get(sessionManager.ID);
 
         try {
-            loadFavorite(userId);
-
+            applicantHistory(userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadFavorite(String id) throws JSONException {
+    private void applicantHistory(String id) throws JSONException {
         String URL = "http://25.54.110.177:8095/VacancyApplicant/getUserApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
