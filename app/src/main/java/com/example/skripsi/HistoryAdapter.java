@@ -11,16 +11,31 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
     private Context context;
     private List<History> list;
@@ -40,6 +55,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         final History history = list.get(i);
 
+        int rateDariUser = 0;
+
         viewHolder.tv_category.setText(history.getCategory());
         viewHolder.pembatas.setText("-");
         viewHolder.tv_position.setText(history.getPosition());
@@ -48,7 +65,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.tv_location.setText(history.getLocation());
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        viewHolder.tv_salary.setText(formatRupiah.format((double)history.getSalary()));
+        viewHolder.tv_salary.setText(formatRupiah.format((double) history.getSalary()));
         viewHolder.tv_rating.setText(history.getRating());
         viewHolder.tv_status.setText(history.getStatus());
 
@@ -63,25 +80,29 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             }
         });
 
-        String flag = history.getFavoriteFlag();
-        System.out.println(flag);
+        String flag = history.getFlagRating();
 
-        if (flag.equals("Y")){
-            viewHolder.btn_rate.setVisibility(View.GONE);
-            viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
-        }else {
-            viewHolder.btn_rate.setVisibility(View.VISIBLE);
-            viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
-        };
-
-        if(history.getStatus().equals("PENDING")){
+        if (history.getStatus().equals("PENDING")) {
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorBlack));
-        }
-        else if(history.getStatus().equals("ACCEPTED")){
+            if (flag.equals("Y")) {
+                viewHolder.btn_rate.setVisibility(View.GONE);
+                viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.btn_rate.setVisibility(View.VISIBLE);
+                viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
+            }
+            ;
+        } else if (history.getStatus().equals("ACCEPTED")) {
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.greenA700));
-            viewHolder.btn_rate.setVisibility(View.VISIBLE);
-        }
-        else if(history.getStatus().equals("REJECTED")){
+            if (flag.equals("Y")) {
+                viewHolder.btn_rate.setVisibility(View.GONE);
+                viewHolder.rb_ratingDariUser.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.btn_rate.setVisibility(View.VISIBLE);
+                viewHolder.rb_ratingDariUser.setVisibility(View.GONE);
+            }
+            ;
+        } else if (history.getStatus().equals("REJECTED")) {
             viewHolder.tv_status.setTextColor(ContextCompat.getColor(context, R.color.colorGrapeFruitDark));
         }
 
@@ -90,7 +111,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", history.getVacId());
                 intent.putExtra("BUSINESS_ID", history.getBusId());
@@ -100,21 +121,18 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         });
     }
 
-
     @Override
     public int getItemCount() {
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
         public TextView tv_category, pembatas, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
         ImageView img_company, img_bintang;
-
         Button btn_rate;
-
         RatingBar rb_ratingDariUser;
-
         LinearLayout layout_data;
 
         public ViewHolder(@NonNull View itemView) {
@@ -129,14 +147,10 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             tv_salary = itemView.findViewById(R.id.tv_salary);
             tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_status = itemView.findViewById(R.id.tv_status);
-
             img_company = itemView.findViewById(R.id.img_company);
             img_bintang = itemView.findViewById(R.id.img_bintang);
-
             btn_rate = itemView.findViewById(R.id.btn_rate);
-
             rb_ratingDariUser = itemView.findViewById(R.id.rb_ratingDariUser);
-
             layout_data = itemView.findViewById(R.id.layout_data);
         }
     }
