@@ -380,8 +380,11 @@ public class AddVacancy extends AppCompatActivity {
                     if(status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Succes to add New Vacancy", Toast.LENGTH_LONG).show();
                         finish();
-
-                    }else {
+                    }
+                    else if(status.equals("Reached limit")){
+                        Toast.makeText(getApplicationContext(), "Already reach maximum limit posting", Toast.LENGTH_LONG).show();
+                    }
+                    else {
                         Toast.makeText(getApplicationContext(), "Failed to add New Vacancy", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {

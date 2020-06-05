@@ -89,23 +89,23 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             }
         });
 
-        viewHolder.imgEdit.setImageResource(R.drawable.icon_edit);
-        viewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), EditVacancy.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("VACANCY_ID", vacancy.getId());
-                intent.putExtra("LOCATION_ID",vacancy.getLocationId());
-                intent.putExtra("CATEGORY_ID",vacancy.getCategoryId());
-                intent.putExtra("TITLE",vacancy.getTitle());
-                intent.putExtra("SALARY",vacancy.getSalary());
-                intent.putExtra("DESCRIPTION",vacancy.getDescription());
-                intent.putExtra("DUE_DATE",vacancy.getDueDate());
-                intent.putExtra("POSITION",vacancy.getPosition());
-                v.getContext().startActivity(intent);
-            }
-        });
+//        viewHolder.imgEdit.setImageResource(R.drawable.icon_edit);
+//        viewHolder.imgEdit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent (v.getContext(), EditVacancy.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("VACANCY_ID", vacancy.getId());
+//                intent.putExtra("LOCATION_ID",vacancy.getLocationId());
+//                intent.putExtra("CATEGORY_ID",vacancy.getCategoryId());
+//                intent.putExtra("TITLE",vacancy.getTitle());
+//                intent.putExtra("SALARY",vacancy.getSalary());
+//                intent.putExtra("DESCRIPTION",vacancy.getDescription());
+//                intent.putExtra("DUE_DATE",vacancy.getDueDate());
+//                intent.putExtra("POSITION",vacancy.getPosition());
+//                v.getContext().startActivity(intent);
+//            }
+//        });
 
         viewHolder.imgDelete.setImageResource(R.drawable.icon_dusbin);
         viewHolder.imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -158,7 +158,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             textCategory = itemView.findViewById(R.id.tv_category);
             textSalary = itemView.findViewById(R.id.tv_salary);
             textLocation = itemView.findViewById(R.id.tv_location);
-            imgEdit = itemView.findViewById(R.id.img_edit);
+            //imgEdit = itemView.findViewById(R.id.img_edit);
             imgDelete = itemView.findViewById(R.id.img_delete);
             layout_data = itemView.findViewById(R.id.layout_data);
             textDueDate = itemView.findViewById(R.id.tv_dueDate);
@@ -178,7 +178,6 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(mContext, "Delete vacancy success", Toast.LENGTH_LONG).show();
-
                     }
                     else {
                         Toast.makeText(mContext, "Delete vacancy failed", Toast.LENGTH_LONG).show();

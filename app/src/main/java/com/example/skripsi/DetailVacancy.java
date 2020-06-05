@@ -38,9 +38,11 @@ public class DetailVacancy extends AppCompatActivity {
 
     Button btn_rate, btn_apply;
 
-    TextView tv_description;
+    TextView tv_description, notActive;
 
     SessionManager sessionManager;
+
+    String active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +61,9 @@ public class DetailVacancy extends AppCompatActivity {
         tv_rating = findViewById(R.id.tv_rating);
         tv_status = findViewById(R.id.tv_status);
         img_favorite = findViewById(R.id.img_favorite);
+
+        notActive = findViewById(R.id.notActive);
+
         if(flag.equals("Y")){
             img_favorite.setImageResource(R.drawable.icon_favorite_red);
         }
@@ -135,8 +140,6 @@ public class DetailVacancy extends AppCompatActivity {
             }
         });
 
-
-
     }
 
     private void loadDetail(String id) throws JSONException {
@@ -178,6 +181,7 @@ public class DetailVacancy extends AppCompatActivity {
 
                             tv_description.setText(object.getString("vac_description"));
 
+                            active = object.getString("vac_activeYN");
                         }
                     }
                     else {
@@ -185,6 +189,14 @@ public class DetailVacancy extends AppCompatActivity {
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
+                }
+
+                if(active.equals("N")){
+                    notActive.setVisibility(View.VISIBLE);
+                    notActive.bringToFront();
+                    btn_apply.setEnabled(false);
+                    btn_rate.setEnabled(false);
+                    img_favorite.setEnabled(false);
                 }
             }
         }, new Response.ErrorListener() {
@@ -217,6 +229,8 @@ public class DetailVacancy extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Success to apply", Toast.LENGTH_LONG).show();
+//                        FirebaseMessagingService firebaseMessagingService = new FirebaseMessagingService();
+//                        firebaseMessagingService.showNotification("New applicant","");
                     }
                     else if(status.equals("Not Eligible")){
                         Toast.makeText(getApplicationContext(), "Please update your profile before applying", Toast.LENGTH_LONG).show();
