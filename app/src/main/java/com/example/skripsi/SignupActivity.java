@@ -376,7 +376,7 @@ public class SignupActivity extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     if(status.equals("Success")) {
-                        Toast.makeText(getApplicationContext(), "New account has been created", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Please check your email to finish your registration", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();
 
