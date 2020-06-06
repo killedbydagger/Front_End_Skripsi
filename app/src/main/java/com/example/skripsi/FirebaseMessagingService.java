@@ -56,12 +56,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             //builder=builder.setContent(getCustomeDesign(title,message));
             builder=builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_stat_name).setColor(getResources().getColor(R.color.colorBlueJeans));
+                    .setSmallIcon(R.drawable.ic_stat_name).setColor(getResources().getColor(R.color.colorMint));
         }
         else{
             builder=builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_stat_name).setColor(getResources().getColor(R.color.colorBlueJeans));
+                    .setSmallIcon(R.drawable.ic_stat_name).setColor(getResources().getColor(R.color.colorMint));
         }
 
         NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
