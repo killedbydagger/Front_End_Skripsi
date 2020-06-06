@@ -42,13 +42,13 @@ public class ForgetPassword extends AppCompatActivity {
         btn_resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!et_email.getText().toString().isEmpty()) {
+                if (!et_email.getText().toString().isEmpty()) {
                     try {
                         forget_password(et_email.getText().toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
+                } else {
                     et_email.setError("Field can't be empty");
                 }
             }
@@ -73,8 +73,7 @@ public class ForgetPassword extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Reset Password Success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Reset Password Failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -86,11 +85,11 @@ public class ForgetPassword extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

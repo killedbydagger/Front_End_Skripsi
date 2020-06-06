@@ -74,7 +74,7 @@ public class PopUpRating extends Activity {
             }
         });
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.5));
+        getWindow().setLayout((int) (width * .8), (int) (height * .5));
     }
 
     private void giveRating(int businessId, int vacId, int userid, int rate, Editable comment) throws JSONException {

@@ -155,7 +155,7 @@ public class ApplicantProfile extends AppCompatActivity {
                             try {
                                 oneWayTripDate = input.parse(date);
                                 tv_applicantDOB.setText(output.format(oneWayTripDate));
-                                System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                                System.out.println("ini tanggalnya: " + oneWayTripDate);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }

@@ -62,16 +62,15 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
         viewHolder.tv_location.setText(searchVacancy.getVacancyLocation());
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        viewHolder.tv_salary.setText(formatRupiah.format((double)searchVacancy.getVacancySalary()));
+        viewHolder.tv_salary.setText(formatRupiah.format((double) searchVacancy.getVacancySalary()));
         viewHolder.tv_rating.setText(searchVacancy.getVacancyCompanyRating());
         viewHolder.tv_status.setText(searchVacancy.getVacancyStatus());
 
         String flag = searchVacancy.getFavoriteFlag();
 
-        if(flag.equals("Y")){
+        if (flag.equals("Y")) {
             viewHolder.img_favorite.setImageResource(R.drawable.icon_favorite_red);
-        }
-        else{
+        } else {
             viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         }
 
@@ -80,7 +79,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
         viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", searchVacancy.getVacancyId());
                 intent.putExtra("BUSINESS_ID", searchVacancy.getVacancyBusId());
@@ -96,7 +95,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
         viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(searchVacancy.getFavoriteFlag().equals("Y")){
+                if (searchVacancy.getFavoriteFlag().equals("Y")) {
                     try {
                         unFavorite(userId, searchVacancy.getVacancyId());
                     } catch (JSONException e) {
@@ -104,8 +103,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
                     }
                     searchVacancy.setFavoriteFlag("N");
                     viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                }
-                else{
+                } else {
                     try {
                         favoriteVacancy(userId, searchVacancy.getVacancyId());
                     } catch (JSONException e) {
@@ -163,8 +161,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(context, "Favorite vacancy success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Favorite vacancy failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -176,11 +173,11 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -201,8 +198,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(context, "Unfavorite vacancy success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Unfavorite vacancy failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -214,11 +210,11 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

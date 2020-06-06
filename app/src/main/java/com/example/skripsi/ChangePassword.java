@@ -58,12 +58,11 @@ public class ChangePassword extends AppCompatActivity {
         cb_showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     et_oldPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     et_newPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     et_confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                }
-                else{
+                } else {
                     et_oldPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     et_newPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     et_confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
@@ -80,9 +79,9 @@ public class ChangePassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    if (et_newPassword.getText().toString().equals(et_confirmPassword.getText().toString())){
+                    if (et_newPassword.getText().toString().equals(et_confirmPassword.getText().toString())) {
                         changePassword(userEmail, et_oldPassword.getText().toString(), et_newPassword.getText().toString());
-                    }else et_confirmPassword.setError("Password do not match!");
+                    } else et_confirmPassword.setError("Password do not match!");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

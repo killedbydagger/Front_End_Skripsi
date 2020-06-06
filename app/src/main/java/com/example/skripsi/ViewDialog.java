@@ -11,6 +11,7 @@ import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 public class ViewDialog {
     Activity activity;
     Dialog dialog;
+
     //..we need the context else we can not create the dialog so get context in constructor
     public ViewDialog(Activity activity) {
         this.activity = activity;
@@ -18,7 +19,7 @@ public class ViewDialog {
 
     public void showDialog() {
 
-        dialog  = new Dialog(activity);
+        dialog = new Dialog(activity);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //...set cancelable false so that it's never get hidden
         dialog.setCancelable(false);
@@ -48,7 +49,7 @@ public class ViewDialog {
     }
 
     //..also create a method which will hide the dialog when some work is done
-    public void hideDialog(){
+    public void hideDialog() {
         dialog.dismiss();
     }
 

@@ -13,9 +13,11 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTabList = new ArrayList<>();
 
-    public SectionPagerAdapter(FragmentManager fm){super(fm);}
+    public SectionPagerAdapter(FragmentManager fm) {
+        super(fm);
+    }
 
-    public void addFragment(Fragment fragment, String tabMenu){
+    public void addFragment(Fragment fragment, String tabMenu) {
         mFragmentList.add(fragment);
         mFragmentTabList.add(tabMenu);
     }

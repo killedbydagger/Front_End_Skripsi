@@ -4,11 +4,11 @@ public class Favorite {
     public String category, position, title, companyName, location, vacId, status, rating, companyId;
     public int salary;
 
-    public Favorite(){
+    public Favorite() {
 
     }
 
-    public Favorite(String category, String position, String title, String companyName, String location, int salary, String vacId, String status, String rating, String companyId){
+    public Favorite(String category, String position, String title, String companyName, String location, int salary, String vacId, String status, String rating, String companyId) {
         this.category = category;
         this.position = position;
         this.title = title;

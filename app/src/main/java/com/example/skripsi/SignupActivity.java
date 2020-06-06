@@ -92,11 +92,10 @@ public class SignupActivity extends AppCompatActivity {
         cb_showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     et_confirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                }
-                else{
+                } else {
                     et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     et_confirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
@@ -175,7 +174,7 @@ public class SignupActivity extends AppCompatActivity {
                 validatePassword();
                 validateConfirm();
 
-                if (!validationChecks.containsValue(false)){
+                if (!validationChecks.containsValue(false)) {
                     viewDialog.showDialog();
                     try {
                         submit();
@@ -187,48 +186,43 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void validateFirstName(){
-        if(et_firstName.getText().toString().isEmpty()){
+    private void validateFirstName() {
+        if (et_firstName.getText().toString().isEmpty()) {
             et_firstName.setError("Field can't be empty");
             validationChecks.put("FirstName", false);
-        }
-        else{
+        } else {
             validationChecks.put("FirstName", true);
         }
     }
 
-    private void validateLastName(){
-        if(et_lastName.getText().toString().isEmpty()){
+    private void validateLastName() {
+        if (et_lastName.getText().toString().isEmpty()) {
             et_lastName.setError("Field can't be empty");
             validationChecks.put("LastName", false);
-        }
-        else{
+        } else {
             et_lastName.setError(null);
             validationChecks.put("LastName", true);
         }
     }
 
-    private void validateDate(){
-        if(mDisplayDate.getText().toString().isEmpty()){
+    private void validateDate() {
+        if (mDisplayDate.getText().toString().isEmpty()) {
             mDisplayDate.setError("Field can't be empty");
             validationChecks.put("DOB", false);
-        }
-        else{
+        } else {
             mDisplayDate.setError(null);
             validationChecks.put("DOB", true);
         }
     }
 
-    private void validateEmail(){
-        if(et_email.getText().toString().isEmpty()){
+    private void validateEmail() {
+        if (et_email.getText().toString().isEmpty()) {
             et_email.setError("Field can't be empty");
             validationChecks.put("Email", false);
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(et_email.getText().toString()).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(et_email.getText().toString()).matches()) {
             et_email.setError("Please enter a valid email format");
             validationChecks.put("Email", false);
-        }
-        else {
+        } else {
             try {
                 checkEmail(et_email.getText().toString());
             } catch (JSONException e) {
@@ -237,57 +231,51 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private void validatePhoneNumber(){
+    private void validatePhoneNumber() {
 
-        if(et_phoneNumber.getText().toString().isEmpty()){
+        if (et_phoneNumber.getText().toString().isEmpty()) {
             et_phoneNumber.setError("Field can't be empty");
             validationChecks.put("Phone", false);
-        }
-        else{
-            String first = et_phoneNumber.getText().toString().substring(0,1);
-            if(first.equals("0")){
+        } else {
+            String first = et_phoneNumber.getText().toString().substring(0, 1);
+            if (first.equals("0")) {
                 et_phoneNumber.setError("Phone number can't start with 0");
                 validationChecks.put("Phone", false);
-            }
-            else{
+            } else {
                 et_phoneNumber.setError(null);
                 validationChecks.put("Phone", true);
             }
         }
     }
 
-    private void validatePassword(){
-        if(et_password.getText().toString().isEmpty()){
+    private void validatePassword() {
+        if (et_password.getText().toString().isEmpty()) {
             et_password.setError("Field can't be empty");
             validationChecks.put("Password", false);
-        }
-        else if(!PASSWORD_PATTERN.matcher(et_password.getText().toString()).matches()){
+        } else if (!PASSWORD_PATTERN.matcher(et_password.getText().toString()).matches()) {
             et_password.setError("Field can't be empty");
             validationChecks.put("Password", false);
-        }
-        else{
+        } else {
             et_password.setError(null);
             validationChecks.put("Password", true);
         }
     }
 
-    private void validateConfirm(){
-        if(et_confirmPassword.getText().toString().isEmpty()){
+    private void validateConfirm() {
+        if (et_confirmPassword.getText().toString().isEmpty()) {
             et_confirmPassword.setError("Field can't be empty");
             validationChecks.put("Confirm", false);
-        }
-        else if(!et_confirmPassword.getText().toString().equals(et_confirmPassword.getText().toString())){
+        } else if (!et_confirmPassword.getText().toString().equals(et_confirmPassword.getText().toString())) {
             et_confirmPassword.setError("Password and confirm password don't match");
             validationChecks.put("Confirm", false);
-        }
-        else{
+        } else {
             et_confirmPassword.setError(null);
             validationChecks.put("Confirm", true);
         }
     }
 
 
-    private void showDateDialog(){
+    private void showDateDialog() {
 
         Calendar newCalendar = Calendar.getInstance();
 
@@ -299,14 +287,14 @@ public class SignupActivity extends AppCompatActivity {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
 
-                String date =dateFormatter.format(newDate.getTime());
+                String date = dateFormatter.format(newDate.getTime());
                 SimpleDateFormat input = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
                 Date oneWayTripDate = null;
                 try {
                     oneWayTripDate = input.parse(date);
                     mDisplayDate.setText(output.format(oneWayTripDate));
-                    System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                    System.out.println("ini tanggalnya: " + oneWayTripDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -315,7 +303,7 @@ public class SignupActivity extends AppCompatActivity {
                 validateDate();
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
     }
@@ -336,7 +324,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     Log.d(TAG, status);
 
-                    if (status.equals("Exist") ) {
+                    if (status.equals("Exist")) {
                         et_email.setError("Email already exist");
                         validationChecks.put("Email", false);
                     } else {
@@ -352,18 +340,18 @@ public class SignupActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
-    };
+        };
 
-    RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-    requestQueue.add(jsonObjectRequest);
-}
+        RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonObjectRequest);
+    }
 
     private void submit() throws JSONException {
         Context mContext = SignupActivity.this;
@@ -388,12 +376,12 @@ public class SignupActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    if(status.equals("Success")) {
+                    if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "New account has been created", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();
 
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Failed to create new account", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -408,9 +396,9 @@ public class SignupActivity extends AppCompatActivity {
         }) {
 
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","applicatiom/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "applicatiom/json");
                 return params;
             }
         };

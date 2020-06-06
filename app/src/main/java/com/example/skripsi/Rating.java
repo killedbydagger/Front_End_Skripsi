@@ -73,14 +73,14 @@ public class Rating extends AppCompatActivity {
         tv_companyName.setText(getIntent().getExtras().getString("NAMA"));
 
         String s = getIntent().getExtras().getString("RATING");
-        if(!s.equals("0.0")){
+        if (!s.equals("0.0")) {
             ratingBar.setRating(Float.parseFloat(s));
         }
 
         mList = findViewById(R.id.rv_rating);
 
         ratingList = new ArrayList<>();
-        adapter = new RatingDataAdapter(getApplicationContext(),ratingList);
+        adapter = new RatingDataAdapter(getApplicationContext(), ratingList);
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -96,14 +96,13 @@ public class Rating extends AppCompatActivity {
 
         System.out.println(businessId);
 
-        if(identifier.equals("BUSINESS_CENTER")){
+        if (identifier.equals("BUSINESS_CENTER")) {
             try {
                 loadRating(business.get(sessionManager.BUSINESS_ID));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             try {
                 loadRating(businessId);
             } catch (JSONException e) {
@@ -125,9 +124,9 @@ public class Rating extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
-                        int tampung  = jsonArray.length();
+                        int tampung = jsonArray.length();
                         tv_count.setText(Integer.toString(tampung));
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             RatingData ratingData = new RatingData();
 
@@ -141,8 +140,7 @@ public class Rating extends AppCompatActivity {
                         }
 
                         adapter.notifyDataSetChanged();
-                    }
-                    else {
+                    } else {
                         tv_dataNotFound.setVisibility(View.VISIBLE);
                         tv_count.setText("0");
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
@@ -156,11 +154,11 @@ public class Rating extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

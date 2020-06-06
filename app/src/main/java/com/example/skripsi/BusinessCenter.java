@@ -112,8 +112,8 @@ public class BusinessCenter extends AppCompatActivity {
             public void onClick(View v) {
                 Intent rating = new Intent(BusinessCenter.this, Rating.class);
                 rating.putExtra("NAMA", tv_namaPerusahaan.getText().toString());
-                rating.putExtra("IDENTIFIER","BUSINESS_CENTER");
-                rating.putExtra("RATING",tv_ratingPerusahaan.getText().toString());
+                rating.putExtra("IDENTIFIER", "BUSINESS_CENTER");
+                rating.putExtra("RATING", tv_ratingPerusahaan.getText().toString());
                 startActivity(rating);
             }
         });
@@ -162,7 +162,7 @@ public class BusinessCenter extends AppCompatActivity {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         HashMap<String, String> business = sessionManager.getBusinessDetail();
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
@@ -172,16 +172,15 @@ public class BusinessCenter extends AppCompatActivity {
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
 
-        if(business.get(sessionManager.BUSINESS_ID) == null) {
+        if (business.get(sessionManager.BUSINESS_ID) == null) {
             try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
                 editor = sharedPreferences.edit();
                 checkBisnis(userId);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }
-        else{
+        } else {
             try {
                 viewRating(business.get(sessionManager.BUSINESS_ID));
                 loadVacancyData(business.get(sessionManager.BUSINESS_ID));
@@ -204,7 +203,7 @@ public class BusinessCenter extends AppCompatActivity {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             Vacancy vacancy = new Vacancy();
 
@@ -235,8 +234,7 @@ public class BusinessCenter extends AppCompatActivity {
 
                         adapter.notifyDataSetChanged();
                         viewDialog.hideDialog();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -248,11 +246,11 @@ public class BusinessCenter extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -266,7 +264,7 @@ public class BusinessCenter extends AppCompatActivity {
 
         String URL = "http://25.54.110.177:8095/Business/checkUserBusiness";
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_id",id);
+        jsonBody.put("user_id", id);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
@@ -278,7 +276,7 @@ public class BusinessCenter extends AppCompatActivity {
 
                         String tampungId = null;
 
-                        for(int i = 0;i<jsonArray.length();i++){
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             String busId = object.getString("bus_id");
@@ -308,24 +306,23 @@ public class BusinessCenter extends AppCompatActivity {
                         viewRating(tampungId);
                         loadVacancyData(tampungId);
 
-                    }
-                    else if(status.equals("Not Registered")) {
+                    } else if (status.equals("Not Registered")) {
                         viewDialog.hideDialog();
                         AlertDialog.Builder alertDialog = new AlertDialog.Builder(BusinessCenter.this);
                         alertDialog.setMessage("Your don't have any business registered. Do you want to register a new business ?").setCancelable(false)
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent createIntent = new Intent(getApplicationContext(),AddBusiness.class);
-                                startActivity(createIntent);
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                finish();
-                            }
-                        });
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Intent createIntent = new Intent(getApplicationContext(), AddBusiness.class);
+                                        startActivity(createIntent);
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        finish();
+                                    }
+                                });
 
                         AlertDialog alert = alertDialog.create();
                         alert.setTitle("Create new business");
@@ -340,11 +337,11 @@ public class BusinessCenter extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -366,8 +363,7 @@ public class BusinessCenter extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         tv_ratingPerusahaan.setText(response.getString("rating"));
-                    }
-                    else {
+                    } else {
                         tv_ratingPerusahaan.setText("0.0");
                     }
                 } catch (JSONException e) {
@@ -379,11 +375,11 @@ public class BusinessCenter extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

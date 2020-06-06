@@ -77,33 +77,33 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5sp"
                             android:text="TextView"
+                            android:textColor="@color/colorBlack"
                             android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/colorBlack"/>
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/tv_applicantDOB"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="15sp"
-                            android:textColor="@color/colorBlack"/>
+                            android:textColor="@color/colorBlack"
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/tv_applicantEducation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="15sp"
-                            android:textColor="@color/colorBlack"/>
+                            android:textColor="@color/colorBlack"
+                            android:textSize="15sp" />
 
                         <TextView
                             android:id="@+id/tv_applicantLocation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="TextView"
-                            android:textSize="15sp"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="@color/colorBlack"
+                            android:textSize="15sp" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -120,8 +120,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="TextView"
-                        android:textSize="15sp"
-                        android:textColor="@color/colorBlack"/>
+                        android:textColor="@color/colorBlack"
+                        android:textSize="15sp" />
 
                     <!--                    <ImageView-->
                     <!--                        android:id="@+id/cv"-->
@@ -201,9 +201,9 @@
                     android:layout_centerInParent="true"
                     android:text="@string/portfolio"
                     android:textAlignment="center"
+                    android:textColor="@color/colorBlack"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorBlack" />
+                    android:textStyle="bold" />
 
                 <!--                <ImageView-->
                 <!--                    android:id="@+id/add"-->

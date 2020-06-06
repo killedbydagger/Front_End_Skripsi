@@ -5,11 +5,11 @@ public class RatingData {
     public String value;
     public String comment;
 
-    public RatingData(){
+    public RatingData() {
 
     }
 
-    public RatingData(String userName, String value, String comment){
+    public RatingData(String userName, String value, String comment) {
         this.userName = userName;
         this.value = value;
         this.comment = comment;

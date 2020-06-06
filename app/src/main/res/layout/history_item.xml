@@ -165,7 +165,7 @@
             android:text="@string/rateCompany"
             android:textColor="@color/colorWhite"
             android:textSize="15sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <RatingBar
             android:id="@+id/rb_ratingDariUser"

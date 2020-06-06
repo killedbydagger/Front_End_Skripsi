@@ -54,9 +54,9 @@ public class MainMenu extends AppCompatActivity {
         sessionManager = new SessionManager(MainMenu.this);
         HashMap<String, String> user = sessionManager.getUserDetail();
 
-        if(user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null || user.get(sessionManager.CATEGORY_DATA) == null) {
+        if (user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null || user.get(sessionManager.CATEGORY_DATA) == null) {
             try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
                 editor = sharedPreferences.edit();
                 loadEducationData();
                 loadLocationData();
@@ -72,7 +72,7 @@ public class MainMenu extends AppCompatActivity {
     private void loadLocationData() throws JSONException {
         String URL = "http://25.54.110.177:8095/Location/getAllLocation";
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
+        jsonBody.put("user_email", sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -82,8 +82,7 @@ public class MainMenu extends AppCompatActivity {
                         System.out.println(response.toString());
                         editor.putString(LOCATION_DATA, response.toString());
                         editor.apply();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -95,11 +94,11 @@ public class MainMenu extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -111,7 +110,7 @@ public class MainMenu extends AppCompatActivity {
     private void loadEducationData() throws JSONException {
         String URL = "http://25.54.110.177:8095/Education/getAllEducation";
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
+        jsonBody.put("user_email", sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -120,8 +119,7 @@ public class MainMenu extends AppCompatActivity {
                     if (status.equals("Success")) {
                         editor.putString(EDUCATION_DATA, response.toString());
                         editor.apply();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -133,11 +131,11 @@ public class MainMenu extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -149,7 +147,7 @@ public class MainMenu extends AppCompatActivity {
     private void loadCategoryData() throws JSONException {
         String URL = "http://25.54.110.177:8095/Category/getAllCategory";
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("user_email",sessionManager.EMAIL);
+        jsonBody.put("user_email", sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -158,8 +156,7 @@ public class MainMenu extends AppCompatActivity {
                     if (status.equals("Success")) {
                         editor.putString(CATEGORY_DATA, response.toString());
                         editor.apply();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -171,11 +168,11 @@ public class MainMenu extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -204,7 +201,7 @@ public class MainMenu extends AppCompatActivity {
                     break;
             }
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
 
             return true;
         }

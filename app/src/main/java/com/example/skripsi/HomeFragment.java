@@ -137,7 +137,7 @@ public class HomeFragment extends Fragment {
             }
         } else {
             try {
-                loadRecommendation(userId ,user.get(sessionManager.RECOMMENDATION), Integer.parseInt(user.get(sessionManager.RECOMMENDATION_LOCATION)));
+                loadRecommendation(userId, user.get(sessionManager.RECOMMENDATION), Integer.parseInt(user.get(sessionManager.RECOMMENDATION_LOCATION)));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -174,7 +174,7 @@ public class HomeFragment extends Fragment {
                             editor.putString(RECOMMENDATION_LOCATION, object.getString("location_id"));
                             editor.apply();
 
-                            loadRecommendation(userId,object.getString("recom_categories"), Integer.parseInt(object.getString("location_id")));
+                            loadRecommendation(userId, object.getString("recom_categories"), Integer.parseInt(object.getString("location_id")));
                         }
                         viewDialog.hideDialog();
                     }
@@ -200,7 +200,7 @@ public class HomeFragment extends Fragment {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void loadRecommendation(String id ,String categories, int locationid) throws JSONException {
+    private void loadRecommendation(String id, String categories, int locationid) throws JSONException {
         String URL = "http://25.54.110.177:8095/Vacancy/recommendVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
