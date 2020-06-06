@@ -73,6 +73,7 @@ public class ForgetPassword extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Reset Password Success", Toast.LENGTH_LONG).show();
+                        finish();
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Reset Password Failed", Toast.LENGTH_LONG).show();
