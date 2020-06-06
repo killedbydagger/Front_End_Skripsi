@@ -62,7 +62,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        viewHolder.tv_salary.setText(formatRupiah.format((double)favorite.getSalary()));
+        viewHolder.tv_salary.setText(formatRupiah.format((double) favorite.getSalary()));
 
         viewHolder.tv_rating.setText(favorite.getRating());
         viewHolder.tv_status.setText(favorite.getStatus());
@@ -85,7 +85,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
-                                    unFavorite(userId,favorite.getVacId());
+                                    unFavorite(userId, favorite.getVacId());
                                     dialog.dismiss();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -108,7 +108,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         viewHolder.layout_vacancy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", favorite.getVacId());
                 intent.putExtra("BUSINESS_ID", favorite.getCompanyId());
@@ -123,7 +123,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_category, pembatas, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
         ImageView img_company, img_favorite, img_bintang;
@@ -163,8 +163,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(context, "Unfavorite vacancy success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Unfavorite vacancy failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -176,11 +175,11 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

@@ -4,7 +4,7 @@ public class History {
     public String category, position, title, companyName, location, vacId, status, rating, favoriteFlag, busId, flagRating;
     public int salary, rateDariUser;
 
-    public History(){
+    public History() {
 
     }
 

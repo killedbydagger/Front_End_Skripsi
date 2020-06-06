@@ -39,14 +39,14 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHolder>{
+public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHolder> {
 
     private Context context;
     private List<Vacancy> list;
 
     SessionManager sessionManager;
 
-    public VacancyAdapter(Context context, List<Vacancy> list){
+    public VacancyAdapter(Context context, List<Vacancy> list) {
         this.context = context;
         this.list = list;
     }
@@ -54,7 +54,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(context).inflate(R.layout.vacancy_item, viewGroup ,false);
+        View v = LayoutInflater.from(context).inflate(R.layout.vacancy_item, viewGroup, false);
         return new ViewHolder(v);
     }
 
@@ -72,7 +72,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
 
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
 
-        viewHolder.textSalary.setText(formatRupiah.format((double)vacancy.getSalary()));
+        viewHolder.textSalary.setText(formatRupiah.format((double) vacancy.getSalary()));
 
         String date = vacancy.getDueDate();
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
@@ -81,7 +81,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
         try {
             oneWayTripDate = input.parse(date);
             viewHolder.textDueDate.setText(output.format(oneWayTripDate));
-            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+            System.out.println("ini tanggalnya: " + oneWayTripDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -92,9 +92,9 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
         viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), ApplicantList.class);
+                Intent intent = new Intent(v.getContext(), ApplicantList.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("TITLE",vacancy.getTitle());
+                intent.putExtra("TITLE", vacancy.getTitle());
                 intent.putExtra("VACANCY_ID", vacancy.getId());
                 v.getContext().startActivity(intent);
             }
@@ -156,9 +156,9 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textTitle, textPosition, textCategory, textSalary, textLocation, textDueDate;
-        public ImageView imgEdit,imgDelete;
+        public ImageView imgEdit, imgDelete;
         public LinearLayout layout_data;
 
         public ViewHolder(@NonNull View itemView) {
@@ -176,7 +176,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
         }
     }
 
-    private void deleteVacancy(final Context mContext , String id, String vacId) throws JSONException {
+    private void deleteVacancy(final Context mContext, String id, String vacId) throws JSONException {
         String URL = "http://25.54.110.177:8095/Vacancy/deleteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
@@ -189,8 +189,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(mContext, "Delete vacancy success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, "Delete vacancy failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -202,11 +201,11 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(mContext, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

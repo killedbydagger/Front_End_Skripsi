@@ -73,7 +73,7 @@ public class ApplicationHistory extends AppCompatActivity {
         mList = findViewById(R.id.rv_applicantHistory);
 
         historyList = new ArrayList<>();
-        adapter = new HistoryAdapter(getApplicationContext(),historyList);
+        adapter = new HistoryAdapter(getApplicationContext(), historyList);
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -108,7 +108,7 @@ public class ApplicationHistory extends AppCompatActivity {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             History history = new History();
 
@@ -143,8 +143,7 @@ public class ApplicationHistory extends AppCompatActivity {
 
                         adapter.notifyDataSetChanged();
                         viewDialog.hideDialog();
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                         empty.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
@@ -158,11 +157,11 @@ public class ApplicationHistory extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

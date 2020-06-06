@@ -4,7 +4,7 @@ public class Applicant {
 
     public String name, email, vac_id, applicant_id, statusName;
 
-    public Applicant(){
+    public Applicant() {
 
     }
 

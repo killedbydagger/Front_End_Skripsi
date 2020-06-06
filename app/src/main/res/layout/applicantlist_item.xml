@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/applicantData"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10sp"
     android:background="@drawable/edit_text_card"
     android:elevation="5sp"
     android:orientation="vertical"
-    android:padding="10dp"
-    android:id="@+id/applicantData">
+    android:padding="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -74,10 +74,10 @@
             android:id="@+id/tv_applicantStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:textColor="@color/colorBlack"
             android:textSize="20sp"
-            android:textAlignment="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
 
     </LinearLayout>

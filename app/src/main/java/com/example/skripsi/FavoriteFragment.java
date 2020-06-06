@@ -61,7 +61,7 @@ public class FavoriteFragment extends Fragment {
         mList = v.findViewById(R.id.rv_listFavorite);
 
         favoriteList = new ArrayList<>();
-        adapter = new FavoriteAdapter(v.getContext(),favoriteList);
+        adapter = new FavoriteAdapter(v.getContext(), favoriteList);
 
         linearLayoutManager = new LinearLayoutManager(v.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -99,7 +99,7 @@ public class FavoriteFragment extends Fragment {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++) {
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             Favorite favorite = new Favorite();
@@ -135,8 +135,7 @@ public class FavoriteFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         viewDialog.hideDialog();
-                    }
-                    else {
+                    } else {
                         empty.setVisibility(View.VISIBLE);
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
@@ -150,11 +149,11 @@ public class FavoriteFragment extends Fragment {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

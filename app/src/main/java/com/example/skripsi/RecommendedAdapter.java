@@ -30,7 +30,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.ViewHolder>{
+public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.ViewHolder> {
 
     private Context context;
     private List<Recommended> list;
@@ -62,7 +62,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
 
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
-        viewHolder.tv_salary.setText(formatRupiah.format((double)recommended.getVacancySalary()));
+        viewHolder.tv_salary.setText(formatRupiah.format((double) recommended.getVacancySalary()));
 
         viewHolder.tv_rating.setText(recommended.getVacancyCompanyRating());
         viewHolder.tv_status.setText(recommended.getVacancyStatus());
@@ -75,7 +75,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         viewHolder.img_favorite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(recommended.getFavoriteFlag().equals("Y")){
+                if (recommended.getFavoriteFlag().equals("Y")) {
                     try {
                         unFavorite(userId, recommended.getVacancyId());
                     } catch (JSONException e) {
@@ -83,8 +83,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                     }
                     recommended.setFavoriteFlag("N");
                     viewHolder.img_favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
-                }
-                else{
+                } else {
                     try {
                         favoriteVacancy(userId, recommended.getVacancyId());
                     } catch (JSONException e) {
@@ -102,7 +101,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         viewHolder.layout_recommended.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent (v.getContext(), DetailVacancy.class);
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("VACANCY_ID", recommended.getVacancyId());
                 intent.putExtra("BUSINESS_ID", recommended.getBusinessId());
@@ -117,7 +116,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView tv_category, pembatas, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
         ImageView img_company, img_favorite, img_bintang;
@@ -157,8 +156,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(context, "Favorite vacancy success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Favorite vacancy failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -170,11 +168,11 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -195,8 +193,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(context, "Unfavorite vacancy success", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(context, "Unfavorite vacancy failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -208,11 +205,11 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

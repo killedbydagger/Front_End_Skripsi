@@ -66,7 +66,7 @@ public class AddBusiness extends AppCompatActivity {
         final String userId = user.get(sessionManager.ID);
 
         try {
-            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
             editor = sharedPreferences.edit();
             setLocationSpinner(user.get(sessionManager.LOCATION_DATA));
         } catch (JSONException e) {
@@ -80,10 +80,10 @@ public class AddBusiness extends AppCompatActivity {
                 validateLocation();
                 validateBusinessOverview();
 
-                if(!validationChecks.containsValue(false)){
+                if (!validationChecks.containsValue(false)) {
                     int locationId = sp_location.getSelectedItemPosition();
                     try {
-                        createBisnis(userId,"URL",et_businessName.getText().toString(), locationId,et_businessOverview.getText().toString());
+                        createBisnis(userId, "URL", et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -93,32 +93,29 @@ public class AddBusiness extends AppCompatActivity {
 
     }
 
-    private void validateBusinessName(){
-        if(et_businessName.getText().toString().isEmpty()){
+    private void validateBusinessName() {
+        if (et_businessName.getText().toString().isEmpty()) {
             et_businessName.setError("Field can't be empty");
             validationChecks.put("BusinessName", false);
-        }
-        else{
+        } else {
             validationChecks.put("BusinessName", true);
         }
     }
 
-    private void validateBusinessOverview(){
-        if(et_businessOverview.getText().toString().isEmpty()){
+    private void validateBusinessOverview() {
+        if (et_businessOverview.getText().toString().isEmpty()) {
             et_businessOverview.setError("Field can't be empty");
             validationChecks.put("BusinessOverview", false);
-        }
-        else{
+        } else {
             validationChecks.put("BusinessOverview", true);
         }
     }
 
-    private void validateLocation(){
-        if(sp_location.getSelectedItemPosition() == 0){
+    private void validateLocation() {
+        if (sp_location.getSelectedItemPosition() == 0) {
             ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
             validationChecks.put("Location", false);
-        }
-        else{
+        } else {
             ((TextView) sp_location.getSelectedView()).setError(null);
             validationChecks.put("Location", true);
         }
@@ -130,11 +127,11 @@ public class AddBusiness extends AppCompatActivity {
         JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose Location ---");
-        for (int i=0;i<locationJSON.length();i++){
+        for (int i = 0; i < locationJSON.length(); i++) {
             object = locationJSON.getJSONObject(i);
             locationArray.add(object.getString("location_name"));
         }
-        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, locationArray);
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationArray);
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_location.setAdapter(locationArrayAdapter);
@@ -156,10 +153,10 @@ public class AddBusiness extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    if(status.equals("Success")) {
+                    if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "New business has been created", Toast.LENGTH_LONG).show();
                         finish();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Failed to create new business", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -174,9 +171,9 @@ public class AddBusiness extends AppCompatActivity {
         }) {
 
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","applicatiom/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "applicatiom/json");
                 return params;
             }
         };

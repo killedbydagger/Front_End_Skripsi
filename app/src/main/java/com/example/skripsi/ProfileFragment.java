@@ -80,14 +80,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 //        System.out.println(splitDob[0]);
 //        tv_dob.setText(splitDob[0]);
 
-        String date =user.get(sessionManager.DOB);
+        String date = user.get(sessionManager.DOB);
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
         Date oneWayTripDate = null;
         try {
             oneWayTripDate = input.parse(date);
             tv_dob.setText(output.format(oneWayTripDate));
-            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+            System.out.println("ini tanggalnya: " + oneWayTripDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -112,7 +112,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         HashMap<String, String> user = sessionManager.getUserDetail();
         String mFirstName = user.get(sessionManager.FIRST_NAME);
@@ -127,14 +127,14 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 //        System.out.println(splitDob[0]);
 //        tv_dob.setText(splitDob[0]);
 
-        String date =user.get(sessionManager.DOB);
+        String date = user.get(sessionManager.DOB);
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
         Date oneWayTripDate = null;                 // parse input
         try {
             oneWayTripDate = input.parse(date);
             tv_dob.setText(output.format(oneWayTripDate));    // format output
-            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+            System.out.println("ini tanggalnya: " + oneWayTripDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }

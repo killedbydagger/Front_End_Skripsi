@@ -39,9 +39,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class EditProfile extends AppCompatActivity {
 
-    EditText et_firstName, et_lastName,et_description,et_phoneNumber;
+    EditText et_firstName, et_lastName, et_description, et_phoneNumber;
     TextView tv_DOB, tv_email;
-    Spinner sp_lastEducation,sp_location;
+    Spinner sp_lastEducation, sp_location;
     Button btn_save;
     ImageView btn_close;
 
@@ -116,7 +116,7 @@ public class EditProfile extends AppCompatActivity {
                 validateEducation();
                 validatePhoneNumber();
 
-                if (!validationChecks.containsValue(false)){
+                if (!validationChecks.containsValue(false)) {
                     try {
                         editProfile();
                     } catch (JSONException e) {
@@ -168,20 +168,20 @@ public class EditProfile extends AppCompatActivity {
 //        String[] splitDob = mDob.split("\\s+");
 //        String tampungTanggal = splitDob[0];
 
-        String date =user.get(sessionManager.DOB);
+        String date = user.get(sessionManager.DOB);
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
         Date oneWayTripDate = null;
         try {
             oneWayTripDate = input.parse(date);
             tv_DOB.setText(output.format(oneWayTripDate));
-            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+            System.out.println("ini tanggalnya: " + oneWayTripDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-        String phone = mPhone.substring(2,mPhone.length());
+        String phone = mPhone.substring(2, mPhone.length());
 
         et_firstName.setText(mFirstName);
         et_lastName.setText(mLastName);
@@ -192,19 +192,18 @@ public class EditProfile extends AppCompatActivity {
         tv_email.setText(mEmail);
 
 
-
         try {
-            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
             editor = sharedPreferences.edit();
             setEducationSpinner(user.get(sessionManager.EDUCATION_DATA), user.get(sessionManager.EDUCATION_ID));
-            setLocationSpinner(user.get(sessionManager.LOCATION_DATA),user.get(sessionManager.LOCATION_ID));
+            setLocationSpinner(user.get(sessionManager.LOCATION_DATA), user.get(sessionManager.LOCATION_ID));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
     }
 
-    private void showDateDialog(){
+    private void showDateDialog() {
 
         Calendar newCalendar = Calendar.getInstance();
 
@@ -216,14 +215,14 @@ public class EditProfile extends AppCompatActivity {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
 
-                String date =dateFormatter.format(newDate.getTime());
+                String date = dateFormatter.format(newDate.getTime());
                 SimpleDateFormat input = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
                 Date oneWayTripDate = null;
                 try {
                     oneWayTripDate = input.parse(date);
                     tv_DOB.setText(output.format(oneWayTripDate));
-                    System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                    System.out.println("ini tanggalnya: " + oneWayTripDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -231,78 +230,71 @@ public class EditProfile extends AppCompatActivity {
                 tanggal = dateFormatter2.format(newDate.getTime());
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
     }
 
-    private void validateFirstName(){
-        if(et_firstName.getText().toString().isEmpty()){
+    private void validateFirstName() {
+        if (et_firstName.getText().toString().isEmpty()) {
             et_firstName.setError("Field can't be empty");
             validationChecks.put("FirstName", false);
-        }
-        else{
+        } else {
             validationChecks.put("FirstName", true);
         }
     }
 
-    private void validateLastName(){
-        if(et_lastName.getText().toString().isEmpty()){
+    private void validateLastName() {
+        if (et_lastName.getText().toString().isEmpty()) {
             et_lastName.setError("Field can't be empty");
             validationChecks.put("LastName", false);
-        }
-        else{
+        } else {
             et_lastName.setError(null);
             validationChecks.put("LastName", true);
         }
     }
 
-    private void validateDate(){
-        if(tv_DOB.getText().toString().isEmpty()){
+    private void validateDate() {
+        if (tv_DOB.getText().toString().isEmpty()) {
             tv_DOB.setError("Field can't be empty");
             validationChecks.put("DOB", false);
-        }
-        else{
+        } else {
             tv_DOB.setError(null);
             validationChecks.put("DOB", true);
         }
     }
 
-    private void validateEducation(){
-        if(sp_lastEducation.getSelectedItemPosition() == 0){
+    private void validateEducation() {
+        if (sp_lastEducation.getSelectedItemPosition() == 0) {
             ((TextView) sp_lastEducation.getSelectedView()).setError("Please choose your last education");
             validationChecks.put("Education", false);
-        }
-        else{
+        } else {
             ((TextView) sp_lastEducation.getSelectedView()).setError(null);
             validationChecks.put("Education", true);
         }
     }
 
-    private void validateLocation(){
-        if(sp_location.getSelectedItemPosition() == 0){
+    private void validateLocation() {
+        if (sp_location.getSelectedItemPosition() == 0) {
             ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
             validationChecks.put("Location", false);
-        }
-        else{
+        } else {
             ((TextView) sp_location.getSelectedView()).setError(null);
             validationChecks.put("Location", true);
         }
     }
 
-    private void validatePhoneNumber(){
+    private void validatePhoneNumber() {
 
-        if(et_phoneNumber.getText().toString().isEmpty()){
+        if (et_phoneNumber.getText().toString().isEmpty()) {
             et_phoneNumber.setError("Field can't be empty");
             validationChecks.put("Phone", false);
-        }
-        else{
-            String first = et_phoneNumber.getText().toString().substring(0,1);
-            if(first.equals("0")){
+        } else {
+            String first = et_phoneNumber.getText().toString().substring(0, 1);
+            if (first.equals("0")) {
                 et_phoneNumber.setError("Phone number can't start with 0");
                 validationChecks.put("Phone", false);
-            }
-            else{
+            } else {
                 et_phoneNumber.setError(null);
                 validationChecks.put("Phone", true);
             }
@@ -315,11 +307,11 @@ public class EditProfile extends AppCompatActivity {
         JSONArray educationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         educationArray.add("--- Choose Education ---");
-        for (int i=0;i<educationJSON.length();i++){
+        for (int i = 0; i < educationJSON.length(); i++) {
             object = educationJSON.getJSONObject(i);
             educationArray.add(object.getString("education_name"));
         }
-        ArrayAdapter<String> educationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, educationArray);
+        ArrayAdapter<String> educationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, educationArray);
         educationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_lastEducation.setAdapter(educationArrayAdapter);
@@ -332,11 +324,11 @@ public class EditProfile extends AppCompatActivity {
         JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose Location ---");
-        for (int i=0;i<locationJSON.length();i++){
+        for (int i = 0; i < locationJSON.length(); i++) {
             object = locationJSON.getJSONObject(i);
             locationArray.add(object.getString("location_name"));
         }
-        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, locationArray);
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationArray);
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_location.setAdapter(locationArrayAdapter);
@@ -365,7 +357,7 @@ public class EditProfile extends AppCompatActivity {
                     if (status.equals("Success")) {
                         JSONArray jsonArray = response.getJSONArray("data");
 
-                        for(int i = 0;i<jsonArray.length();i++){
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             String userEmail = object.getString("user_email");
@@ -399,8 +391,7 @@ public class EditProfile extends AppCompatActivity {
                             finish();
 
                         }
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -412,11 +403,11 @@ public class EditProfile extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

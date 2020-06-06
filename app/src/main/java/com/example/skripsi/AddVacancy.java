@@ -95,7 +95,7 @@ public class AddVacancy extends AppCompatActivity {
         HashMap<String, String> user = sessionManager.getUserDetail();
 
         try {
-            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
             editor = sharedPreferences.edit();
             setCategorySpinner(user.get(sessionManager.CATEGORY_DATA));
             setLocationSpinner(user.get(sessionManager.LOCATION_DATA));
@@ -109,21 +109,19 @@ public class AddVacancy extends AppCompatActivity {
                 compared_position.clear();
                 positionArray.clear();
                 sp_position.setAdapter(null);
-                if(position == 0){
+                if (position == 0) {
                     et_gaji.setText("");
                     et_gaji.setEnabled(false);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
                     sp_position.setEnabled(false);
                     sp_position.setBackgroundResource(R.drawable.edit_text_card_gray);
-                }
-                else if(position == 6){
+                } else if (position == 6) {
                     et_gaji.setText("0");
                     et_gaji.setEnabled(false);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
                     sp_position.setEnabled(false);
                     sp_position.setBackgroundResource(R.drawable.edit_text_card_gray);
-                }
-                else{
+                } else {
                     et_gaji.setText("");
                     et_gaji.setEnabled(true);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card);
@@ -156,12 +154,11 @@ public class AddVacancy extends AppCompatActivity {
                 validateDescription();
                 validateDate();
 
-                if(!validationChecks.containsValue(false)){
+                if (!validationChecks.containsValue(false)) {
                     int tampung;
-                    if(sp_kategori.getSelectedItemPosition() !=6){
+                    if (sp_kategori.getSelectedItemPosition() != 6) {
                         tampung = compared_position.get(sp_position.getSelectedItem().toString());
-                    }
-                    else{
+                    } else {
                         tampung = 7;
                     }
                     try {
@@ -177,7 +174,7 @@ public class AddVacancy extends AppCompatActivity {
 
     }
 
-    private void showDateDialog(){
+    private void showDateDialog() {
 
         Calendar newCalendar = Calendar.getInstance();
 
@@ -189,14 +186,14 @@ public class AddVacancy extends AppCompatActivity {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
 
-                String date =dateFormatter.format(newDate.getTime());
+                String date = dateFormatter.format(newDate.getTime());
                 SimpleDateFormat input = new SimpleDateFormat("dd-MM-yyyy");
                 SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
                 Date oneWayTripDate = null;
                 try {
                     oneWayTripDate = input.parse(date);
                     tv_dueDate.setText(output.format(oneWayTripDate));
-                    System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                    System.out.println("ini tanggalnya: " + oneWayTripDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -205,84 +202,78 @@ public class AddVacancy extends AppCompatActivity {
                 validateDate();
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
     }
 
-    private void validatePosition(){
-        if(sp_position.getSelectedItemPosition() ==  0){
+    private void validatePosition() {
+        if (sp_position.getSelectedItemPosition() == 0) {
             ((TextView) sp_position.getSelectedView()).setError("Please choose your position");
             validationChecks.put("Position", false);
-        }
-        else{
+        } else {
             ((TextView) sp_position.getSelectedView()).setError(null);
             validationChecks.put("Position", true);
         }
     }
 
-    private void validateDate(){
-        if(tv_dueDate.getText().toString().isEmpty()){
+    private void validateDate() {
+        if (tv_dueDate.getText().toString().isEmpty()) {
             tv_dueDate.setError("Field can't be empty");
             validationChecks.put("Due_Date", false);
-        }
-        else{
+        } else {
             tv_dueDate.setError(null);
             validationChecks.put("Due_Date", true);
         }
     }
 
-    private void validateCategory(){
-        if(sp_kategori.getSelectedItemPosition() == 0){
+    private void validateCategory() {
+        if (sp_kategori.getSelectedItemPosition() == 0) {
             ((TextView) sp_kategori.getSelectedView()).setError("Please choose your category");
             validationChecks.put("Category", false);
-        }
-        else{
+        } else {
             ((TextView) sp_kategori.getSelectedView()).setError(null);
             validationChecks.put("Category", true);
 
-            if(sp_kategori.getSelectedItemPosition() != 6){
+            if (sp_kategori.getSelectedItemPosition() != 6) {
                 validatePosition();
             }
         }
     }
 
-    private void validateTitle(){
-        if(et_title.getText().toString().isEmpty()){
+    private void validateTitle() {
+        if (et_title.getText().toString().isEmpty()) {
             et_title.setError("Field can't be empty");
             validationChecks.put("Title", false);
-        }
-        else{
+        } else {
             validationChecks.put("Title", true);
         }
     }
 
-    private void validateLocation(){
-        if(sp_location.getSelectedItemPosition() == 0){
+    private void validateLocation() {
+        if (sp_location.getSelectedItemPosition() == 0) {
             ((TextView) sp_location.getSelectedView()).setError("Please choose your location");
             validationChecks.put("Location", false);
-        }
-        else{
+        } else {
             ((TextView) sp_location.getSelectedView()).setError(null);
             validationChecks.put("Location", true);
         }
     }
-    private void validateSalary(){
-        if(et_gaji.getText().toString().isEmpty()){
+
+    private void validateSalary() {
+        if (et_gaji.getText().toString().isEmpty()) {
             et_gaji.setError("Field can't be empty");
             validationChecks.put("Salary", false);
-        }
-        else{
+        } else {
             validationChecks.put("Salary", true);
         }
     }
 
-    private void validateDescription(){
-        if(et_deskripsi.getText().toString().isEmpty()){
+    private void validateDescription() {
+        if (et_deskripsi.getText().toString().isEmpty()) {
             et_deskripsi.setError("Field can't be empty");
             validationChecks.put("Description", false);
-        }
-        else{
+        } else {
             validationChecks.put("Description", true);
         }
     }
@@ -293,11 +284,11 @@ public class AddVacancy extends AppCompatActivity {
         JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose Location ---");
-        for (int i=0;i<locationJSON.length();i++){
+        for (int i = 0; i < locationJSON.length(); i++) {
             object = locationJSON.getJSONObject(i);
             locationArray.add(object.getString("location_name"));
         }
-        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, locationArray);
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationArray);
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_location.setAdapter(locationArrayAdapter);
@@ -309,11 +300,11 @@ public class AddVacancy extends AppCompatActivity {
         JSONArray locationJSON = jsonObject.getJSONArray("data");
         JSONObject object;
         locationArray.add("--- Choose category ---");
-        for (int i=0;i<locationJSON.length();i++){
+        for (int i = 0; i < locationJSON.length(); i++) {
             object = locationJSON.getJSONObject(i);
             locationArray.add(object.getString("category_name"));
         }
-        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String> (this, android.R.layout.simple_spinner_item, locationArray);
+        ArrayAdapter<String> locationArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, locationArray);
         locationArrayAdapter.setDropDownViewResource(android.R.layout
                 .simple_spinner_dropdown_item);
         sp_kategori.setAdapter(locationArrayAdapter);
@@ -321,10 +312,10 @@ public class AddVacancy extends AppCompatActivity {
 
     private void loadPositionData(int categoryId) throws JSONException {
         System.out.println(categoryId);
-        if(sp_position.getSelectedItemPosition() != 0) {
+        if (sp_position.getSelectedItemPosition() != 0) {
             String URL = "http://25.54.110.177:8095/CategoryPosition/getCategoryPosition";
             final JSONObject jsonBody = new JSONObject();
-            jsonBody.put("category_id",categoryId);
+            jsonBody.put("category_id", categoryId);
 
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
@@ -336,18 +327,17 @@ public class AddVacancy extends AppCompatActivity {
                             positionArray.add("--- Choose position ---");
                             JSONArray positionJSON = response.getJSONArray("data");
                             JSONObject object;
-                            for (int i=0;i<positionJSON.length();i++){
+                            for (int i = 0; i < positionJSON.length(); i++) {
                                 object = positionJSON.getJSONObject(i);
                                 JSONObject object1 = object.getJSONObject("position");
                                 positionArray.add(object1.getString("position_name"));
                                 compared_position.put(object1.getString("position_name"), object1.getInt("position_id"));
                             }
-                            ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String> (getApplicationContext(), android.R.layout.simple_spinner_item, positionArray);
+                            ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, positionArray);
                             positionArrayAdapter.setDropDownViewResource(android.R.layout
                                     .simple_spinner_dropdown_item);
                             sp_position.setAdapter(positionArrayAdapter);
-                        }
-                        else {
+                        } else {
                             // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
@@ -359,11 +349,11 @@ public class AddVacancy extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 }
-            }){
+            }) {
                 @Override
-                public Map<String,String> getHeaders() throws AuthFailureError {
-                    final Map<String,String> params = new HashMap<String, String>();
-                    params.put("Context-Type","application/json");
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    final Map<String, String> params = new HashMap<String, String>();
+                    params.put("Context-Type", "application/json");
                     return params;
                 }
             };
@@ -392,14 +382,12 @@ public class AddVacancy extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    if(status.equals("Success")) {
+                    if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Succes to add New Vacancy", Toast.LENGTH_LONG).show();
                         finish();
-                    }
-                    else if(status.equals("Reached limit")){
+                    } else if (status.equals("Reached limit")) {
                         Toast.makeText(getApplicationContext(), "Already reach maximum limit posting", Toast.LENGTH_LONG).show();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Failed to add New Vacancy", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -414,9 +402,9 @@ public class AddVacancy extends AppCompatActivity {
         }) {
 
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","applicatiom/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "applicatiom/json");
                 return params;
             }
         };
