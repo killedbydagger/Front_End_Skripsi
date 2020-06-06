@@ -239,4 +239,20 @@
         android:text="@string/apply"
         android:textColor="@color/colorWhite"
         android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/notActive"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="This vacancy already not active"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/colorBlack"
+        android:background="#8888"
+        android:layout_below="@id/action"
+        android:textStyle="bold"
+        android:visibility="gone"
+        />
+
+
 </RelativeLayout>

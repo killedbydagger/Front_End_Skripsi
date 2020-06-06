@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SKRIPSI</string>
+    <string name="app_name">Hire me!</string>
     <string name="edt_email">Email</string>
     <string name="edt_password">Password</string>
     <string name="changePassword">Change Password</string>

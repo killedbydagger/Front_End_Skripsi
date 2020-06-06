@@ -21,6 +21,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +33,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -155,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             String id = object.getString("user_id");
-                            String email = object.getString("user_email");
+                            final String email = object.getString("user_email");
                             String firstName = object.getString("user_first_name");
                             String lastName = object.getString("user_last_name");
                             String phone = object.getString("user_phone");
@@ -200,6 +205,26 @@ public class LoginActivity extends AppCompatActivity {
 
                             sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName);
                             viewDialog.hideDialog();
+
+                            FirebaseInstanceId.getInstance().getInstanceId()
+                                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                            if (!task.isSuccessful()) {
+                                                System.out.println("TIDAK BERHASIL");
+                                                return;
+                                            }
+
+                                            String token = task.getResult().getToken();
+                                            System.out.println("token :" + token);
+                                            try {
+                                                userToken(email, token);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+
                             Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
                             startActivity(singinIntent);
                             finish();
@@ -228,6 +253,45 @@ public class LoginActivity extends AppCompatActivity {
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonObjectRequest);
+    }
+
+    private void userToken(String email, String token) throws JSONException {
+        String URL = "http://25.54.110.177:8095/User/setUserFirebaseNotificationToken";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_email", email);
+        jsonBody.put("firebase_token", token);
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        System.out.println("SUCCESS TO SET USER TOKEN");
+                    }
+                    else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        System.out.println("FAILED TO SET USER TOKEN");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            public Map<String,String> getHeaders() throws AuthFailureError {
+                final Map<String,String> params = new HashMap<String, String>();
+                params.put("Context-Type","application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
     }
 }

@@ -97,22 +97,22 @@
             android:layout_weight="0.9"
             android:orientation="vertical"
             android:gravity="center"
-            android:weightSum="2">
+            android:weightSum="1">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:background="@drawable/blue_edit"
-                android:gravity="center">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:layout_weight="1"-->
+<!--                android:orientation="vertical"-->
+<!--                android:background="@drawable/blue_edit"-->
+<!--                android:gravity="center">-->
 
-                <ImageView
-                    android:id="@+id/img_edit"
-                    android:layout_width="30sp"
-                    android:layout_height="30sp"
-                    app:srcCompat="@drawable/icon_edit" />
-            </LinearLayout>
+<!--                <ImageView-->
+<!--                    android:id="@+id/img_edit"-->
+<!--                    android:layout_width="30sp"-->
+<!--                    android:layout_height="30sp"-->
+<!--                    app:srcCompat="@drawable/icon_edit" />-->
+<!--            </LinearLayout>-->
 
             <LinearLayout
                 android:layout_width="match_parent"

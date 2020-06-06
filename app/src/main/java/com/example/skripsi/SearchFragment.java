@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -174,8 +175,15 @@ public class SearchFragment extends Fragment {
                     Toast.makeText(getContext(), "Need to feel atleast one Filter", Toast.LENGTH_LONG).show();
                 }
                 else {
+                    int tampung;
+                    if(sp_kategori.getSelectedItemPosition() !=6){
+                        tampung = compared_position.get(sp_kategoriJabatan.getSelectedItem().toString());
+                    }
+                    else{
+                        tampung = 7;
+                    }
                     try {
-                        loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), sp_kategoriJabatan.getSelectedItemPosition(), sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
+                        loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), tampung, sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -327,7 +335,13 @@ public class SearchFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         //viewDialog.hideDialog();
-                    } else {
+                    } else if(status.equals("Not Found")){
+                        layoutSearchFilter.setVisibility(View.GONE);
+                        layoutVacancyList.setVisibility(View.VISIBLE);
+                        btn_filter.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Data not found", Toast.LENGTH_LONG).show();
+                    }
+                    else{
                         Toast.makeText(getContext(), "Search failed, try again", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
