@@ -23,6 +23,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -144,8 +147,19 @@ public class ApplicantProfile extends AppCompatActivity {
                             String applicantLocation = object2.getString("location_name");
 
                             tv_applicantName.setText(applicantName);
-                            String[] splitDob = applicantDOB.split("\\s+");
-                            tv_applicantDOB.setText(splitDob[0]);
+
+                            String date = applicantDOB;
+                            SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+                            SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+                            Date oneWayTripDate = null;
+                            try {
+                                oneWayTripDate = input.parse(date);
+                                tv_applicantDOB.setText(output.format(oneWayTripDate));
+                                System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
                             tv_applicantDesc.setText(applicantDesc);
                             tv_applicantEducation.setText(applicantEducation);
                             tv_applicantLocation.setText(applicantLocation);

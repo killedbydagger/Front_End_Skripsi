@@ -29,8 +29,10 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -297,7 +299,18 @@ public class SignupActivity extends AppCompatActivity {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
 
-                mDisplayDate.setText(dateFormatter.format(newDate.getTime()));
+                String date =dateFormatter.format(newDate.getTime());
+                SimpleDateFormat input = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+                Date oneWayTripDate = null;
+                try {
+                    oneWayTripDate = input.parse(date);
+                    mDisplayDate.setText(output.format(oneWayTripDate));
+                    System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 tanggal = dateFormatter2.format(newDate.getTime());
                 validateDate();
             }
