@@ -12,7 +12,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,6 +24,7 @@ public class ForgetPassword extends AppCompatActivity {
 
     EditText et_email;
     Button btn_resetPassword;
+    ViewDialog viewDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,17 +32,13 @@ public class ForgetPassword extends AppCompatActivity {
         setContentView(R.layout.activity_forget_password);
 
         et_email = findViewById(R.id.et_email);
-//        et_email.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View view, boolean b) {
-//                validateEmail();
-//            }
-//        });
         btn_resetPassword = findViewById(R.id.btn_resetPassword);
+        viewDialog = new ViewDialog(this);
         btn_resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!et_email.getText().toString().isEmpty()) {
+                    viewDialog.showDialog();
                     try {
                         forget_password(et_email.getText().toString());
                     } catch (JSONException e) {
@@ -54,12 +50,6 @@ public class ForgetPassword extends AppCompatActivity {
             }
         });
     }
-
-//    public void validateEmail() {
-//        if(et_email.getText().toString().isEmpty()){
-//            et_email.setError("Field can't be empty");
-//        }
-//    }
 
     public void forget_password(String email) throws JSONException {
         String URL = "http://25.54.110.177:8095/User/forgetPasswordUser";
@@ -73,6 +63,8 @@ public class ForgetPassword extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Reset Password Success", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        finish();
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Reset Password Failed", Toast.LENGTH_LONG).show();

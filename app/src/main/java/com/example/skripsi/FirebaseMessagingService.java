@@ -56,7 +56,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             //builder=builder.setContent(getCustomeDesign(title,message));
             builder=builder.setContentTitle(title)
                     .setContentText(message)
-                    .setSmallIcon(R.drawable.ic_stat_name);
+                    .setSmallIcon(R.drawable.ic_stat_name).setColor(R.drawable.gradient_color);
         }
         else{
             builder=builder.setContentTitle(title)
