@@ -14,7 +14,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,7 +56,7 @@ public class MainMenu extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         sessionManager = new SessionManager(MainMenu.this);
-        HashMap<String, String> user = sessionManager.getUserDetail();
+        final HashMap<String, String> user = sessionManager.getUserDetail();
 
         if (user.get(sessionManager.LOCATION_DATA) == null || user.get(sessionManager.EDUCATION_DATA) == null || user.get(sessionManager.CATEGORY_DATA) == null) {
             try {
@@ -67,6 +71,7 @@ public class MainMenu extends AppCompatActivity {
         }
 
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
+
     }
 
     private void loadLocationData() throws JSONException {
@@ -206,4 +211,5 @@ public class MainMenu extends AppCompatActivity {
             return true;
         }
     };
+
 }

@@ -162,7 +162,9 @@ public class AddVacancy extends AppCompatActivity {
                         tampung = 7;
                     }
                     try {
-                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), et_deskripsi.getText().toString(), et_gaji.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
+                        String deskripsi = et_deskripsi.getText().toString();
+                        deskripsi = deskripsi.replace(System.getProperty("line.separator"),"/n");
+                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), deskripsi, et_gaji.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

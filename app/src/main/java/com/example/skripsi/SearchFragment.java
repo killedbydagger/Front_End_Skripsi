@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -88,11 +89,11 @@ public class SearchFragment extends Fragment {
         btn_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (layoutSearchFilter.getVisibility() == View.VISIBLE) {
+                if (layoutSearchFilter.getVisibility() == View.VISIBLE){
                     layoutVacancyList.setVisibility(View.VISIBLE);
                     layoutSearchFilter.setVisibility(View.GONE);
                     btn_filter.setText("Filter");
-                } else {
+                }else {
                     layoutVacancyList.setVisibility(View.GONE);
                     layoutSearchFilter.setVisibility(View.VISIBLE);
                     btn_filter.setText("List");
@@ -116,7 +117,7 @@ public class SearchFragment extends Fragment {
         final String userId = user.get(sessionManager.ID);
 
         try {
-            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN",PRIVATE_MODE);
             editor = sharedPreferences.edit();
             setCategorySpinner(user.get(sessionManager.CATEGORY_DATA));
             setLocationSpinner(user.get(sessionManager.LOCATION_DATA));
@@ -130,21 +131,23 @@ public class SearchFragment extends Fragment {
                 compared_position.clear();
                 positionArray.clear();
                 sp_kategoriJabatan.setAdapter(null);
-                if (position == 0) {
+                if(position == 0){
                     et_salary.setText("");
                     et_salary.setEnabled(true);
                     et_salary.setBackgroundResource(R.drawable.edit_text_card);
                     sp_kategoriJabatan.setEnabled(true);
                     sp_kategoriJabatan.setBackgroundResource(R.drawable.edit_text_card);
                     sp_kategoriJabatan.setVisibility(View.GONE);
-                } else if (position == 6) {
+                }
+                else if(position == 6){
                     et_salary.setText("0");
                     et_salary.setEnabled(false);
                     et_salary.setBackgroundResource(R.drawable.edit_text_card_gray);
                     sp_kategoriJabatan.setEnabled(false);
                     sp_kategoriJabatan.setBackgroundResource(R.drawable.edit_text_card_gray);
                     sp_kategoriJabatan.setVisibility(View.GONE);
-                } else {
+                }
+                else{
                     et_salary.setText("");
                     et_salary.setEnabled(true);
                     et_salary.setBackgroundResource(R.drawable.edit_text_card);
@@ -168,11 +171,19 @@ public class SearchFragment extends Fragment {
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (sp_kategori.getSelectedItemPosition() == 0 && sv_keyword.getQuery().toString().equals("") && sp_lokasi.getSelectedItemPosition() == 0 && et_salary.getText().toString().equals("")) {
+                if(sp_kategori.getSelectedItemPosition() == 0 && sv_keyword.getQuery().toString().equals("") && sp_lokasi.getSelectedItemPosition() == 0 && et_salary.getText().toString().equals("")){
                     Toast.makeText(getContext(), "Need to feel atleast one Filter", Toast.LENGTH_LONG).show();
-                } else {
+                }
+                else {
+                    int tampung;
+                    if(sp_kategori.getSelectedItemPosition() !=6){
+                        tampung = compared_position.get(sp_kategoriJabatan.getSelectedItem().toString());
+                    }
+                    else{
+                        tampung = 7;
+                    }
                     try {
-                        loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), sp_kategoriJabatan.getSelectedItemPosition(), sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
+                        loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), tampung, sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -218,10 +229,10 @@ public class SearchFragment extends Fragment {
 
     private void loadPositionData(int categoryId) throws JSONException {
         System.out.println(categoryId);
-        if (sp_kategoriJabatan.getSelectedItemPosition() != 0) {
+        if(sp_kategoriJabatan.getSelectedItemPosition() != 0) {
             String URL = "http://25.54.110.177:8095/CategoryPosition/getCategoryPosition";
             final JSONObject jsonBody = new JSONObject();
-            jsonBody.put("category_id", categoryId);
+            jsonBody.put("category_id",categoryId);
 
             final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
                 @Override
@@ -233,17 +244,18 @@ public class SearchFragment extends Fragment {
                             positionArray.add("--- Choose position ---");
                             JSONArray positionJSON = response.getJSONArray("data");
                             JSONObject object;
-                            for (int i = 0; i < positionJSON.length(); i++) {
+                            for (int i=0;i<positionJSON.length();i++){
                                 object = positionJSON.getJSONObject(i);
                                 JSONObject object1 = object.getJSONObject("position");
                                 positionArray.add(object1.getString("position_name"));
                                 compared_position.put(object1.getString("position_name"), object1.getInt("position_id"));
                             }
-                            ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, positionArray);
+                            ArrayAdapter<String> positionArrayAdapter = new ArrayAdapter<String> (getContext(), android.R.layout.simple_spinner_item, positionArray);
                             positionArrayAdapter.setDropDownViewResource(android.R.layout
                                     .simple_spinner_dropdown_item);
                             sp_kategoriJabatan.setAdapter(positionArrayAdapter);
-                        } else {
+                        }
+                        else {
                             // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
@@ -255,11 +267,11 @@ public class SearchFragment extends Fragment {
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
                 }
-            }) {
+            }){
                 @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> params = new HashMap<String, String>();
-                    params.put("Context-Type", "application/json");
+                public Map<String,String> getHeaders() throws AuthFailureError {
+                    final Map<String,String> params = new HashMap<String, String>();
+                    params.put("Context-Type","application/json");
                     return params;
                 }
             };
@@ -323,7 +335,13 @@ public class SearchFragment extends Fragment {
                         }
                         adapter.notifyDataSetChanged();
                         //viewDialog.hideDialog();
-                    } else {
+                    } else if(status.equals("Not Found")){
+                        layoutSearchFilter.setVisibility(View.GONE);
+                        layoutVacancyList.setVisibility(View.VISIBLE);
+                        btn_filter.setVisibility(View.VISIBLE);
+                        Toast.makeText(getContext(), "Data not found", Toast.LENGTH_LONG).show();
+                    }
+                    else{
                         Toast.makeText(getContext(), "Search failed, try again", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
