@@ -28,6 +28,9 @@ import org.json.JSONObject;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -71,9 +74,17 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
 
         viewHolder.textSalary.setText(formatRupiah.format((double)vacancy.getSalary()));
 
-
-        String[] splitDob = vacancy.getDueDate().split("\\s+");
-        viewHolder.textDueDate.setText(splitDob[0]);
+        String date = vacancy.getDueDate();
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+        Date oneWayTripDate = null;
+        try {
+            oneWayTripDate = input.parse(date);
+            viewHolder.textDueDate.setText(output.format(oneWayTripDate));
+            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         sessionManager = new SessionManager(context);
         final HashMap<String, String> business = sessionManager.getBusinessDetail();

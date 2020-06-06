@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,8 @@ public class ApplicationHistory extends AppCompatActivity {
 
     ImageView btn_close;
 
+    RatingBar rb_ratingDariUser;
+
     private LinearLayoutManager linearLayoutManager;
     private DividerItemDecoration dividerItemDecoration;
     private List<History> historyList;
@@ -51,6 +54,8 @@ public class ApplicationHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_application_history);
+
+        rb_ratingDariUser = findViewById(R.id.rb_ratingDariUser);
 
         viewDialog = new ViewDialog(ApplicationHistory.this);
         viewDialog.showDialog();
@@ -124,6 +129,8 @@ public class ApplicationHistory extends AppCompatActivity {
                             history.setSalary(object1.getInt("vac_salary"));
 
                             history.setStatus(object.getString("status"));
+                            history.setFlagRating(object.getString("businessRatedFlag"));
+                            history.setRateDariUser(object.getInt("businessUserRate"));
 
                             JSONObject object5 = object1.getJSONObject("position");
                             history.setPosition(object5.getString("position_name"));
@@ -163,4 +170,5 @@ public class ApplicationHistory extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(jsonObjectRequest);
     }
+
 }

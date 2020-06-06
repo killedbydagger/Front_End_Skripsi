@@ -26,9 +26,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -163,8 +165,20 @@ public class EditProfile extends AppCompatActivity {
         String mDob = user.get(sessionManager.DOB);
         String mEmail = user.get(sessionManager.EMAIL);
 
-        String[] splitDob = mDob.split("\\s+");
-        String tampungTanggal = splitDob[0];
+//        String[] splitDob = mDob.split("\\s+");
+//        String tampungTanggal = splitDob[0];
+
+        String date =user.get(sessionManager.DOB);
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+        Date oneWayTripDate = null;
+        try {
+            oneWayTripDate = input.parse(date);
+            tv_DOB.setText(output.format(oneWayTripDate));
+            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
 
         String phone = mPhone.substring(2,mPhone.length());
@@ -174,7 +188,7 @@ public class EditProfile extends AppCompatActivity {
         et_description.setText(mDescription);
         et_phoneNumber.setText(phone);
 
-        tv_DOB.setText(tampungTanggal);
+        //tv_DOB.setText(tampungTanggal);
         tv_email.setText(mEmail);
 
 
@@ -202,9 +216,18 @@ public class EditProfile extends AppCompatActivity {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
 
-                System.out.println(dateFormatter.format(newDate.getTime()));
+                String date =dateFormatter.format(newDate.getTime());
+                SimpleDateFormat input = new SimpleDateFormat("dd-MM-yyyy");
+                SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+                Date oneWayTripDate = null;
+                try {
+                    oneWayTripDate = input.parse(date);
+                    tv_DOB.setText(output.format(oneWayTripDate));
+                    System.out.println("ini tanggalnya: "+ oneWayTripDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-                tv_DOB.setText(dateFormatter.format(newDate.getTime()));
                 tanggal = dateFormatter2.format(newDate.getTime());
             }
 

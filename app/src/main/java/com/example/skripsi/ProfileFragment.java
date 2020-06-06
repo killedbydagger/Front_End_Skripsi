@@ -13,7 +13,11 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,9 +76,21 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         tv_nama.setText(mFirstName + " " + mLastName);
 
-        String[] splitDob = mDob.split("\\s+");
-        System.out.println(splitDob[0]);
-        tv_dob.setText(splitDob[0]);
+//        String[] splitDob = mDob.split("\\s+");
+//        System.out.println(splitDob[0]);
+//        tv_dob.setText(splitDob[0]);
+
+        String date =user.get(sessionManager.DOB);
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+        Date oneWayTripDate = null;
+        try {
+            oneWayTripDate = input.parse(date);
+            tv_dob.setText(output.format(oneWayTripDate));
+            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
@@ -106,10 +122,23 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mLokasi = user.get(sessionManager.LOCATION_NAME);
         String mDescription = user.get(sessionManager.DESCRIPTION);
 
-        tv_nama.setText(mFirstName + " " + mLastName);
-        String[] splitDob = mDob.split("\\s+");
-        System.out.println(splitDob[0]);
-        tv_dob.setText(splitDob[0]);
+//        tv_nama.setText(mFirstName + " " + mLastName);
+//        String[] splitDob = mDob.split("\\s+");
+//        System.out.println(splitDob[0]);
+//        tv_dob.setText(splitDob[0]);
+
+        String date =user.get(sessionManager.DOB);
+        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
+        Date oneWayTripDate = null;                 // parse input
+        try {
+            oneWayTripDate = input.parse(date);
+            tv_dob.setText(output.format(oneWayTripDate));    // format output
+            System.out.println("ini tanggalnya: "+ oneWayTripDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
