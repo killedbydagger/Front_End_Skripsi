@@ -234,6 +234,7 @@ public class DetailVacancy extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Success to apply", Toast.LENGTH_LONG).show();
 //                        FirebaseMessagingService firebaseMessagingService = new FirebaseMessagingService();
 //                        firebaseMessagingService.showNotification("New applicant","");
+                        
                     }
                     else if(status.equals("Not Eligible")){
                         Toast.makeText(getApplicationContext(), "Please update your profile before applying", Toast.LENGTH_LONG).show();
