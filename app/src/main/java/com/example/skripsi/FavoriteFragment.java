@@ -62,6 +62,7 @@ public class FavoriteFragment extends Fragment {
 
         favoriteList = new ArrayList<>();
         adapter = new FavoriteAdapter(v.getContext(), favoriteList);
+        adapter.notifyDataSetChanged();
 
         linearLayoutManager = new LinearLayoutManager(v.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

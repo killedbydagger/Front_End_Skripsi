@@ -57,6 +57,8 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final History history = list.get(i);
 
+        
+
         sessionManager = new SessionManager(context);
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);

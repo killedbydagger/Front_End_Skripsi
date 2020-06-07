@@ -86,6 +86,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
                                     unFavorite(userId, favorite.getVacId());
+                                    list.remove(i);
                                     dialog.dismiss();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -163,6 +164,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(context, "Unfavorite vacancy success", Toast.LENGTH_LONG).show();
+                        notifyDataSetChanged();
                     } else {
                         Toast.makeText(context, "Unfavorite vacancy failed", Toast.LENGTH_LONG).show();
                     }

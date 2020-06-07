@@ -59,7 +59,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int position) {
         final Vacancy vacancy = list.get(position);
 
         viewHolder.textTitle.setText(vacancy.getTitle());
@@ -133,6 +133,8 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
                                     deleteVacancy(v.getContext(), business.get(sessionManager.BUSINESS_ID), vacancy.getId());
+                                    list.remove(position);
+                                    notifyDataSetChanged();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
