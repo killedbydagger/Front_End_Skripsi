@@ -176,11 +176,19 @@ public class SearchFragment extends Fragment {
                 }
                 else {
                     int tampung;
-                    if(sp_kategori.getSelectedItemPosition() !=6){
-                        tampung = compared_position.get(sp_kategoriJabatan.getSelectedItem().toString());
+                    if(sp_kategori.getSelectedItemPosition() ==6){
+                        tampung = 7;
+                    }
+                    else if(sp_kategori.getSelectedItemPosition() ==0){
+                        tampung = -1;
                     }
                     else{
-                        tampung = 7;
+                        if(sp_kategoriJabatan.getSelectedItemPosition() ==0){
+                            tampung = 0;
+                        }
+                        else{
+                            tampung = compared_position.get(sp_kategoriJabatan.getSelectedItem().toString());
+                        }
                     }
                     try {
                         loadSearchVacancy(Integer.parseInt(userId), sp_kategori.getSelectedItemPosition(), tampung, sv_keyword.getQuery(), sp_lokasi.getSelectedItemPosition(), et_salary.getText());
