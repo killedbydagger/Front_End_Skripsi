@@ -39,6 +39,8 @@ public class ApplicantList extends AppCompatActivity {
     private List<Applicant> applicantLists;
     private RecyclerView.Adapter adapter;
 
+    TextView tv_totAplicant;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,8 @@ public class ApplicantList extends AppCompatActivity {
 
         TextView textView = findViewById(R.id.tv_jobTitle);
         textView.setText(jobTitle);
+
+        tv_totAplicant = findViewById(R.id.tv_totApplicant);
 
         rv_applicantList = findViewById(R.id.rv_applicantList);
 
@@ -114,7 +118,7 @@ public class ApplicantList extends AppCompatActivity {
                             applicant.setStatusName(object.getString("status"));
                             applicantLists.add(applicant);
                         }
-
+                        tv_totAplicant.setText("Total: " + jsonArray.length());
                         adapter.notifyDataSetChanged();
                     } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();

@@ -51,6 +51,12 @@ public class ForgetPassword extends AppCompatActivity {
         });
     }
 
+//    public void validateEmail() {
+//        if(et_email.getText().toString().isEmpty()){
+//            et_email.setError("Field can't be empty");
+//        }
+//    }
+
     public void forget_password(String email) throws JSONException {
         String URL = "http://25.54.110.177:8095/User/forgetPasswordUser";
         final JSONObject jsonBody = new JSONObject();

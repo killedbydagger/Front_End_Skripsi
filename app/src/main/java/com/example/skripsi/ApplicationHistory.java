@@ -72,8 +72,19 @@ public class ApplicationHistory extends AppCompatActivity {
 
         mList = findViewById(R.id.rv_applicantHistory);
 
+        sessionManager = new SessionManager(getApplicationContext());
+        HashMap<String, String> user = sessionManager.getUserDetail();
+        String userId = user.get(sessionManager.ID);
+
+        try {
+            applicantHistory(userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         historyList = new ArrayList<>();
         adapter = new HistoryAdapter(getApplicationContext(), historyList);
+        adapter.notifyDataSetChanged();
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -84,15 +95,25 @@ public class ApplicationHistory extends AppCompatActivity {
         mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         sessionManager = new SessionManager(getApplicationContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
+
+        adapter.notifyDataSetChanged();
 
         try {
             applicantHistory(userId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        adapter.notifyDataSetChanged();
     }
 
     private void applicantHistory(String id) throws JSONException {
