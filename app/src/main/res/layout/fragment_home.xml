@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/action"
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -12,16 +12,24 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:text="@string/recommended"
-            android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/img_edit"
+            android:layout_width="50sp"
+            android:layout_height="50sp"
+            android:layout_alignParentRight="true"
+            android:layout_marginVertical="5sp"
+            app:srcCompat="@drawable/icon_edit"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView

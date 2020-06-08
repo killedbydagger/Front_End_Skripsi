@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,10 +37,20 @@ public class SetRecommendation extends AppCompatActivity {
 
     Map<String, Boolean> validationChecks = new HashMap<>();
 
+    ImageView img_close;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_recommendation);
+
+        img_close = findViewById(R.id.img_close);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         sp_lokasi = findViewById(R.id.sp_lokasi);
         sp_kategori1 = findViewById(R.id.sp_kategori1);
@@ -73,6 +84,8 @@ public class SetRecommendation extends AppCompatActivity {
             }
         });
     }
+
+
 
     private void validateLocation() {
         if (sp_lokasi.getSelectedItemPosition() == 0) {
@@ -141,10 +154,15 @@ public class SetRecommendation extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        Toast.makeText(getApplicationContext(), "Success to create recommendation", Toast.LENGTH_LONG).show();
+                    System.out.println(status);
+                    if (status.equals("Success Insert")) {
+                        Toast.makeText(getApplicationContext(), "Success to set recommendation", Toast.LENGTH_LONG).show();
                         finish();
-                    } else {
+                    }
+                    else if(status.equals("Success Update")){
+                        Toast.makeText(getApplicationContext(), "Success to update recommendation", Toast.LENGTH_LONG).show();
+                        finish();
+                    }else {
                         Toast.makeText(getApplicationContext(), "Failed to set recommendation", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {

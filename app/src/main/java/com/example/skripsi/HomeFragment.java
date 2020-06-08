@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +64,8 @@ public class HomeFragment extends Fragment {
 
     ViewDialog viewDialog;
 
+    ImageView img_edit;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +74,14 @@ public class HomeFragment extends Fragment {
         viewDialog = new ViewDialog(getActivity());
         viewDialog.showDialog();
 
+        img_edit = v.findViewById(R.id.img_edit);
+        img_edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), SetRecommendation.class);
+                startActivity(intent);
+            }
+        });
         rv_listRecommended = v.findViewById(R.id.rv_listRecommended);
         btn_setRecommendation = v.findViewById(R.id.btn_setRecommendation);
         btn_setRecommendation.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +139,6 @@ public class HomeFragment extends Fragment {
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
 
-        if (user.get(sessionManager.RECOMMENDATION) == null) {
             try {
                 sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
                 editor = sharedPreferences.edit();
@@ -135,13 +146,6 @@ public class HomeFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            try {
-                loadRecommendation(userId, user.get(sessionManager.RECOMMENDATION), Integer.parseInt(user.get(sessionManager.RECOMMENDATION_LOCATION)));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private void getUserRecommendation(int id) throws JSONException {
@@ -158,7 +162,6 @@ public class HomeFragment extends Fragment {
                         btn_setRecommendation.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
                     } else if (status.equals("Success")) {
-                        btn_setRecommendation.setVisibility(View.GONE);
 
                         sessionManager = new SessionManager(getContext());
                         HashMap<String, String> user = sessionManager.getUserDetail();
@@ -176,6 +179,7 @@ public class HomeFragment extends Fragment {
 
                             loadRecommendation(userId, object.getString("recom_categories"), Integer.parseInt(object.getString("location_id")));
                         }
+                        img_edit.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
@@ -246,6 +250,7 @@ public class HomeFragment extends Fragment {
                             recommendeds.add(recommended);
                         }
                         adapter.notifyDataSetChanged();
+                        img_edit.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
                     } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
