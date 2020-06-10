@@ -139,7 +139,7 @@ public class AddBusiness extends AppCompatActivity {
 
     private void createBisnis(String id, String imageURL, String namaBisnis, int locationId, String overview) throws JSONException {
         Context mContext = AddBusiness.this;
-        String URL = "http://25.54.110.177:8095/Business/createNewBusiness";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusiness";
         JSONObject jsonBody = new JSONObject();
 
         jsonBody.put("user_id", id);

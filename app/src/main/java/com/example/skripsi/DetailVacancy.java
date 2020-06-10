@@ -143,7 +143,7 @@ public class DetailVacancy extends AppCompatActivity {
     }
 
     private void loadDetail(String id) throws JSONException {
-        String URL = "http://25.54.110.177:8095/Vacancy/viewVacancyDetail";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/viewVacancyDetail";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("vac_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -220,7 +220,7 @@ public class DetailVacancy extends AppCompatActivity {
     }
 
     private void apply(String userId, String vacId, String busId) throws JSONException {
-        String URL = "http://25.54.110.177:8095/VacancyApplicant/applyVacancy";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/VacancyApplicant/applyVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);
@@ -265,7 +265,7 @@ public class DetailVacancy extends AppCompatActivity {
     }
 
     private void favorite(String userId, String vacId) throws JSONException {
-        String URL = "http://25.54.110.177:8095/FavoriteVacancy/addFavoriteVacancy";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/FavoriteVacancy/addFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);
@@ -303,7 +303,7 @@ public class DetailVacancy extends AppCompatActivity {
     }
 
     private void unFavorite(String userId, String vacId) throws JSONException {
-        String URL = "http://25.54.110.177:8095/FavoriteVacancy/removeFavoriteVacancy";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/FavoriteVacancy/removeFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);

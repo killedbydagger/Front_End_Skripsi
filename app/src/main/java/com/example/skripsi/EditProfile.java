@@ -337,7 +337,7 @@ public class EditProfile extends AppCompatActivity {
 
     private void editProfile() throws JSONException {
         Context mContext = EditProfile.this;
-        String URL = "http://25.54.110.177:8095/User/editUserProfile";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/editUserProfile";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("first_name", et_firstName.getText().toString());
         jsonBody.put("last_name", et_lastName.getText().toString());

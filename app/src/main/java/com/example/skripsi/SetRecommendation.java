@@ -144,7 +144,7 @@ public class SetRecommendation extends AppCompatActivity {
 
     private void setRecommendation(int userid, int location, String category) throws JSONException {
         Context mContext = SetRecommendation.this;
-        String URL = "http://25.54.110.177:8095/Recommendation/setUserRecommendation";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Recommendation/setUserRecommendation";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userid);
         jsonBody.put("location_id", location);

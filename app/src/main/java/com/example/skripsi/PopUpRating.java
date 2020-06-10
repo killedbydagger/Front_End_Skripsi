@@ -79,7 +79,7 @@ public class PopUpRating extends Activity {
 
     private void giveRating(int businessId, int vacId, int userid, int rate, Editable comment) throws JSONException {
         Context mContext = PopUpRating.this;
-        String URL = "http://25.54.110.177:8095/BusinessRating/applyBusinessRating";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/BusinessRating/applyBusinessRating";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", businessId);
         jsonBody.put("vac_id", vacId);

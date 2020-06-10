@@ -311,7 +311,7 @@ public class SignupActivity extends AppCompatActivity {
     private void checkEmail(String email) throws JSONException {
         Context mContext = SignupActivity.this;
 
-        String URL = "http://25.54.110.177:8095/User/checkEmailRegister";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/checkEmailRegister";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", email);
 
@@ -355,7 +355,7 @@ public class SignupActivity extends AppCompatActivity {
 
     private void submit() throws JSONException {
         Context mContext = SignupActivity.this;
-        String URL = "http://25.54.110.177:8095/User/createNewUser";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/createNewUser";
         JSONObject jsonBody = new JSONObject();
 
         int selectedId = rb_genderGroup.getCheckedRadioButtonId();

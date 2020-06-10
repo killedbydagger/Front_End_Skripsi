@@ -141,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
     private void login(final String email, String password) throws JSONException {
         Context mContext = LoginActivity.this;
 
-        String URL = "http://25.54.110.177:8095/User/getUserLogIn";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/getUserLogIn";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email",email);
         jsonBody.put("password",password);
@@ -257,7 +257,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void userToken(String email, String token) throws JSONException {
-        String URL = "http://25.54.110.177:8095/User/setUserFirebaseNotificationToken";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/setUserFirebaseNotificationToken";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email", email);
         jsonBody.put("firebase_token", token);

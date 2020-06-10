@@ -120,7 +120,7 @@ public class ApplicantProfile extends AppCompatActivity {
     }
 
     private void showApplicantProfile() throws JSONException {
-        String URL = "http://25.54.110.177:8095/User/getUserApplicant";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/getUserApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", getIntent().getExtras().getString("applicantEmail"));
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {

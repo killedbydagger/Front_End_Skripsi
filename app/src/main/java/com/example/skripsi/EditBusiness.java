@@ -150,7 +150,7 @@ public class EditBusiness extends AppCompatActivity {
 
     private void editProfile(String userId, String businessId, String imgURL, String businessName, int locationId, String businessOverview) throws JSONException {
         Context mContext = EditBusiness.this;
-        String URL = "http://25.54.110.177:8095/Business/editUserBusiness";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusiness";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("business_id", businessId);

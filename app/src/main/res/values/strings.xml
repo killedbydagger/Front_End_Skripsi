@@ -29,7 +29,7 @@
     <string name="location">Location</string>
     <string name="description">Description about yourself</string>
     <string name="upload">Upload</string>
-    <string name="uploadYourFile">Upload your file</string>
+    <string name="uploadYourFile">Upload your curriculum vitae</string>
     <string name="setRecommendation">Set Recommendation</string>
     <string name="category">Category</string>
     <string name="categoryOptional">Category (optional)</string>
@@ -42,7 +42,7 @@
     <string name="sendReset">Send reset password</string>
     <string name="or">OR</string>
     <string name="minimumSalary">Minimum salary</string>
-    <string name="viewFile">View file</string>
+    <string name="viewFile">View CV</string>
     <string name="addPortfolio">Add portfolio</string>
     <string name="addButton">Add</string>
     <string name="title">Title</string>
