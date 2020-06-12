@@ -84,4 +84,6 @@
     <string name="FavoriteEmpty">Favorite is empty</string>
     <string name="callCustomerService">Call Customer Service</string>
     <string name="applicationEmpty">Application history is empty</string>
+    <string name="image">Image :</string>
+    <string name="imageGallery">Image gallery</string>
 </resources>

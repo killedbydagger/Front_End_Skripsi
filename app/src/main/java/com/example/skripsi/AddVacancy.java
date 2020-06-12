@@ -115,7 +115,7 @@ public class AddVacancy extends AppCompatActivity {
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
                     sp_position.setEnabled(false);
                     sp_position.setBackgroundResource(R.drawable.edit_text_card_gray);
-                } else if (position == 6) {
+                } else if (position == 19) {
                     et_gaji.setText("0");
                     et_gaji.setEnabled(false);
                     et_gaji.setBackgroundResource(R.drawable.edit_text_card_gray);
@@ -156,10 +156,10 @@ public class AddVacancy extends AppCompatActivity {
 
                 if (!validationChecks.containsValue(false)) {
                     int tampung;
-                    if (sp_kategori.getSelectedItemPosition() != 6) {
+                    if (sp_kategori.getSelectedItemPosition() != 19) {
                         tampung = compared_position.get(sp_position.getSelectedItem().toString());
                     } else {
-                        tampung = 7;
+                        tampung = 15;
                     }
                     try {
                         String deskripsi = et_deskripsi.getText().toString();

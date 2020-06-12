@@ -376,6 +376,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
+                    System.out.println("Status : " + status);
                     if(status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Please check your email to finish your registration", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();

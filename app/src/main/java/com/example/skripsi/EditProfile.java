@@ -1,9 +1,18 @@
 package com.example.skripsi;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -26,6 +35,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +47,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class EditProfile extends AppCompatActivity {
@@ -43,7 +57,7 @@ public class EditProfile extends AppCompatActivity {
     TextView tv_DOB, tv_email;
     Spinner sp_lastEducation, sp_location;
     Button btn_save;
-    ImageView btn_close;
+    ImageView btn_close, add, img_profile;
 
     static int PRIVATE_MODE = 0;
 
@@ -74,11 +88,37 @@ public class EditProfile extends AppCompatActivity {
     public static final String LOCATION_ID = "LOCATION_ID";
     public static final String LOCATION_NAME = "LOCATION_NAME";
 
+    public static final String IMG_URL = "IMG_URL";
+
+    private static final int IMAGE_PICK_CODE = 1000;
+    private static final int PERMISSION_CODE = 1001;
+
+    File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        img_profile = findViewById(R.id.img_profile);
+
+        add = findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    }else{
+                        pickImageFromGallery();
+                    }
+                }
+                else{
+                    pickImageFromGallery();
+                }
+            }
+        });
 
         et_firstName = findViewById(R.id.et_firstName);
         et_lastName = findViewById(R.id.et_lastName);
@@ -102,28 +142,6 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-            }
-        });
-
-        btn_save = findViewById(R.id.btn_save);
-        btn_save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateFirstName();
-                validateLastName();
-                validateDate();
-                validateLocation();
-                validateEducation();
-                validatePhoneNumber();
-
-                if (!validationChecks.containsValue(false)) {
-                    try {
-                        editProfile();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
             }
         });
 
@@ -157,13 +175,15 @@ public class EditProfile extends AppCompatActivity {
 
         sessionManager = new SessionManager(this);
 
-        HashMap<String, String> user = sessionManager.getUserDetail();
+        final HashMap<String, String> user = sessionManager.getUserDetail();
         String mFirstName = user.get(sessionManager.FIRST_NAME);
         String mLastName = user.get(sessionManager.LAST_NAME);
         String mDescription = user.get(sessionManager.DESCRIPTION);
         String mPhone = user.get(sessionManager.PHONE);
         String mDob = user.get(sessionManager.DOB);
         String mEmail = user.get(sessionManager.EMAIL);
+
+        tanggal = mDob;
 
 //        String[] splitDob = mDob.split("\\s+");
 //        String tampungTanggal = splitDob[0];
@@ -201,7 +221,67 @@ public class EditProfile extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        btn_save = findViewById(R.id.btn_save);
+        btn_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                validateFirstName();
+                validateLastName();
+                validateDate();
+                validateLocation();
+                validateEducation();
+                validatePhoneNumber();
+
+                if (!validationChecks.containsValue(false)) {
+                    try {
+                        editPhoto(imageFile, user.get(sessionManager.ID));
+                        editProfile();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
     }
+
+    private void pickImageFromGallery() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, IMAGE_PICK_CODE);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PERMISSION_CODE:{
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    pickImageFromGallery();
+                }
+                else{
+                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+            Uri selectedImageUri = data.getData();
+            String filePath = FetchPath.getPath(this, selectedImageUri);
+            imageFile = new File(filePath);
+            img_profile.setImageURI(selectedImageUri);
+
+//            Uri photoUri = data.getData();
+//            if (photoUri != null) {
+//                String filePath = FetchPath.getPath(this, photoUri);
+//            }
+        }
+    }
+
 
     private void showDateDialog() {
 
@@ -345,8 +425,8 @@ public class EditProfile extends AppCompatActivity {
         jsonBody.put("location", sp_location.getSelectedItemPosition());
         jsonBody.put("description", et_description.getText().toString());
         jsonBody.put("upload_file", null);
-        jsonBody.put("phone", et_phoneNumber.getText().toString());
-        jsonBody.put("dateOfBirth", tv_DOB.getText().toString());
+        jsonBody.put("phone", "62" + et_phoneNumber.getText().toString());
+        jsonBody.put("dateOfBirth", tanggal);
         jsonBody.put("email", tv_email.getText().toString());
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -416,5 +496,44 @@ public class EditProfile extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
+    private void editPhoto(File imageView, String userId){
+        final String URL = "https://springjava-1591708327203.azurewebsites.net/User/setUserPhotoProfile";
+        //final String URL = "http://25.54.110.177:8095/User/setUserPhotoProfile";
+        MultipartRequest multipartRequest = new MultipartRequest(URL, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    System.out.println("MASUK PAH HAJI");
+                    if(status.equals("Success")){
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String userImgURL = object.getString("user_imageURL");
+
+                            editor.putString(IMG_URL, userImgURL);
+                            editor.apply();
+                            Toast.makeText(getApplicationContext(), "Success to change photo", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                    else {
+                        Toast.makeText(getApplicationContext(), "Failed to change photo", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, imageView, userId );
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(multipartRequest);
+    }
 
 }

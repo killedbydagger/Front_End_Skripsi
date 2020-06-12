@@ -206,6 +206,7 @@ public class HomeFragment extends Fragment {
 
     private void loadRecommendation(String id, String categories, int locationid) throws JSONException {
         String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/recommendVacancy";
+        //String URL = "http://25.54.110.177:8095/Vacancy/recommendVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
         jsonBody.put("categories", categories);

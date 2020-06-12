@@ -9,6 +9,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.entity.mime.content.FileBody;
@@ -37,7 +38,7 @@ public class MultipartRequest extends Request<JSONObject>{
         this.file = image;
         this.user_id = user_id;
 
-        entity.addPart(FILE_PART_NAME, new FileBody(file));
+        entity.addPart(FILE_PART_NAME, new FileBody(file, ContentType.create("image/jpg"), file.getName()));
         try {
             entity.addPart(STRING_PART_NAME, new StringBody(user_id));
         } catch (UnsupportedEncodingException e) {
@@ -60,9 +61,9 @@ public class MultipartRequest extends Request<JSONObject>{
         {
             httpentity.writeTo(bos);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
-            VolleyLog.e("IOException writing to ByteArrayOutputStream");
+            e.printStackTrace();
         }
         return bos.toByteArray();
     }

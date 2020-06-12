@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/action"
-        android:layout_marginHorizontal="10sp"
+        android:layout_marginHorizontal="20sp"
         android:layout_marginTop="10sp"
         android:scrollbars="vertical" />
 

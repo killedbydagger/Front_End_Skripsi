@@ -176,8 +176,8 @@ public class SearchFragment extends Fragment {
                 }
                 else {
                     int tampung;
-                    if(sp_kategori.getSelectedItemPosition() ==6){
-                        tampung = 7;
+                    if(sp_kategori.getSelectedItemPosition() ==19){
+                        tampung = 15;
                     }
                     else if(sp_kategori.getSelectedItemPosition() ==0){
                         tampung = -1;
