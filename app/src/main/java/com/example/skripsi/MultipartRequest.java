@@ -21,26 +21,32 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 public class MultipartRequest extends Request<JSONObject>{
 
     private MultipartEntityBuilder entity = MultipartEntityBuilder.create();
     private static final String FILE_PART_NAME = "image";
-    private static final String STRING_PART_NAME = "user_id";
+//    private static final String STRING_PART_NAME = "user_id";
+    private final Map<String,String> bodypart;
     private final Response.Listener<JSONObject> mListener;
     private final File file;
-    private final String user_id;
+    //private final String user_id;
     private HttpEntity httpentity;
 
-    public MultipartRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, File image, String user_id) {
+    public MultipartRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, File image, Map<String, String> bodypart) {
         super(Method.POST, url, errorListener);
         mListener = listener;
         this.file = image;
-        this.user_id = user_id;
+        this.bodypart = bodypart;
 
         entity.addPart(FILE_PART_NAME, new FileBody(file, ContentType.create("image/jpg"), file.getName()));
         try {
-            entity.addPart(STRING_PART_NAME, new StringBody(user_id));
+            if (bodypart != null) {
+                for (Map.Entry<String, String> entry : bodypart.entrySet()) {
+                    entity.addPart(entry.getKey(), new StringBody(entry.getValue()));
+                }
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

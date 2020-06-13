@@ -7,11 +7,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -37,6 +39,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,6 +98,8 @@ public class EditProfile extends AppCompatActivity {
     private static final int PERMISSION_CODE = 1001;
 
     File imageFile;
+
+    String flag = "N";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,6 +194,39 @@ public class EditProfile extends AppCompatActivity {
 //        String[] splitDob = mDob.split("\\s+");
 //        String tampungTanggal = splitDob[0];
 
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
+
+        if (user.get(sessionManager.IMG_URL) == null) {
+            img_profile.setImageResource(R.drawable.logo1);
+        }
+        else {
+            try {
+                URL url = new URL(user.get(sessionManager.IMG_URL));
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                img_profile.setImageBitmap(myBitmap);
+                img_profile.setScaleType(ImageView.ScaleType.FIT_XY);
+
+//                System.out.println("img url :" + user.get(sessionManager.IMG_URL));
+//                URL url = new URL(user.get(sessionManager.IMG_URL));
+//                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                img_profile.setImageBitmap(bmp);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         String date = user.get(sessionManager.DOB);
         SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
@@ -234,7 +273,9 @@ public class EditProfile extends AppCompatActivity {
 
                 if (!validationChecks.containsValue(false)) {
                     try {
-                        editPhoto(imageFile, user.get(sessionManager.ID));
+                        if(!flag.equals("N") ){
+                            editPhoto(imageFile, user.get(sessionManager.ID));
+                        }
                         editProfile();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -274,11 +315,8 @@ public class EditProfile extends AppCompatActivity {
             String filePath = FetchPath.getPath(this, selectedImageUri);
             imageFile = new File(filePath);
             img_profile.setImageURI(selectedImageUri);
-
-//            Uri photoUri = data.getData();
-//            if (photoUri != null) {
-//                String filePath = FetchPath.getPath(this, photoUri);
-//            }
+            img_profile.setScaleType(ImageView.ScaleType.FIT_XY);
+            flag = "Y";
         }
     }
 
@@ -446,6 +484,7 @@ public class EditProfile extends AppCompatActivity {
                             String userPhone = object.getString("user_phone");
                             String userDOB = object.getString("user_dateOfBirth");
                             String userDescription = object.getString("user_description");
+                            String userImage = object.getString("user_imageURL");
 
                             JSONObject object1 = object.getJSONObject("education");
                             String educationId = object1.getString("education_id");
@@ -465,6 +504,7 @@ public class EditProfile extends AppCompatActivity {
                             editor.putString(LOCATION_NAME, locationName);
                             editor.putString(EDUCATION_ID, educationId);
                             editor.putString(EDUCATION_NAME, educationName);
+                            editor.putString(IMG_URL, userImage);
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Edit profile success", Toast.LENGTH_LONG).show();
@@ -496,27 +536,20 @@ public class EditProfile extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void editPhoto(File imageView, String userId){
+    private void editPhoto(File imageView, String userId) throws JSONException {
         final String URL = "https://springjava-1591708327203.azurewebsites.net/User/setUserPhotoProfile";
         //final String URL = "http://25.54.110.177:8095/User/setUserPhotoProfile";
+        Map<String,String> bodypart = new HashMap<>();
+        bodypart.put("user_id", userId);
+
         MultipartRequest multipartRequest = new MultipartRequest(URL, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
-                    System.out.println("MASUK PAH HAJI");
+                    System.out.println("status : " + status);
                     if(status.equals("Success")){
-                        JSONArray jsonArray = response.getJSONArray("data");
 
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(i);
-
-                            String userImgURL = object.getString("user_imageURL");
-
-                            editor.putString(IMG_URL, userImgURL);
-                            editor.apply();
-                            Toast.makeText(getApplicationContext(), "Success to change photo", Toast.LENGTH_LONG).show();
-                        }
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Failed to change photo", Toast.LENGTH_LONG).show();
@@ -530,10 +563,9 @@ public class EditProfile extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }, imageView, userId );
+        }, imageView, bodypart );
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(multipartRequest);
     }
-
 }

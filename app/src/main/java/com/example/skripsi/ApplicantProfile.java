@@ -3,8 +3,11 @@ package com.example.skripsi;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,28 +26,65 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ApplicantProfile extends AppCompatActivity {
     private static final int REQUEST_CALL = 1;
 
+    ViewDialog viewDialog;
+
     Button btn_applicantViewFile, btn_applicantCall, btn_applicantEmail;
-    ImageView img_close;
+    ImageView img_close, img_applicantPhoto;
     TextView tv_applicantName, tv_applicantDOB, tv_applicantEducation, tv_applicantLocation, tv_applicantDesc, tv_userPhoneNum, tv_userEmailAdd;
+
+    private RecyclerView mList;
+
+    private LinearLayoutManager linearLayoutManager;
+    private DividerItemDecoration dividerItemDecoration;
+    private List<Portfolio> portfolioList;
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applicant_profile);
+
+        img_applicantPhoto = findViewById(R.id.img_applicantPhoto);
+
+        viewDialog = new ViewDialog(ApplicantProfile.this);
+        viewDialog.showDialog();
+
+        mList = findViewById(R.id.rv_photo);
+
+        portfolioList = new ArrayList<>();
+        adapter = new PortfolioAdapter(getApplicationContext(),portfolioList);
+
+        linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+
+        mList.setHasFixedSize(true);
+        mList.setAdapter(adapter);
+        mList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
 
         tv_applicantName = findViewById(R.id.tv_applicantName);
         tv_applicantDOB = findViewById(R.id.tv_applicantDOB);
@@ -132,13 +172,16 @@ public class ApplicantProfile extends AppCompatActivity {
                         JSONArray jsonArray = response.getJSONArray("data");
 
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(0);
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String applicantId = object.getString("user_id");
 
                             String applicantName = object.getString("user_first_name") + " " + object.getString("user_last_name");
                             String applicantDOB = object.getString("user_dateOfBirth");
                             String applicantDesc = object.getString("user_description");
                             String applicantPhone = object.getString("user_phone");
                             String applicantEmail = object.getString("user_email");
+                            String applicantImgURL = object.getString("user_imageURL");
 
                             JSONObject object1 = object.getJSONObject("education");
                             String applicantEducation = object1.getString("education_name");
@@ -160,12 +203,38 @@ public class ApplicantProfile extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
+                            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                            if (SDK_INT > 8)
+                            {
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                        .permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
+                                //your codes here
+
+                            }
+                                try {
+                                    java.net.URL url = new URL(applicantImgURL);
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setDoInput(true);
+                                    connection.connect();
+                                    InputStream inputStream = connection.getInputStream();
+                                    Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                                    img_applicantPhoto.setImageBitmap(myBitmap);
+                                    img_applicantPhoto.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+
                             tv_applicantDesc.setText(applicantDesc);
                             tv_applicantEducation.setText(applicantEducation);
                             tv_applicantLocation.setText(applicantLocation);
                             tv_userPhoneNum.setText(applicantPhone);
                             tv_userEmailAdd.setText(applicantEmail);
 
+                            loadImagePortfolio(applicantId);
                         }
                     } else {
                         Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
@@ -190,5 +259,58 @@ public class ApplicantProfile extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(jsonObjectRequest);
+    }
+
+    private void loadImagePortfolio(String id) throws JSONException {
+        String URL = "https://springjava-1591708327203.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
+        //String URL = "http://25.54.110.177:8095/UserPortfolio/getAllUserPortfolio";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", id);
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    portfolioList.clear();
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            Portfolio portfolio = new Portfolio();
+
+                            portfolio.setImgId(object.getString("portfolio_id"));
+                            portfolio.setImgURL(object.getString("image_url"));
+
+                            portfolioList.add(portfolio);
+                        }
+                        adapter.notifyDataSetChanged();
+                        viewDialog.hideDialog();
+                    } else {
+                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplication(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
+                return params;
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsonObjectRequest);
+
     }
 }

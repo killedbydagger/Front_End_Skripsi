@@ -6,7 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -27,6 +30,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -73,6 +79,7 @@ public class BusinessCenter extends AppCompatActivity {
         viewDialog = new ViewDialog(BusinessCenter.this);
         viewDialog.showDialog();
 
+        img_Business = findViewById(R.id.img_Business);
 
         tv_namaPerusahaan = findViewById(R.id.tv_namaPerusahaan);
         tv_lokasiPerusahaan = findViewById(R.id.tv_lokasiPerusahaan);
@@ -168,6 +175,7 @@ public class BusinessCenter extends AppCompatActivity {
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
         tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
 
+
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
@@ -187,7 +195,41 @@ public class BusinessCenter extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+            if (SDK_INT > 8)
+            {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                        .permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                //your codes here
+
+            }
+
+            if (business.get(sessionManager.BUSINESS_IMAGE) == null) {
+                img_Business.setImageResource(R.drawable.logo1);
+            }
+            else{
+                try {
+                    String urlGambar = business.get(sessionManager.BUSINESS_IMAGE);
+                    System.out.println(urlGambar);
+                    URL url = new URL(urlGambar);
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setDoInput(true);
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                    img_Business.setImageBitmap(myBitmap);
+                    img_Business.setScaleType(ImageView.ScaleType.FIT_XY);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
         }
+
+
     }
 
     private void loadVacancyData(String id) throws JSONException {
@@ -299,6 +341,40 @@ public class BusinessCenter extends AppCompatActivity {
                             HashMap<String, String> business = sessionManager.getBusinessDetail();
                             tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
                             tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+
+                            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                            if (SDK_INT > 8)
+                            {
+                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                        .permitAll().build();
+                                StrictMode.setThreadPolicy(policy);
+                                //your codes here
+
+                            }
+
+                            if (business.get(sessionManager.BUSINESS_IMAGE) == null) {
+                                img_Business.setImageResource(R.drawable.logo1);
+                            }
+                            else{
+                                try {
+                                    URL url = new URL(busImage);
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setDoInput(true);
+                                    connection.connect();
+                                    InputStream inputStream = connection.getInputStream();
+                                    Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                                    img_Business.setImageBitmap(myBitmap);
+                                    img_Business.setScaleType(ImageView.ScaleType.FIT_XY);
+
+//                System.out.println("img url :" + user.get(sessionManager.IMG_URL));
+//                URL url = new URL(user.get(sessionManager.IMG_URL));
+//                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//                img_profile.setImageBitmap(bmp);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
 
                             tampungId = busId;
                         }
