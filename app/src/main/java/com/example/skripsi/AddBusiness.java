@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -65,6 +66,8 @@ public class AddBusiness extends AppCompatActivity {
     File imageFile;
 
     String flag = "N";
+
+    ViewDialog viewDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,10 +128,18 @@ public class AddBusiness extends AppCompatActivity {
 
                 if (!validationChecks.containsValue(false)) {
                     int locationId = sp_location.getSelectedItemPosition();
-                    try {
-                        createBisnis(userId , et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    //createBisnis(userId , et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
+                    viewDialog = new ViewDialog(AddBusiness.this);
+                    viewDialog.showDialog();
+                    if(flag.equals("N")){
+                        try {
+                            createBisnisWithoutImage(userId , et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        creatBusinessNew(imageFile ,userId , et_businessName.getText().toString(), String.valueOf(locationId), et_businessOverview.getText().toString());
                     }
                 }
             }
@@ -165,6 +176,8 @@ public class AddBusiness extends AppCompatActivity {
             img_business.setImageURI(selectedImageUri);
             img_business.setScaleType(ImageView.ScaleType.FIT_XY);
             flag = "Y";
+
+            System.out.println(imageFile);
         }
     }
 
@@ -302,5 +315,103 @@ public class AddBusiness extends AppCompatActivity {
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(multipartRequest);
+    }
+
+    private void creatBusinessNew(File imageView, String id, String namaBisnis, String locationId, String overview){
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusiness";
+        Map<String,String> bodypart = new HashMap<>();
+
+        bodypart.put("user_id", id);
+        bodypart.put("business_name", namaBisnis);
+        bodypart.put("location_id", locationId);
+        bodypart.put("business_overview", overview);
+
+        MultipartTest multipartTest = new MultipartTest(URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status = jsonObject.getString("status");
+                    if (status.equals("Success")) {
+                        Toast.makeText(getApplicationContext(), "New business has been created", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Failed to create new business", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, imageView, bodypart);
+
+        multipartTest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(multipartTest);
+    }
+
+    private void createBisnisWithoutImage(String id, String namaBisnis, int locationId, String overview) throws JSONException {
+        Context mContext = AddBusiness.this;
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusinessWithoutImage";
+        //String URL = "http://25.54.110.177:8095/Business/createNewBusiness";
+        JSONObject jsonBody = new JSONObject();
+
+        jsonBody.put("user_id", id);
+        jsonBody.put("business_name", namaBisnis);
+        jsonBody.put("location_id", locationId);
+        jsonBody.put("business_overview", overview);
+
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    String status = response.getString("status");
+                    System.out.println(status);
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                        }
+
+                        Toast.makeText(getApplicationContext(), "New business has been created", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Failed to create new business", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "applicatiom/json");
+                return params;
+            }
+        };
+
+        requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue.add(jsonObjectRequest);
     }
 }

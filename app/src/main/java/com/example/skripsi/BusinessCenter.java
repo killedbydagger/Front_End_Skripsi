@@ -77,7 +77,7 @@ public class BusinessCenter extends AppCompatActivity {
         setContentView(R.layout.activity_business_center);
 
         viewDialog = new ViewDialog(BusinessCenter.this);
-        viewDialog.showDialog();
+        //viewDialog.showDialog();
 
         img_Business = findViewById(R.id.img_Business);
 
@@ -172,15 +172,16 @@ public class BusinessCenter extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         HashMap<String, String> business = sessionManager.getBusinessDetail();
-        tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
-        tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+//        tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
+//        tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
 
+        viewDialog.showDialog();
 
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
 
-        if (business.get(sessionManager.BUSINESS_ID) == null) {
+//        if (business.get(sessionManager.BUSINESS_ID) == null) {
             try {
                 sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
                 editor = sharedPreferences.edit();
@@ -188,46 +189,46 @@ public class BusinessCenter extends AppCompatActivity {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        } else {
-            try {
-                viewRating(business.get(sessionManager.BUSINESS_ID));
-                loadVacancyData(business.get(sessionManager.BUSINESS_ID));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            int SDK_INT = android.os.Build.VERSION.SDK_INT;
-            if (SDK_INT > 8)
-            {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                        .permitAll().build();
-                StrictMode.setThreadPolicy(policy);
-                //your codes here
-
-            }
-
-            if (business.get(sessionManager.BUSINESS_IMAGE) == null) {
-                img_Business.setImageResource(R.drawable.logo1);
-            }
-            else{
-                try {
-                    String urlGambar = business.get(sessionManager.BUSINESS_IMAGE);
-                    System.out.println(urlGambar);
-                    URL url = new URL(urlGambar);
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                    connection.setDoInput(true);
-                    connection.connect();
-                    InputStream inputStream = connection.getInputStream();
-                    Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
-                    img_Business.setImageBitmap(myBitmap);
-                    img_Business.setScaleType(ImageView.ScaleType.FIT_XY);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        }
+//        } else {
+//            try {
+//                viewRating(business.get(sessionManager.BUSINESS_ID));
+//                loadVacancyData(business.get(sessionManager.BUSINESS_ID));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//
+//            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+//            if (SDK_INT > 8)
+//            {
+//                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+//                        .permitAll().build();
+//                StrictMode.setThreadPolicy(policy);
+//                //your codes here
+//
+//            }
+//
+//            if (business.get(sessionManager.BUSINESS_IMAGE) == null) {
+//                img_Business.setImageResource(R.drawable.logo1);
+//            }
+//            else{
+//                try {
+//                    String urlGambar = business.get(sessionManager.BUSINESS_IMAGE);
+//                    System.out.println(urlGambar);
+//                    URL url = new URL(urlGambar);
+//                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//                    connection.setDoInput(true);
+//                    connection.connect();
+//                    InputStream inputStream = connection.getInputStream();
+//                    Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+//                    img_Business.setImageBitmap(myBitmap);
+//                    img_Business.setScaleType(ImageView.ScaleType.FIT_XY);
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }
 
 
     }
@@ -275,7 +276,6 @@ public class BusinessCenter extends AppCompatActivity {
                         }
 
                         adapter.notifyDataSetChanged();
-                        viewDialog.hideDialog();
                     } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
@@ -336,11 +336,16 @@ public class BusinessCenter extends AppCompatActivity {
                             editor.putString(BUSINESS_LOCATION_ID, locationId);
                             editor.putString(BUSINESS_LOCATION_NAME, locationName);
                             editor.putString(BUSINESS_OVERVIEW, busOverview);
-                            editor.putString(BUSINESS_IMAGE, busImage);
+
+                            if(!busImage.equals(null)){
+                                editor.putString(BUSINESS_IMAGE, busImage);
+                            }
+
                             editor.apply();
                             HashMap<String, String> business = sessionManager.getBusinessDetail();
                             tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));
                             tv_lokasiPerusahaan.setText(business.get(sessionManager.BUSINESS_LOCATION_NAME));
+
 
                             int SDK_INT = android.os.Build.VERSION.SDK_INT;
                             if (SDK_INT > 8)
@@ -352,7 +357,7 @@ public class BusinessCenter extends AppCompatActivity {
 
                             }
 
-                            if (business.get(sessionManager.BUSINESS_IMAGE) == null) {
+                            if (busImage.equals("null")) {
                                 img_Business.setImageResource(R.drawable.logo1);
                             }
                             else{
@@ -366,10 +371,6 @@ public class BusinessCenter extends AppCompatActivity {
                                     img_Business.setImageBitmap(myBitmap);
                                     img_Business.setScaleType(ImageView.ScaleType.FIT_XY);
 
-//                System.out.println("img url :" + user.get(sessionManager.IMG_URL));
-//                URL url = new URL(user.get(sessionManager.IMG_URL));
-//                Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-//                img_profile.setImageBitmap(bmp);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -381,6 +382,7 @@ public class BusinessCenter extends AppCompatActivity {
 
                         viewRating(tampungId);
                         loadVacancyData(tampungId);
+                        viewDialog.hideDialog();
 
                     } else if (status.equals("Not Registered")) {
                         viewDialog.hideDialog();

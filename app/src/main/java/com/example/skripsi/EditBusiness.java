@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -117,6 +118,7 @@ public class EditBusiness extends AppCompatActivity {
         final String business_id = business.get(sessionManager.BUSINESS_ID);
         String businessName = business.get(sessionManager.BUSINESS_NAME);
         String businessOverview = business.get(sessionManager.BUSINESS_OVERVIEW);
+        String businessImage = business.get(sessionManager.BUSINESS_IMAGE);
 
         et_businessName.setText(businessName);
         et_businessOverview.setText(businessOverview);
@@ -143,12 +145,12 @@ public class EditBusiness extends AppCompatActivity {
 
         }
 
-        if (business.get(sessionManager.BUSINESS_IMAGE) == null) {
+        if (businessImage.equals("null")) {
             img_business.setImageResource(R.drawable.logo1);
         }
         else {
             try {
-                URL url = new URL(business.get(sessionManager.BUSINESS_IMAGE));
+                URL url = new URL(businessImage);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setDoInput(true);
                 connection.connect();
@@ -171,14 +173,24 @@ public class EditBusiness extends AppCompatActivity {
                 if (!validationChecks.containsValue(false)) {
                     viewDialog = new ViewDialog(EditBusiness.this);
                     viewDialog.showDialog();
-                    try {
-                        if(!flag.equals("N")){
-                            editPhotoBusiness(imageFile, business_id);
+//                    try {
+//                        editProfile(userId, business_id, et_businessName.getText().toString(), sp_location.getSelectedItemPosition(), et_businessOverview.getText().toString(), imageFile);
+//
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+
+                    if(flag.equals("N")){
+                        try {
+                            editProfileWithoutImage(userId, business_id , et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        editProfile(userId, business_id, et_businessName.getText().toString(), sp_location.getSelectedItemPosition(), et_businessOverview.getText().toString());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                     }
+                    else{
+                        editBusinessMulti(imageFile ,userId, business_id , et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
+                    }
+
                 }
 
             }
@@ -263,9 +275,9 @@ public class EditBusiness extends AppCompatActivity {
         sp_location.setSelection(Integer.parseInt(id));
     }
 
-    private void editProfile(String userId, String businessId, String businessName, int locationId, String businessOverview) throws JSONException {
+    private void editProfileWithoutImage(String userId, String businessId, String businessName, String locationId, String businessOverview) throws JSONException {
         Context mContext = EditBusiness.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusiness";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusinessWithoutImage";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("business_id", businessId);
@@ -280,36 +292,12 @@ public class EditBusiness extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
-                        JSONArray jsonArray = response.getJSONArray("data");
-
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject object = jsonArray.getJSONObject(i);
-
-                            String business_Name = object.getString("bus_name");
-                            String businessOverview = object.getString("bus_overview");
-
-                            JSONObject object1 = object.getJSONObject("location");
-                            String location_Id = object1.getString("location_id");
-                            String location_Name = object1.getString("location_name");
-
-                            System.out.println("ke ubah : "+ object.getString("bus_image"));
-
-                            editor.putString(BUSINESS_NAME, business_Name);
-                            editor.putString(BUSINESS_LOCATION_ID, location_Id);
-                            editor.putString(BUSINESS_LOCATION_NAME, location_Name);
-                            editor.putString(BUSINESS_OVERVIEW, businessOverview);
-                            editor.putString(BUSINESS_IMAGE, object.getString("bus_image"));
-                            editor.apply();
-
-                            Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
-//                            Intent businessIntent = new Intent(getApplicationContext(),BusinessCenter.class);
-//                            startActivity(businessIntent);
-                            viewDialog.hideDialog();
-                            finish();
-
-                        }
+                        Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        finish();
                     } else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        Toast.makeText(getApplicationContext(), "Failed to edit business", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -333,37 +321,94 @@ public class EditBusiness extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void editPhotoBusiness(File imageView, String businessId) throws JSONException {
-        final String URL = "https://springjava-1591708327203.azurewebsites.net/Business/setBusinessImage";
-        //final String URL = "http://25.54.110.177:8095/Business/setBusinessImagee";
+//    private void editBusiness(File imageView, String id, String namaBisnis, String locationId, String overview){
+//        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusiness";
+//        Map<String,String> bodypart = new HashMap<>();
+//
+//        bodypart.put("user_id", id);
+//        bodypart.put("business_name", namaBisnis);
+//        bodypart.put("location_id", locationId);
+//        bodypart.put("business_overview", overview);
+//
+//        MultipartTest multipartTest = new MultipartTest(URL, new Response.Listener<String>() {
+//            @Override
+//            public void onResponse(String response) {
+//                try {
+//                    JSONObject jsonObject = new JSONObject(response);
+//                    String status = jsonObject.getString("status");
+//                    if (status.equals("Success")) {
+//                        Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
+//                        viewDialog.hideDialog();
+//                        finish();
+//                    } else {
+//                        Toast.makeText(getApplicationContext(), "Failed to edit business", Toast.LENGTH_LONG).show();
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//
+//            }
+//        }, imageView, bodypart);
+//
+//        multipartTest.setRetryPolicy(new DefaultRetryPolicy(
+//                0,
+//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+//
+//        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//        requestQueue.add(multipartTest);
+//    }
 
+    private void editBusinessMulti(final File imageView, String id, String businessId, String namaBisnis, String locationId, String overview){
+        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusiness";
         Map<String,String> bodypart = new HashMap<>();
-        bodypart.put("bus_id", businessId);
 
-        MultipartRequest multipartRequest = new MultipartRequest(URL, new Response.Listener<JSONObject>() {
+        bodypart.put("user_id", id);
+        bodypart.put("business_id", businessId);
+        bodypart.put("business_name", namaBisnis);
+        bodypart.put("location_id", locationId);
+        bodypart.put("business_overview", overview);
+
+        MultipartTest multipartTest = new MultipartTest(URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 try {
-                    String status = response.getString("status");
-                    System.out.println("status : " + status);
-                    if(status.equals("Success")){
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status = jsonObject.getString("status");
+                    if (status.equals("Success")) {
+                        System.out.println(imageView);
+                        Toast.makeText(getApplicationContext(), "Edit business success", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        finish();
+                    } else {
+                        viewDialog.hideDialog();
+                        Toast.makeText(getApplicationContext(), "Failed to edit business", Toast.LENGTH_LONG).show();
+                    }
 
-                    }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Failed to change photo", Toast.LENGTH_LONG).show();
-                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
-        }, imageView, bodypart );
+        }, imageView, bodypart);
+
+        multipartTest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(multipartRequest);
+        requestQueue.add(multipartTest);
     }
 }

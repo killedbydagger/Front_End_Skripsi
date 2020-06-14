@@ -237,6 +237,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mPendidikanTerakhir = user.get(sessionManager.EDUCATION_NAME);
         String mLokasi = user.get(sessionManager.LOCATION_NAME);
         String mDescription = user.get(sessionManager.DESCRIPTION);
+        String mImage = user.get(sessionManager.IMG_URL);
 
         tv_nama.setText(mFirstName + " " + mLastName);
 //        String[] splitDob = mDob.split("\\s+");
@@ -265,7 +266,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         }
 
-        if (user.get(sessionManager.IMG_URL) == null) {
+        if (mImage == null || mImage.equals("null")) {
             img_profile.setImageResource(R.drawable.logo1);
         }
         else{
@@ -367,6 +368,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
                                 portfolio.setImgId(object.getString("portfolio_id"));
                                 portfolio.setImgURL(object.getString("image_url"));
+                                portfolio.setUserId(object.getString("user_id"));
 
                                 portfolioList.add(portfolio);
                             }

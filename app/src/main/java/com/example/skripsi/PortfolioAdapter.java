@@ -1,6 +1,7 @@
 package com.example.skripsi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -51,6 +52,17 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        holder.img_portfolio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), ViewPortfolio.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("IMG_URL", portfolio.getImgURL());
+                intent.putExtra("IMG_USER_ID", portfolio.getUserId());
+                view.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

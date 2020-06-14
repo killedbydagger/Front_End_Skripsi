@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -137,8 +138,6 @@ public class EditProfile extends AppCompatActivity {
         sp_lastEducation = findViewById(R.id.sp_lastEducation);
         sp_location = findViewById(R.id.sp_location);
 
-        viewDialog = new ViewDialog(EditProfile.this);
-
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
 
         dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -188,6 +187,7 @@ public class EditProfile extends AppCompatActivity {
         String mPhone = user.get(sessionManager.PHONE);
         String mDob = user.get(sessionManager.DOB);
         String mEmail = user.get(sessionManager.EMAIL);
+        String mImage = user.get(sessionManager.IMG_URL);
 
         tanggal = mDob;
 
@@ -204,7 +204,7 @@ public class EditProfile extends AppCompatActivity {
 
         }
 
-        if (user.get(sessionManager.IMG_URL) == null) {
+        if (mImage == null || mImage.equals("null")) {
             img_profile.setImageResource(R.drawable.logo1);
         }
         else {
@@ -234,7 +234,6 @@ public class EditProfile extends AppCompatActivity {
         try {
             oneWayTripDate = input.parse(date);
             tv_DOB.setText(output.format(oneWayTripDate));
-            System.out.println("ini tanggalnya: " + oneWayTripDate);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -272,14 +271,18 @@ public class EditProfile extends AppCompatActivity {
                 validatePhoneNumber();
 
                 if (!validationChecks.containsValue(false)) {
-                    try {
-                        if(!flag.equals("N") ){
-                            editPhoto(imageFile, user.get(sessionManager.ID));
+                    viewDialog = new ViewDialog(EditProfile.this);
+                    viewDialog.showDialog();
+                        if(flag.equals("N") ){
+                            try {
+                                editProfileWithoutImage();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                         }
-                        editProfile();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        else{
+                                editProfile(imageFile);
+                        }
                 }
 
             }
@@ -453,19 +456,20 @@ public class EditProfile extends AppCompatActivity {
         sp_location.setSelection(Integer.parseInt(id));
     }
 
-    private void editProfile() throws JSONException {
+    private void editProfileWithoutImage() throws JSONException {
         Context mContext = EditProfile.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/User/editUserProfile";
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/editUserProfileWithoutImage";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("first_name", et_firstName.getText().toString());
         jsonBody.put("last_name", et_lastName.getText().toString());
         jsonBody.put("lastEducation", sp_lastEducation.getSelectedItemPosition());
         jsonBody.put("location", sp_location.getSelectedItemPosition());
         jsonBody.put("description", et_description.getText().toString());
-        jsonBody.put("upload_file", null);
         jsonBody.put("phone", "62" + et_phoneNumber.getText().toString());
         jsonBody.put("dateOfBirth", tanggal);
         jsonBody.put("email", tv_email.getText().toString());
+
+        System.out.println(jsonBody);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
@@ -508,11 +512,13 @@ public class EditProfile extends AppCompatActivity {
                             editor.apply();
 
                             Toast.makeText(getApplicationContext(), "Edit profile success", Toast.LENGTH_LONG).show();
+                            viewDialog.hideDialog();
                             finish();
 
                         }
                     } else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                         Toast.makeText(getApplicationContext(), "Edit profile failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -536,36 +542,90 @@ public class EditProfile extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void editPhoto(File imageView, String userId) throws JSONException {
-        final String URL = "https://springjava-1591708327203.azurewebsites.net/User/setUserPhotoProfile";
-        //final String URL = "http://25.54.110.177:8095/User/setUserPhotoProfile";
+    private void editProfile(File imageView){
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/editUserProfile";
         Map<String,String> bodypart = new HashMap<>();
-        bodypart.put("user_id", userId);
 
-        MultipartRequest multipartRequest = new MultipartRequest(URL, new Response.Listener<JSONObject>() {
+        bodypart.put("first_name", et_firstName.getText().toString());
+        bodypart.put("last_name", et_lastName.getText().toString());
+        bodypart.put("lastEducation", String.valueOf(sp_lastEducation.getSelectedItemPosition()));
+        bodypart.put("location", String.valueOf(sp_location.getSelectedItemPosition()));
+        bodypart.put("description", et_description.getText().toString());
+        bodypart.put("phone", "62" + et_phoneNumber.getText().toString());
+        bodypart.put("dateOfBirth", tanggal);
+        bodypart.put("email", tv_email.getText().toString());
+
+        MultipartTest multipartTest = new MultipartTest(URL, new Response.Listener<String>() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(String response) {
                 try {
-                    String status = response.getString("status");
-                    System.out.println("status : " + status);
-                    if(status.equals("Success")){
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status = jsonObject.getString("status");
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
 
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+
+                            String userEmail = object.getString("user_email");
+                            String userFirstName = object.getString("user_first_name");
+                            String userLastName = object.getString("user_last_name");
+                            String userPhone = object.getString("user_phone");
+                            String userDOB = object.getString("user_dateOfBirth");
+                            String userDescription = object.getString("user_description");
+                            String userImage = object.getString("user_imageURL");
+
+                            JSONObject object1 = object.getJSONObject("education");
+                            String educationId = object1.getString("education_id");
+                            String educationName = object1.getString("education_name");
+
+                            JSONObject object2 = object.getJSONObject("location");
+                            String locationId = object2.getString("location_id");
+                            String locationName = object2.getString("location_name");
+
+                            editor.putString(EMAIL, userEmail);
+                            editor.putString(FIRST_NAME, userFirstName);
+                            editor.putString(LAST_NAME, userLastName);
+                            editor.putString(PHONE, userPhone);
+                            editor.putString(DOB, userDOB);
+                            editor.putString(DESCRIPTION, userDescription);
+                            editor.putString(LOCATION_ID, locationId);
+                            editor.putString(LOCATION_NAME, locationName);
+                            editor.putString(EDUCATION_ID, educationId);
+                            editor.putString(EDUCATION_NAME, educationName);
+                            editor.putString(IMG_URL, userImage);
+                            editor.apply();
+
+                            System.out.println(userImage);
+
+                            Toast.makeText(getApplicationContext(), "Edit profile success", Toast.LENGTH_LONG).show();
+                            viewDialog.hideDialog();
+                            finish();
+
+                        }
+                    } else {
+                        viewDialog.hideDialog();
+                        Toast.makeText(getApplicationContext(), "Failed to edit profile", Toast.LENGTH_LONG).show();
                     }
-                    else {
-                        Toast.makeText(getApplicationContext(), "Failed to change photo", Toast.LENGTH_LONG).show();
-                    }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
 
             }
-        }, imageView, bodypart );
+        }, imageView, bodypart);
+
+        multipartTest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(multipartRequest);
+        requestQueue.add(multipartTest);
     }
 }

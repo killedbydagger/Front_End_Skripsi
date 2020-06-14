@@ -86,4 +86,5 @@
     <string name="applicationEmpty">Application history is empty</string>
     <string name="image">Image :</string>
     <string name="imageGallery">Image gallery</string>
+    <string name="delete">Delete</string>
 </resources>

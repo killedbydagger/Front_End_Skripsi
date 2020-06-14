@@ -283,6 +283,7 @@ public class ApplicantProfile extends AppCompatActivity {
 
                             portfolio.setImgId(object.getString("portfolio_id"));
                             portfolio.setImgURL(object.getString("image_url"));
+                            portfolio.setUserId(object.getString("user_id"));
 
                             portfolioList.add(portfolio);
                         }

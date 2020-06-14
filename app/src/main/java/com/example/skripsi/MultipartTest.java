@@ -23,24 +23,26 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-public class MultipartRequest extends Request<JSONObject>{
+public class MultipartTest extends Request<String>{
 
     private MultipartEntityBuilder entity = MultipartEntityBuilder.create();
     private static final String FILE_PART_NAME = "image";
     //    private static final String STRING_PART_NAME = "user_id";
     private final Map<String,String> bodypart;
-    private final Response.Listener<JSONObject> mListener;
+    private final Response.Listener<String> mListener;
     private final File file;
     //private final String user_id;
     private HttpEntity httpentity;
 
-    public MultipartRequest(String url, Response.Listener<JSONObject> listener, Response.ErrorListener errorListener, File image, Map<String, String> bodypart) {
+    public MultipartTest(String url, Response.Listener<String> listener, Response.ErrorListener errorListener, File image, Map<String, String> bodypart) {
         super(Method.POST, url, errorListener);
         mListener = listener;
         this.file = image;
         this.bodypart = bodypart;
 
+
         entity.addPart(FILE_PART_NAME, new FileBody(file, ContentType.create("image/jpg"), file.getName()));
+
         try {
             if (bodypart != null) {
                 for (Map.Entry<String, String> entry : bodypart.entrySet()) {
@@ -75,19 +77,20 @@ public class MultipartRequest extends Request<JSONObject>{
     }
 
     @Override
-    protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+    protected Response<String> parseNetworkResponse(NetworkResponse response) {
         try {
-            String jsonString = new String(response.data, HttpHeaderParser.parseCharset(response.headers));
-            return Response.success(new JSONObject(jsonString),HttpHeaderParser.parseCacheHeaders(response));
+//          System.out.println("Network Response "+ new String(response.data, "UTF-8"));
+            return Response.success(new String(response.data, "UTF-8"),
+                    getCacheEntry());
         } catch (UnsupportedEncodingException e) {
-            return Response.error(new ParseError(e));
-        } catch (JSONException je) {
-            return Response.error(new ParseError(je));
+            e.printStackTrace();
+            // fuck it, it should never happen though
+            return Response.success(new String(response.data), getCacheEntry());
         }
     }
 
     @Override
-    protected void deliverResponse(JSONObject response) {
+    protected void deliverResponse(String response) {
         mListener.onResponse(response);
     }
 }
