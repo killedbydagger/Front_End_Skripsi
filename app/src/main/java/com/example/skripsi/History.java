@@ -1,14 +1,14 @@
 package com.example.skripsi;
 
 public class History {
-    public String category, position, title, companyName, location, vacId, status, rating, favoriteFlag, busId, flagRating;
+    public String category, position, title, companyName, location, vacId, status, rating, favoriteFlag, busId, flagRating, busImage;
     public int salary, rateDariUser;
 
     public History() {
 
     }
 
-    public History(String category, String position, String title, String companyName, String location, String vacId, String status, String rating, String favoriteFlag, String busId, String flagRating, int salary, int rateDariUser) {
+    public History(String category, String position, String title, String companyName, String location, String vacId, String status, String rating, String favoriteFlag, String busId, String flagRating, int salary, int rateDariUser, String busImage) {
         this.category = category;
         this.position = position;
         this.title = title;
@@ -22,6 +22,7 @@ public class History {
         this.flagRating = flagRating;
         this.salary = salary;
         this.rateDariUser = rateDariUser;
+        this.busImage = busImage;
     }
 
     public int getRateDariUser() {
@@ -126,5 +127,13 @@ public class History {
 
     public String getBusId() {
         return busId;
+    }
+
+    public String getBusImage() {
+        return busImage;
+    }
+
+    public void setBusImage(String busImage) {
+        this.busImage = busImage;
     }
 }

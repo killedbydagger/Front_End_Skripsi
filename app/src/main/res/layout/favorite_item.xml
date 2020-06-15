@@ -39,12 +39,13 @@
                     android:layout_height="135sp"
                     android:layout_marginLeft="10sp"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginVertical="10sp">
 
                     <ImageView
                         android:id="@+id/img_company"
                         android:layout_width="60sp"
-                        android:layout_height="60sp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         tools:srcCompat="@tools:sample/avatars" />
                 </LinearLayout>

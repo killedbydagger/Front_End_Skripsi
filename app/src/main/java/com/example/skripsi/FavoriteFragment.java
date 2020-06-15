@@ -66,7 +66,7 @@ public class FavoriteFragment extends Fragment {
 
         linearLayoutManager = new LinearLayoutManager(v.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+        //dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
 
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
@@ -118,6 +118,7 @@ public class FavoriteFragment extends Fragment {
                             favorite.setCompanyId(object3.getString("bus_id"));
                             favorite.setCompanyName(object3.getString("bus_name"));
                             favorite.setRating(object3.getString("rating"));
+                            favorite.setCompanyImage(object3.getString("bus_image"));
 
                             JSONObject object4 = object1.getJSONObject("location");
                             favorite.setLocation(object4.getString("location_name"));

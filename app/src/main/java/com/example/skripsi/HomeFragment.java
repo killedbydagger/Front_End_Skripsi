@@ -238,6 +238,7 @@ public class HomeFragment extends Fragment {
                             recommended.setVacancyCompanyName(object3.getString("bus_name"));
                             recommended.setVacancyCompanyRating(object3.getString("rating"));
                             recommended.setBusinessId(object3.getString("bus_id"));
+                            recommended.setBusinessImage(object3.getString("bus_image"));
 
                             JSONObject object4 = object3.getJSONObject("location");
                             recommended.setVacancyLocation(object4.getString("location_name"));

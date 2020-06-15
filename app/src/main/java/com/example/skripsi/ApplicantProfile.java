@@ -11,6 +11,7 @@ import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -62,10 +63,14 @@ public class ApplicantProfile extends AppCompatActivity {
     private List<Portfolio> portfolioList;
     private RecyclerView.Adapter adapter;
 
+    ProgressBar pbLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_applicant_profile);
+
+        pbLoading = findViewById(R.id.pb_loading);
 
         img_applicantPhoto = findViewById(R.id.img_applicantPhoto);
 
@@ -119,6 +124,7 @@ public class ApplicantProfile extends AppCompatActivity {
         });
 
         try {
+            showLoading(true);
             showApplicantProfile();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -289,8 +295,11 @@ public class ApplicantProfile extends AppCompatActivity {
                         }
                         adapter.notifyDataSetChanged();
                         viewDialog.hideDialog();
+                        showLoading(false);
                     } else {
-                        // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                         Toast.makeText(getApplicationContext(), "Load failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
+                        showLoading(false);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -313,5 +322,13 @@ public class ApplicantProfile extends AppCompatActivity {
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         requestQueue.add(jsonObjectRequest);
 
+    }
+
+    public void showLoading(boolean visible) {
+        if (visible) {
+            pbLoading.setVisibility(View.VISIBLE);
+        } else {
+            pbLoading.setVisibility(View.GONE);
+        }
     }
 }

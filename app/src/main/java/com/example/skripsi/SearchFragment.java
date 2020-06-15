@@ -105,7 +105,7 @@ public class SearchFragment extends Fragment {
         adapter = new SearchVacancyAdapter(v.getContext(), searchVacancies);
         linearLayoutManager = new LinearLayoutManager(v.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(rv_searchedList.getContext(), linearLayoutManager.getOrientation());
+        //dividerItemDecoration = new DividerItemDecoration(rv_searchedList.getContext(), linearLayoutManager.getOrientation());
 
         rv_searchedList.setHasFixedSize(true);
         rv_searchedList.setLayoutManager(linearLayoutManager);
@@ -330,6 +330,7 @@ public class SearchFragment extends Fragment {
                             searchVacancy.setVacancyCompanyName(object3.getString("bus_name"));
                             searchVacancy.setVacancyCompanyRating(object3.getString("rating"));
                             searchVacancy.setVacancyBusId(object3.getString("bus_id"));
+                            searchVacancy.setVacancyBusImage(object3.getString("bus_image"));
 
                             JSONObject object4 = object3.getJSONObject("location");
                             searchVacancy.setVacancyLocation(object4.getString("location_name"));

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -58,6 +59,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.widget.ProgressBar;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout drawer;
@@ -67,6 +69,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     Button btn_edit, btn_addPortfolio;
     ImageView img_slideMenuProfile, img_history, img_profile;
     TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc;
+    ProgressBar pbLoading;
     SessionManager sessionManager;
 
     private static final int IMAGE_PICK_CODE = 1000;
@@ -79,14 +82,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     private List<Portfolio> portfolioList;
     private RecyclerView.Adapter adapter;
 
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        viewDialog = new ViewDialog(getActivity());
-        viewDialog.showDialog();
+        pbLoading = v.findViewById(R.id.pb_loading);
 
         mList = v.findViewById(R.id.rv_photo);
 
@@ -215,11 +216,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         }
 
-        try {
-            loadImagePortfolio(user.get(sessionManager.ID));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            loadImagePortfolio(user.get(sessionManager.ID));
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
         return v;
 
@@ -230,6 +231,10 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     @Override
     public void onResume() {
         super.onResume();
+
+        viewDialog = new ViewDialog(getActivity());
+        viewDialog.showDialog();
+
         HashMap<String, String> user = sessionManager.getUserDetail();
         String mFirstName = user.get(sessionManager.FIRST_NAME);
         String mLastName = user.get(sessionManager.LAST_NAME);
@@ -295,6 +300,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         tv_desc.setText(mDescription);
 
         try {
+            showLoading(true);
             loadImagePortfolio(user.get(sessionManager.ID));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -347,57 +353,68 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     }
 
     private void loadImagePortfolio(String id) throws JSONException {
-            String URL = "https://springjava-1591708327203.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
-            //String URL = "http://25.54.110.177:8095/UserPortfolio/getAllUserPortfolio";
-            final JSONObject jsonBody = new JSONObject();
-            jsonBody.put("user_id", id);
+        String URL = "https://springjava-1591708327203.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
+        //String URL = "http://25.54.110.177:8095/UserPortfolio/getAllUserPortfolio";
+        final JSONObject jsonBody = new JSONObject();
+        jsonBody.put("user_id", id);
 
-            final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-                @Override
-                public void onResponse(JSONObject response) {
-                    try {
-                        portfolioList.clear();
-                        String status = response.getString("status");
-                        if (status.equals("Success")) {
-                            JSONArray jsonArray = response.getJSONArray("data");
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    portfolioList.clear();
+                    String status = response.getString("status");
+                    if (status.equals("Success")) {
+                        JSONArray jsonArray = response.getJSONArray("data");
 
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject object = jsonArray.getJSONObject(i);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
 
-                                Portfolio portfolio = new Portfolio();
+                            Portfolio portfolio = new Portfolio();
 
-                                portfolio.setImgId(object.getString("portfolio_id"));
-                                portfolio.setImgURL(object.getString("image_url"));
-                                portfolio.setUserId(object.getString("user_id"));
+                            portfolio.setImgId(object.getString("portfolio_id"));
+                            portfolio.setImgURL(object.getString("image_url"));
+                            portfolio.setUserId(object.getString("user_id"));
 
-                                portfolioList.add(portfolio);
-                            }
-                            adapter.notifyDataSetChanged();
-                            viewDialog.hideDialog();
-                        } else {
-                            // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                            portfolioList.add(portfolio);
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        adapter.notifyDataSetChanged();
+                        viewDialog.hideDialog();
+                        showLoading(false);
+                    } else {
+                        Toast.makeText(getContext(), "Load image failed", Toast.LENGTH_LONG).show();
+                         viewDialog.hideDialog();
+                        showLoading(false);
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }) {
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    final Map<String, String> params = new HashMap<String, String>();
-                    params.put("Context-Type", "application/json");
-                    return params;
-                }
-            };
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
+                return params;
+            }
+        };
 
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            requestQueue.add(jsonObjectRequest);
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        requestQueue.add(jsonObjectRequest);
 
+    }
+
+    public void showLoading(boolean visible) {
+        if (visible) {
+            pbLoading.setVisibility(View.VISIBLE);
+        } else {
+            pbLoading.setVisibility(View.GONE);
+        }
     }
 
 }

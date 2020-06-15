@@ -1,10 +1,10 @@
 package com.example.skripsi;
 
 public class SearchVacancy {
-    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating, favoriteFlag, vacancyBusId;
+    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating, favoriteFlag, vacancyBusId, vacancyBusImage;
     public int vacancySalary;
 
-    public SearchVacancy(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancyId, String vacancyStatus, String vacancyCompanyRating, int vacancySalary, String favoriteFlag, String vacancyBusId) {
+    public SearchVacancy(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, String vacancyId, String vacancyStatus, String vacancyCompanyRating, int vacancySalary, String favoriteFlag, String vacancyBusId, String vacancyBusImage) {
         this.vacancyCategory = vacancyCategory;
         this.vacancyPosition = vacancyPosition;
         this.vacancyTitle = vacancyTitle;
@@ -16,6 +16,7 @@ public class SearchVacancy {
         this.vacancySalary = vacancySalary;
         this.favoriteFlag = favoriteFlag;
         this.vacancyBusId = vacancyBusId;
+        this.vacancyBusImage = vacancyBusImage;
     }
 
     public SearchVacancy() {
@@ -108,5 +109,13 @@ public class SearchVacancy {
 
     public void setVacancyBusId(String vacancyBusId) {
         this.vacancyBusId = vacancyBusId;
+    }
+
+    public String getVacancyBusImage() {
+        return vacancyBusImage;
+    }
+
+    public void setVacancyBusImage(String vacancyBusImage) {
+        this.vacancyBusImage = vacancyBusImage;
     }
 }

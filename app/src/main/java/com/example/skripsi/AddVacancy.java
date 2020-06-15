@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -58,6 +59,8 @@ public class AddVacancy extends AppCompatActivity {
     HashMap<String, Integer> compared_position = new HashMap<>();
     ArrayList<String> positionArray = new ArrayList<>();
 
+    ImageView btn_close;
+
     private DatePickerDialog datePickerDialog;
     private String tanggal;
 
@@ -74,6 +77,14 @@ public class AddVacancy extends AppCompatActivity {
         sp_kategori = findViewById(R.id.sp_kategori);
         sp_location = findViewById(R.id.sp_location);
         sp_position = findViewById(R.id.sp_position);
+
+        btn_close = findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         dateFormatter2 = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -366,6 +377,7 @@ public class AddVacancy extends AppCompatActivity {
     private void add(String businessId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
         Context mContext = AddVacancy.this;
         String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/addNewVacancy";
+        //String URL = "http://25.54.110.177:8095/Vacancy/addNewVacancy";
         JSONObject jsonBody = new JSONObject();
 
         jsonBody.put("business_id", businessId);
@@ -377,11 +389,14 @@ public class AddVacancy extends AppCompatActivity {
         jsonBody.put("position_id", positionId);
         jsonBody.put("due_date", date);
 
+        System.out.println(jsonBody);
+
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
                     String status = response.getString("status");
+                    System.out.println(status);
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Succes to add New Vacancy", Toast.LENGTH_LONG).show();
                         finish();

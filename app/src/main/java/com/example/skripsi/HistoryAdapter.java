@@ -3,6 +3,9 @@ package com.example.skripsi;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -120,6 +126,37 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 v.getContext().startActivity(intent);
             }
         });
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
+
+        String foto = history.getBusImage();
+
+        if (foto == null || foto.equals("null")) {
+            viewHolder.img_company.setImageResource(R.drawable.logo1);
+        }
+        else{
+            try {
+                URL url = new URL(foto);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                viewHolder.img_company.setImageBitmap(myBitmap);
+                viewHolder.img_company.setScaleType(ImageView.ScaleType.FIT_XY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Override

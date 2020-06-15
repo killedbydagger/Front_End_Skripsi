@@ -29,7 +29,7 @@
     <string name="location">Location</string>
     <string name="description">Description about yourself</string>
     <string name="upload">Upload</string>
-    <string name="uploadYourFile">Upload your curriculum vitae</string>
+    <string name="uploadYourFile">Upload your curriculum vitae (.pdf)</string>
     <string name="setRecommendation">Set Recommendation</string>
     <string name="category">Category</string>
     <string name="categoryOptional">Category (optional)</string>
@@ -87,4 +87,5 @@
     <string name="image">Image :</string>
     <string name="imageGallery">Image gallery</string>
     <string name="delete">Delete</string>
+    <string name="viewPortfolio">View portfolio</string>
 </resources>

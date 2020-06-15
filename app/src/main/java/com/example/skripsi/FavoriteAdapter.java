@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +26,9 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -117,6 +123,37 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                 v.getContext().startActivity(intent);
             }
         });
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
+
+        String foto = favorite.getCompanyImage();
+
+        if (foto == null || foto.equals("null")) {
+            viewHolder.img_company.setImageResource(R.drawable.logo1);
+        }
+        else{
+            try {
+                URL url = new URL(foto);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                viewHolder.img_company.setImageBitmap(myBitmap);
+                viewHolder.img_company.setScaleType(ImageView.ScaleType.FIT_XY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     @Override

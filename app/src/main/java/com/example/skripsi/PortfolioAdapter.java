@@ -1,5 +1,6 @@
 package com.example.skripsi;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -60,6 +61,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("IMG_URL", portfolio.getImgURL());
                 intent.putExtra("IMG_USER_ID", portfolio.getUserId());
+                intent.putExtra("IMG_ID", portfolio.getImgId());
                 view.getContext().startActivity(intent);
             }
         });

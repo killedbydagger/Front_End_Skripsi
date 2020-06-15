@@ -219,4 +219,11 @@
         android:layout_height="match_parent"
         android:layout_below="@id/profileHeader"/>
 
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/profileHeader"
+        android:layout_centerInParent="true"/>
+
 </RelativeLayout>

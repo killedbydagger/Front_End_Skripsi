@@ -88,7 +88,7 @@ public class ApplicationHistory extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+        //dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
 
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
@@ -143,6 +143,7 @@ public class ApplicationHistory extends AppCompatActivity {
                             history.setCompanyName(object3.getString("bus_name"));
                             history.setRating(object3.getString("rating"));
                             history.setBusId(object3.getString("bus_id"));
+                            history.setBusImage(object3.getString("bus_image"));
 
                             JSONObject object4 = object1.getJSONObject("location");
                             history.setLocation(object4.getString("location_name"));

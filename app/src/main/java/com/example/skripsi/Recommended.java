@@ -1,10 +1,10 @@
 package com.example.skripsi;
 
 public class Recommended {
-    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating, businessId, favoriteFlag;
+    public String vacancyCategory, vacancyPosition, vacancyTitle, vacancyCompanyName, vacancyLocation, vacancyId, vacancyStatus, vacancyCompanyRating, businessId, favoriteFlag, businessImage;
     int vacancySalary;
 
-    public Recommended(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, int vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating, String businessId, String favoriteFlag) {
+    public Recommended(String vacancyCategory, String vacancyPosition, String vacancyTitle, String vacancyCompanyName, String vacancyLocation, int vacancySalary, String vacancyId, String vacancyStatus, String vacancyCompanyRating, String businessId, String favoriteFlag, String businessImage) {
         this.vacancyCategory = vacancyCategory;
         this.vacancyPosition = vacancyPosition;
         this.vacancyTitle = vacancyTitle;
@@ -16,6 +16,7 @@ public class Recommended {
         this.vacancyCompanyRating = vacancyCompanyRating;
         this.businessId = businessId;
         this.favoriteFlag = favoriteFlag;
+        this.businessImage = businessImage;
     }
 
     public Recommended() {
@@ -108,5 +109,13 @@ public class Recommended {
 
     public void setFavoriteFlag(String favoriteFlag) {
         this.favoriteFlag = favoriteFlag;
+    }
+
+    public String getBusinessImage() {
+        return businessImage;
+    }
+
+    public void setBusinessImage(String businessImage) {
+        this.businessImage = businessImage;
     }
 }

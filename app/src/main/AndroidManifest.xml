@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".ViewPortfolio"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".AddPortfolio"
             android:theme="@style/AppTheme.NoActionBar" />

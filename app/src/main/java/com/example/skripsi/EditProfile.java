@@ -59,9 +59,9 @@ import androidx.appcompat.app.AppCompatActivity;
 public class EditProfile extends AppCompatActivity {
 
     EditText et_firstName, et_lastName, et_description, et_phoneNumber;
-    TextView tv_DOB, tv_email;
+    TextView tv_DOB, tv_email, tv_file;
     Spinner sp_lastEducation, sp_location;
-    Button btn_save;
+    Button btn_save, btn_upload;
     ImageView btn_close, add, img_profile;
 
     static int PRIVATE_MODE = 0;
@@ -98,9 +98,13 @@ public class EditProfile extends AppCompatActivity {
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
 
-    File imageFile;
+    private static final int PERMISSION_CODE2 = 1002;
+    private static final int FILE_PICK_CODE = 1003;
+
+    File imageFile, pdfFile;
 
     String flag = "N";
+    String flagPDF = "N";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,7 @@ public class EditProfile extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         img_profile = findViewById(R.id.img_profile);
+        tv_file = findViewById(R.id.tv_file);
 
         add = findViewById(R.id.add);
         add.setOnClickListener(new View.OnClickListener() {
@@ -175,6 +180,24 @@ public class EditProfile extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 validateDate();
+            }
+        });
+
+        btn_upload = findViewById(R.id.btn_upload);
+        btn_upload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+                        requestPermissions(permissions, PERMISSION_CODE2);
+                    }else{
+                        pickFile();
+                    }
+                }
+                else{
+                    pickFile();
+                }
             }
         });
 
@@ -294,7 +317,13 @@ public class EditProfile extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(intent, IMAGE_PICK_CODE);
+    }
 
+    private void pickFile() {
+        Intent intentPDF = new Intent(Intent.ACTION_GET_CONTENT);
+        intentPDF.setType("application/pdf");
+        intentPDF.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(Intent.createChooser(intentPDF , "Select File"), FILE_PICK_CODE);
     }
 
     @Override
@@ -308,6 +337,16 @@ public class EditProfile extends AppCompatActivity {
                     Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
                 }
             }
+            break;
+            case PERMISSION_CODE2 :{
+                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    pickFile();
+                }
+                else{
+                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                }
+            }
+            break;
         }
     }
 
@@ -320,6 +359,20 @@ public class EditProfile extends AppCompatActivity {
             img_profile.setImageURI(selectedImageUri);
             img_profile.setScaleType(ImageView.ScaleType.FIT_XY);
             flag = "Y";
+        }
+        else if(resultCode == RESULT_OK && requestCode == FILE_PICK_CODE){
+            Uri selectedImageUri = data.getData();
+            String filePath = FetchPath.getPath(this, selectedImageUri);
+            pdfFile = new File(filePath);
+            System.out.println(pdfFile);
+            flagPDF = "Y";
+            tv_file.setText(pdfFile.getName());
+
+            sessionManager = new SessionManager(this);
+            final HashMap<String, String> user = sessionManager.getUserDetail();
+            String id = user.get(sessionManager.ID);
+
+            uploadFilePDF(pdfFile, id);
         }
     }
 
@@ -606,6 +659,45 @@ public class EditProfile extends AppCompatActivity {
                     } else {
                         viewDialog.hideDialog();
                         Toast.makeText(getApplicationContext(), "Failed to edit profile", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }, imageView, bodypart);
+
+        multipartTest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(multipartTest);
+    }
+
+    private void uploadFilePDF(File imageView, String id){
+        String URL = "https://springjava-1591708327203.azurewebsites.net/User/insertUserCV";
+        Map<String,String> bodypart = new HashMap<>();
+
+        bodypart.put("user_id", id);
+
+        MultipartTest multipartTest = new MultipartTest(URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    String status = jsonObject.getString("status");
+                    if (status.equals("Success")) {
+                            Toast.makeText(getApplicationContext(), "Upload file success", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Upload file failed", Toast.LENGTH_LONG).show();
                     }
 
                 } catch (JSONException e) {
