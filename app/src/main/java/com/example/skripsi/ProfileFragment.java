@@ -114,15 +114,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         btn_edit = (Button) v.findViewById(R.id.btn_edit);
         btn_edit.setOnClickListener(this);
 
-        btn_addPortfolio = v.findViewById(R.id.btn_addPortfolio);
-        btn_addPortfolio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent portfolioIntent = new Intent(view.getContext(), AddPortfolio.class);
-                startActivity(portfolioIntent);
-            }
-        });
-
         drawer = v.findViewById(R.id.drawer_layout);
         img_slideMenuProfile = v.findViewById(R.id.img_slideMenuProfile);
         img_slideMenuProfile.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +141,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mPendidikanTerakhir = user.get(sessionManager.EDUCATION_NAME);
         String mLokasi = user.get(sessionManager.LOCATION_NAME);
         String mDescription = user.get(sessionManager.DESCRIPTION);
+        final String status = user.get(sessionManager.STATUS);
 
         tv_nama.setText(mFirstName + " " + mLastName);
 
@@ -172,6 +164,32 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
         tv_desc.setText(mDescription);
+
+        btn_addPortfolio = v.findViewById(R.id.btn_addPortfolio);
+        btn_addPortfolio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int item = adapter.getItemCount();
+                if(status.equals("Premium")){
+                    if(item == 15){
+                        Toast.makeText(view.getContext(), "Already reach limit", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Intent portfolioIntent = new Intent(view.getContext(), AddPortfolio.class);
+                        startActivity(portfolioIntent);
+                    }
+                }
+                else{
+                    if(item == 3){
+                        Toast.makeText(view.getContext(), "Already reach limit, need more ? upgrade to PREMIUM member", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Intent portfolioIntent = new Intent(view.getContext(), AddPortfolio.class);
+                        startActivity(portfolioIntent);
+                    }
+                }
+            }
+        });
 
         img_history = v.findViewById(R.id.img_history);
         img_history.setOnClickListener(new View.OnClickListener() {

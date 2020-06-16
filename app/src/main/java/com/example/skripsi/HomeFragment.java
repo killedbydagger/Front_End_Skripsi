@@ -96,12 +96,12 @@ public class HomeFragment extends Fragment {
         adapter = new RecommendedAdapter(v.getContext(), recommendeds);
         linearLayoutManager = new LinearLayoutManager(v.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(rv_listRecommended.getContext(), linearLayoutManager.getOrientation());
+        //dividerItemDecoration = new DividerItemDecoration(rv_listRecommended.getContext(), linearLayoutManager.getOrientation());
 
         rv_listRecommended.setHasFixedSize(true);
         rv_listRecommended.setLayoutManager(linearLayoutManager);
         rv_listRecommended.setAdapter(adapter);
-        rv_listRecommended.addItemDecoration(dividerItemDecoration);
+        //rv_listRecommended.addItemDecoration(dividerItemDecoration);
 
         sessionManager = new SessionManager(getContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
@@ -162,6 +162,7 @@ public class HomeFragment extends Fragment {
                         btn_setRecommendation.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
                     } else if (status.equals("Success")) {
+                        btn_setRecommendation.setVisibility(View.GONE);
 
                         sessionManager = new SessionManager(getContext());
                         HashMap<String, String> user = sessionManager.getUserDetail();

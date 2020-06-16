@@ -62,7 +62,6 @@ public class FavoriteFragment extends Fragment {
 
         favoriteList = new ArrayList<>();
         adapter = new FavoriteAdapter(v.getContext(), favoriteList);
-        adapter.notifyDataSetChanged();
 
         linearLayoutManager = new LinearLayoutManager(v.getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -70,7 +69,7 @@ public class FavoriteFragment extends Fragment {
 
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
+        //mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
         sessionManager = new SessionManager(v.getContext());

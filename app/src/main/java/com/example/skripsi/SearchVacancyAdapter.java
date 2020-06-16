@@ -133,7 +133,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
 
         String foto = searchVacancy.getVacancyBusImage();
 
-        if (foto == null || foto.equals("null")) {
+        if (foto.equals(null) || foto.equals("null")) {
             viewHolder.img_company.setImageResource(R.drawable.logo1);
         }
         else{

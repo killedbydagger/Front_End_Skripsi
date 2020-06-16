@@ -175,7 +175,7 @@ public class AddVacancy extends AppCompatActivity {
                     try {
                         String deskripsi = et_deskripsi.getText().toString();
                         deskripsi = deskripsi.replace(System.getProperty("line.separator"),"/n");
-                        add(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), deskripsi, et_gaji.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
+                        addVacancy(businessId, sp_kategori.getSelectedItemPosition(), et_title.getText().toString(), deskripsi, et_gaji.getText().toString(), sp_location.getSelectedItemPosition(), tampung, tanggal);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -374,7 +374,7 @@ public class AddVacancy extends AppCompatActivity {
         }
     }
 
-    private void add(String businessId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
+    private void addVacancy(String businessId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
         Context mContext = AddVacancy.this;
         String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/addNewVacancy";
         //String URL = "http://25.54.110.177:8095/Vacancy/addNewVacancy";

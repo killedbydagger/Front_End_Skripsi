@@ -110,7 +110,7 @@ public class SearchFragment extends Fragment {
         rv_searchedList.setHasFixedSize(true);
         rv_searchedList.setLayoutManager(linearLayoutManager);
         rv_searchedList.setAdapter(adapter);
-        rv_searchedList.addItemDecoration(dividerItemDecoration);
+        //rv_searchedList.addItemDecoration(dividerItemDecoration);
 
         sessionManager = new SessionManager(getContext());
         HashMap<String, String> user = sessionManager.getUserDetail();
@@ -298,6 +298,7 @@ public class SearchFragment extends Fragment {
         jsonBody.put("keyword", keyword);
         jsonBody.put("location_id", location);
         jsonBody.put("salary", salary);
+
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -311,6 +312,8 @@ public class SearchFragment extends Fragment {
                         btn_filter.setVisibility(View.VISIBLE);
 
                         JSONArray jsonArray = response.getJSONArray("data");
+
+                        System.out.println(jsonArray);
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);

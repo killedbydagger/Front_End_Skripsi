@@ -149,6 +149,9 @@ public class SetRecommendation extends AppCompatActivity {
         jsonBody.put("user_id", userid);
         jsonBody.put("location_id", location);
         jsonBody.put("categories", category);
+
+        System.out.println(jsonBody);
+
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {

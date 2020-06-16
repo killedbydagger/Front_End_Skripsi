@@ -104,15 +104,6 @@ public class BusinessCenter extends AppCompatActivity {
             }
         });
 
-        btn_addVacancy = findViewById(R.id.btn_addVacancy);
-        btn_addVacancy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addVacancy = new Intent(BusinessCenter.this, AddVacancy.class);
-                startActivity(addVacancy);
-            }
-        });
-
         btn_viewRating = findViewById(R.id.btn_viewRating);
         btn_viewRating.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,10 +117,37 @@ public class BusinessCenter extends AppCompatActivity {
         });
 
         sessionManager = new SessionManager(this);
-        HashMap<String, String> user = sessionManager.getUserDetail();
+        final HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
+        final String status = user.get(sessionManager.ID);
 
         HashMap<String, String> business = sessionManager.getBusinessDetail();
+
+        btn_addVacancy = findViewById(R.id.btn_addVacancy);
+        btn_addVacancy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int item = adapter.getItemCount();
+                if(status.equals("Premium")){
+                    if(item == 10){
+                        Toast.makeText(getApplicationContext(), "Already reach limit", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Intent addVacancy = new Intent(BusinessCenter.this, AddVacancy.class);
+                        startActivity(addVacancy);
+                    }
+                }
+                else{
+                    if(item == 2){
+                        Toast.makeText(getApplicationContext(), "Already reach limit, need more ? upgrade to PREMIUM member", Toast.LENGTH_LONG).show();
+                    }
+                    else{
+                        Intent addVacancy = new Intent(BusinessCenter.this, AddVacancy.class);
+                        startActivity(addVacancy);
+                    }
+                }
+            }
+        });
 
         premiumTag.setText(user.get(sessionManager.STATUS));
         tv_namaPerusahaan.setText(business.get(sessionManager.BUSINESS_NAME));

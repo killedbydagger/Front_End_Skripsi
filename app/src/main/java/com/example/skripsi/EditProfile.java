@@ -306,6 +306,11 @@ public class EditProfile extends AppCompatActivity {
                         else{
                                 editProfile(imageFile);
                         }
+
+                        if(flagPDF.equals("Y")){
+                            String id = user.get(sessionManager.ID);
+                            uploadFilePDF(pdfFile, id);
+                        }
                 }
 
             }
@@ -367,12 +372,6 @@ public class EditProfile extends AppCompatActivity {
             System.out.println(pdfFile);
             flagPDF = "Y";
             tv_file.setText(pdfFile.getName());
-
-            sessionManager = new SessionManager(this);
-            final HashMap<String, String> user = sessionManager.getUserDetail();
-            String id = user.get(sessionManager.ID);
-
-            uploadFilePDF(pdfFile, id);
         }
     }
 
@@ -708,7 +707,7 @@ public class EditProfile extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                //Toast.makeText(getApplicationContext(), (CharSequence) error, Toast.LENGTH_LONG).show();
             }
         }, imageView, bodypart);
 
