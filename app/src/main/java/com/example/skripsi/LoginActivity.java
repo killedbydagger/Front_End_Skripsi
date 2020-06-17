@@ -167,7 +167,9 @@ public class LoginActivity extends AppCompatActivity {
                             String gender = object.getString("user_gender");
                             String dateOfBirth = object.getString("user_dateOfBirth");
                             String image = object.getString("user_imageURL");
+                            String cv = object.getString("user_cv");
                             String description = "";
+
 
                             if(object.isNull("user_description")){
                                 description = "";
@@ -204,7 +206,7 @@ public class LoginActivity extends AppCompatActivity {
                                 locationName = object2.getString("location_name");
                             }
 
-                            sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName, image);
+                            sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName, image, cv);
                             viewDialog.hideDialog();
 
                             FirebaseInstanceId.getInstance().getInstanceId()

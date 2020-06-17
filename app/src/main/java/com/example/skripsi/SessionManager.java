@@ -44,6 +44,7 @@ public class SessionManager {
     public static final String BUSINESS_OVERVIEW = "BUSINESS_OVERVIEW";
 
     public static final String IMG_URL = "IMG_URL";
+    public static final String CV_URL = "CV_URL";
 
     public SessionManager(Context context) {
         this.context = context;
@@ -52,7 +53,7 @@ public class SessionManager {
     }
 
     public void createSession(String id, String email, String firstName, String lastName, String phone, String gender, String dob, String description, String user_status, String education_id, String education_name,
-                              String location_id, String location_name, String imgURL) {
+                              String location_id, String location_name, String imgURL, String cvURL) {
         editor.putBoolean(LOGIN, true);
         editor.putString(ID, id);
         editor.putString(EMAIL, email);
@@ -68,6 +69,7 @@ public class SessionManager {
         editor.putString(LOCATION_ID, location_id);
         editor.putString(LOCATION_NAME, location_name);
         editor.putString(IMG_URL, imgURL);
+        editor.putString(CV_URL, cvURL);
         editor.apply();
     }
 
@@ -106,6 +108,7 @@ public class SessionManager {
         user.put(RECOMMENDATION_LOCATION, sharedPreferences.getString(RECOMMENDATION_LOCATION, null));
 
         user.put(IMG_URL, sharedPreferences.getString(IMG_URL,null));
+        user.put(CV_URL, sharedPreferences.getString(CV_URL,null));
 
         user.put(LOCATION_DATA, sharedPreferences.getString(LOCATION_DATA, null));
         user.put(EDUCATION_DATA, sharedPreferences.getString(EDUCATION_DATA, null));

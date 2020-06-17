@@ -94,6 +94,7 @@ public class EditProfile extends AppCompatActivity {
     public static final String LOCATION_NAME = "LOCATION_NAME";
 
     public static final String IMG_URL = "IMG_URL";
+    public static final String CV_URL = "CV_URL";
 
     private static final int IMAGE_PICK_CODE = 1000;
     private static final int PERMISSION_CODE = 1001;
@@ -694,6 +695,13 @@ public class EditProfile extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     String status = jsonObject.getString("status");
                     if (status.equals("Success")) {
+                        JSONArray jsonArray = jsonObject.getJSONArray("data");
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject object = jsonArray.getJSONObject(i);
+                            String userCV = object.getString("user_cv");
+                            editor.putString(CV_URL, userCV);
+                            editor.apply();
+                        }
                             Toast.makeText(getApplicationContext(), "Upload file success", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Upload file failed", Toast.LENGTH_LONG).show();

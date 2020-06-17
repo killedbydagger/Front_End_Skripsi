@@ -65,6 +65,8 @@ public class ApplicantProfile extends AppCompatActivity {
 
     ProgressBar pbLoading;
 
+    String cv;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,20 @@ public class ApplicantProfile extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+
+        btn_applicantViewFile = findViewById(R.id.btn_applicantViewFile);
+        btn_applicantViewFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (cv.equals(null)||cv.equals("null")){
+                    Toast.makeText(getApplicationContext(), "No file can be viewed", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(cv));
+                    startActivity(browserIntent);
+                }
+            }
+        });
 
 
         mList.setHasFixedSize(true);
@@ -188,6 +204,7 @@ public class ApplicantProfile extends AppCompatActivity {
                             String applicantPhone = object.getString("user_phone");
                             String applicantEmail = object.getString("user_email");
                             String applicantImgURL = object.getString("user_imageURL");
+                            cv = object.getString("user_cv");
 
                             JSONObject object1 = object.getJSONObject("education");
                             String applicantEducation = object1.getString("education_name");

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -66,7 +67,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
     ViewDialog viewDialog;
 
-    Button btn_edit, btn_addPortfolio;
+    Button btn_edit, btn_addPortfolio, btn_viewfile;
     ImageView img_slideMenuProfile, img_history, img_profile;
     TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc;
     ProgressBar pbLoading;
@@ -142,6 +143,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mLokasi = user.get(sessionManager.LOCATION_NAME);
         String mDescription = user.get(sessionManager.DESCRIPTION);
         final String status = user.get(sessionManager.STATUS);
+        final String mCV = user.get(sessionManager.CV_URL);
 
         tv_nama.setText(mFirstName + " " + mLastName);
 
@@ -160,6 +162,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        btn_viewfile = v.findViewById(R.id.btn_viewfile);
+        btn_viewfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCV.equals(null)||mCV.equals("null")){
+                    Toast.makeText(getContext(), "No file can be viewed", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mCV));
+                    startActivity(browserIntent);
+                }
+            }
+        });
 
         tv_pendidikanTerakhir.setText(mPendidikanTerakhir);
         tv_lokasi.setText(mLokasi);
