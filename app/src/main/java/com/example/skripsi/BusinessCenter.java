@@ -119,7 +119,7 @@ public class BusinessCenter extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         final HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
-        final String status = user.get(sessionManager.ID);
+        final String status = user.get(sessionManager.STATUS);
 
         HashMap<String, String> business = sessionManager.getBusinessDetail();
 
@@ -160,11 +160,11 @@ public class BusinessCenter extends AppCompatActivity {
 
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
+        //dividerItemDecoration = new DividerItemDecoration(mList.getContext(), linearLayoutManager.getOrientation());
 
         mList.setHasFixedSize(true);
         mList.setLayoutManager(linearLayoutManager);
-        mList.addItemDecoration(dividerItemDecoration);
+        //mList.addItemDecoration(dividerItemDecoration);
         mList.setAdapter(adapter);
 
 //        if(business.get(sessionManager.BUSINESS_ID) == null) {
@@ -198,6 +198,9 @@ public class BusinessCenter extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         HashMap<String, String> user = sessionManager.getUserDetail();
         String userId = user.get(sessionManager.ID);
+        String userStatus = user.get(sessionManager.STATUS);
+
+
 
 //        if (business.get(sessionManager.BUSINESS_ID) == null) {
             try {
@@ -460,7 +463,7 @@ public class BusinessCenter extends AppCompatActivity {
                     if (status.equals("Success")) {
                         tv_ratingPerusahaan.setText(response.getString("rating"));
                     } else {
-                        tv_ratingPerusahaan.setText("0.0");
+                        tv_ratingPerusahaan.setText("5.0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

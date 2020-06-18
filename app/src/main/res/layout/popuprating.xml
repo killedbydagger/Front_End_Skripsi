@@ -30,6 +30,7 @@
                 android:layout_centerInParent="true"
                 android:numStars="5"
                 android:stepSize="1"
+                android:isIndicator="false"
                 android:theme="@style/RatingBar" />
 
         </RelativeLayout>
@@ -46,9 +47,14 @@
             android:id="@+id/et_komenRating"
             android:layout_width="match_parent"
             android:layout_height="120sp"
-            android:layout_marginHorizontal="15sp"
-            android:layout_marginBottom="5sp"
-            android:background="@drawable/edit_text_card" />
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:layout_marginBottom="10sp"
+            android:background="@drawable/edit_text_card"
+            android:elevation="5sp"
+            android:paddingHorizontal="10sp"
+            android:paddingVertical="10sp"/>
 
         <Button
             android:id="@+id/btn_rate"

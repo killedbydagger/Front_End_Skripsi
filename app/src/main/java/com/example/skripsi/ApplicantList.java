@@ -76,11 +76,11 @@ public class ApplicantList extends AppCompatActivity {
         adapter = new ApplicantAdapter(getApplicationContext(), applicantLists);
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        dividerItemDecoration = new DividerItemDecoration(rv_applicantList.getContext(), linearLayoutManager.getOrientation());
+        //dividerItemDecoration = new DividerItemDecoration(rv_applicantList.getContext(), linearLayoutManager.getOrientation());
 
         rv_applicantList.setHasFixedSize(true);
         rv_applicantList.setLayoutManager(linearLayoutManager);
-        rv_applicantList.addItemDecoration(dividerItemDecoration);
+        //rv_applicantList.addItemDecoration(dividerItemDecoration);
         rv_applicantList.setAdapter(adapter);
 
         try {

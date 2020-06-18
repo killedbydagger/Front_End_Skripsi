@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
     Button btn_edit, btn_addPortfolio, btn_viewfile;
     ImageView img_slideMenuProfile, img_history, img_profile;
-    TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc;
+    TextView tv_nama, tv_dob, tv_pendidikanTerakhir, tv_lokasi, tv_desc, tv_noPhoto;
     ProgressBar pbLoading;
     SessionManager sessionManager;
 
@@ -91,6 +91,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         pbLoading = v.findViewById(R.id.pb_loading);
 
         mList = v.findViewById(R.id.rv_photo);
+
+        tv_noPhoto = v.findViewById(R.id.tv_noPhoto);
 
         portfolioList = new ArrayList<>();
         adapter = new PortfolioAdapter(getContext(),portfolioList);
@@ -226,7 +228,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         }
 
-        if (user.get(sessionManager.IMG_URL) == null) {
+        String foto = user.get(sessionManager.IMG_URL);
+
+        if (foto.equals(null) || foto.equals("null")) {
             img_profile.setImageResource(R.drawable.logo1);
         }
         else{
@@ -416,7 +420,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
                         viewDialog.hideDialog();
                         showLoading(false);
                     } else {
-                        Toast.makeText(getContext(), "Load image failed", Toast.LENGTH_LONG).show();
+                        tv_noPhoto.setVisibility(View.VISIBLE);
+                        //Toast.makeText(getContext(), "Load image failed", Toast.LENGTH_LONG).show();
                          viewDialog.hideDialog();
                         showLoading(false);
                     }

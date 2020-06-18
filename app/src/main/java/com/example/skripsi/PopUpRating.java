@@ -37,6 +37,8 @@ public class PopUpRating extends Activity {
     Button btn_rate;
     EditText et_komenRating;
 
+    ViewDialog viewDialog;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,9 @@ public class PopUpRating extends Activity {
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        viewDialog = new ViewDialog(PopUpRating.this);
+        //viewDialog.showDialog();
 
         int width = dm.widthPixels;
         int height = dm.heightPixels;
@@ -61,6 +66,7 @@ public class PopUpRating extends Activity {
         btn_rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                viewDialog.showDialog();
                 try {
                     System.out.println("id bisnis: " + businessId);
                     System.out.println("id vac: " + vacancyId);
@@ -86,6 +92,8 @@ public class PopUpRating extends Activity {
         jsonBody.put("user_id", userid);
         jsonBody.put("rate", rate);
         jsonBody.put("comment", comment);
+
+        System.out.println(jsonBody);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -93,9 +101,11 @@ public class PopUpRating extends Activity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Success to give rating", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Failed to give rating", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();

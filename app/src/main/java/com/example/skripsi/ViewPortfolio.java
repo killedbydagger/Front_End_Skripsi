@@ -4,6 +4,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -71,13 +74,30 @@ public class ViewPortfolio extends AppCompatActivity {
         img_delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                viewDialog = new ViewDialog(ViewPortfolio.this);
-                viewDialog.showDialog();
-                try {
-                    deletePortfolio(userID, imgId);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewPortfolio.this);
+                alertDialog.setMessage("Are you sure want to delete this portfolio ?").setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                viewDialog = new ViewDialog(ViewPortfolio.this);
+                                viewDialog.showDialog();
+                                try {
+                                    deletePortfolio(userID, imgId);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                AlertDialog alert = alertDialog.create();
+                alert.setTitle("Create new business");
+                alert.show();
             }
         });
 

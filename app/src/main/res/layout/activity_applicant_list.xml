@@ -67,7 +67,8 @@
                     android:elevation="5sp"
                     android:gravity="center_vertical"
                     android:textColor="@color/colorBlack"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:paddingHorizontal="10sp"/>
 
                 <TextView
                     android:id="@+id/tv_totApplicant"

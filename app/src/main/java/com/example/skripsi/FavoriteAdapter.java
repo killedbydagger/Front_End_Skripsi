@@ -112,18 +112,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         });
         viewHolder.img_bintang.setImageResource(R.drawable.star);
 
-        viewHolder.layout_vacancy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("VACANCY_ID", favorite.getVacId());
-                intent.putExtra("BUSINESS_ID", favorite.getCompanyId());
-                intent.putExtra("FLAG", "Y");
-                v.getContext().startActivity(intent);
-            }
-        });
-
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {
@@ -134,7 +122,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         }
 
-        String foto = favorite.getCompanyImage();
+        final String foto = favorite.getCompanyImage();
 
         if (foto == null || foto.equals("null")) {
             viewHolder.img_company.setImageResource(R.drawable.logo1);
@@ -154,6 +142,24 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             }
 
         }
+
+        viewHolder.layout_vacancy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", favorite.getVacId());
+                intent.putExtra("BUSINESS_ID", favorite.getCompanyId());
+                intent.putExtra("FLAG", "Y");
+                if (foto.equals(null) || foto.equals("null")) {
+                    intent.putExtra("BUSINESS_IMAGE", "N");
+                }
+                else{
+                    intent.putExtra("BUSINESS_IMAGE", favorite.getCompanyImage());
+                }
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override

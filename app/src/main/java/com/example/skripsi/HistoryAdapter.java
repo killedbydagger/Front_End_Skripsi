@@ -115,18 +115,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         viewHolder.img_bintang.setImageResource(R.drawable.star);
 
-        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("VACANCY_ID", history.getVacId());
-                intent.putExtra("BUSINESS_ID", history.getBusId());
-                intent.putExtra("FLAG", history.getFavoriteFlag());
-                v.getContext().startActivity(intent);
-            }
-        });
-
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8)
         {
@@ -137,7 +125,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         }
 
-        String foto = history.getBusImage();
+        final String foto = history.getBusImage();
 
         if (foto == null || foto.equals("null")) {
             viewHolder.img_company.setImageResource(R.drawable.logo1);
@@ -157,6 +145,25 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             }
 
         }
+
+        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", history.getVacId());
+                intent.putExtra("BUSINESS_ID", history.getBusId());
+                intent.putExtra("FLAG", history.getFavoriteFlag());
+                if (foto == null || foto.equals("null")) {
+                    intent.putExtra("BUSINESS_IMAGE", "N");
+                }
+                else{
+                    intent.putExtra("BUSINESS_IMAGE", history.getBusImage());
+                }
+                v.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     @Override

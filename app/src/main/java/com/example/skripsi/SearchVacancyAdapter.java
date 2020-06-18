@@ -82,18 +82,6 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
 
         viewHolder.img_bintang.setImageResource(R.drawable.star);
 
-        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra("VACANCY_ID", searchVacancy.getVacancyId());
-                intent.putExtra("BUSINESS_ID", searchVacancy.getVacancyBusId());
-                intent.putExtra("FLAG", searchVacancy.getFavoriteFlag());
-                v.getContext().startActivity(intent);
-            }
-        });
-
         sessionManager = new SessionManager(context);
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
@@ -131,7 +119,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
 
         }
 
-        String foto = searchVacancy.getVacancyBusImage();
+        final String foto = searchVacancy.getVacancyBusImage();
 
         if (foto.equals(null) || foto.equals("null")) {
             viewHolder.img_company.setImageResource(R.drawable.logo1);
@@ -151,6 +139,25 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
             }
 
         }
+
+        viewHolder.layout_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), DetailVacancy.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("VACANCY_ID", searchVacancy.getVacancyId());
+                intent.putExtra("BUSINESS_ID", searchVacancy.getVacancyBusId());
+                intent.putExtra("FLAG", searchVacancy.getFavoriteFlag());
+                if (foto == null || foto.equals("null")) {
+                    intent.putExtra("BUSINESS_IMAGE", "N");
+                }
+                else{
+                    intent.putExtra("BUSINESS_IMAGE", searchVacancy.getVacancyBusImage());
+                }
+                v.getContext().startActivity(intent);
+            }
+        });
+
     }
 
     @Override

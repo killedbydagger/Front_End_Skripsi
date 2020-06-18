@@ -1,7 +1,10 @@
 package com.example.skripsi;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Locale;
@@ -30,11 +36,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class DetailVacancy extends AppCompatActivity {
 
-    String vacancyId, flag, businessId;
+    String vacancyId, flag, businessId, businessImage;
 
     TextView tv_category, tv_position, tv_title, tv_companyName, tv_location, tv_salary, tv_rating, tv_status;
 
-    ImageView img_favorite, btn_close;
+    ImageView img_favorite, btn_close, img_company;
 
     Button btn_rate, btn_apply;
 
@@ -51,6 +57,36 @@ public class DetailVacancy extends AppCompatActivity {
         vacancyId = getIntent().getExtras().getString("VACANCY_ID");
         flag = getIntent().getExtras().getString("FLAG");
         businessId = getIntent().getExtras().getString("BUSINESS_ID");
+        businessImage = getIntent().getExtras().getString("BUSINESS_IMAGE");
+
+        img_company = findViewById(R.id.img_company);
+        if(businessImage.equals("N")){
+            img_company.setImageResource(R.drawable.logo1);
+        }
+        else{
+            int SDK_INT = android.os.Build.VERSION.SDK_INT;
+            if (SDK_INT > 8)
+            {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                        .permitAll().build();
+                StrictMode.setThreadPolicy(policy);
+                //your codes here
+
+            }
+
+            try {
+                URL url = new URL(businessImage);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setDoInput(true);
+                connection.connect();
+                InputStream inputStream = connection.getInputStream();
+                Bitmap myBitmap = BitmapFactory.decodeStream(inputStream);
+                img_company.setImageBitmap(myBitmap);
+                img_company.setScaleType(ImageView.ScaleType.FIT_XY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
         tv_category = findViewById(R.id.tv_category);
         tv_position = findViewById(R.id.tv_position);

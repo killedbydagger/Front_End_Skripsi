@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -26,10 +27,20 @@ public class ForgetPassword extends AppCompatActivity {
     Button btn_resetPassword;
     ViewDialog viewDialog;
 
+    ImageView btn_close;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forget_password);
+
+        btn_close = findViewById(R.id.btn_close);
+        btn_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         et_email = findViewById(R.id.et_email);
         btn_resetPassword = findViewById(R.id.btn_resetPassword);

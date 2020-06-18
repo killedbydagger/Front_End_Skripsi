@@ -88,4 +88,5 @@
     <string name="imageGallery">Image gallery</string>
     <string name="delete">Delete</string>
     <string name="viewPortfolio">View portfolio</string>
+    <string name="noPort">Portfolio is empty</string>
 </resources>

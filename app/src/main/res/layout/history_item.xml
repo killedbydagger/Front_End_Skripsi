@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="10sp"
         android:background="@drawable/edit_text_card"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:elevation="5sp">
 
         <LinearLayout
             android:layout_width="match_parent"
