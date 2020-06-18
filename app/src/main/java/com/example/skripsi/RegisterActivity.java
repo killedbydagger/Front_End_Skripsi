@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class SignupActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
     private static final String TAG = "SignupActivity";
 
@@ -74,7 +74,7 @@ public class SignupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_register);
         mDisplayDate = (TextView) findViewById(R.id.tv_DOB);
         et_firstName = (EditText) findViewById(R.id.et_firstName);
         et_lastName = (EditText) findViewById(R.id.et_lastName);
@@ -85,7 +85,7 @@ public class SignupActivity extends AppCompatActivity {
         btn_signup = (Button) findViewById(R.id.btn_signup);
         rb_genderGroup = (RadioGroup) findViewById(R.id.rb_genderGroup);
 
-        viewDialog = new ViewDialog(SignupActivity.this);
+        viewDialog = new ViewDialog(RegisterActivity.this);
 
         cb_showPassword = (CheckBox) findViewById(R.id.cb_showPassword);
 
@@ -309,7 +309,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void checkEmail(String email) throws JSONException {
-        Context mContext = SignupActivity.this;
+        Context mContext = RegisterActivity.this;
 
         String URL = "https://springjava-1591708327203.azurewebsites.net/User/checkEmailRegister";
         JSONObject jsonBody = new JSONObject();
@@ -354,7 +354,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void submit() throws JSONException {
-        Context mContext = SignupActivity.this;
+        Context mContext = RegisterActivity.this;
         String URL = "https://springjava-1591708327203.azurewebsites.net/User/createNewUser";
         JSONObject jsonBody = new JSONObject();
 
