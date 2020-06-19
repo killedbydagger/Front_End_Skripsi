@@ -403,6 +403,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
                     portfolioList.clear();
                     String status = response.getString("status");
                     if (status.equals("Success")) {
+                        tv_noPhoto.setVisibility(View.GONE);
                         JSONArray jsonArray = response.getJSONArray("data");
 
                         for (int i = 0; i < jsonArray.length(); i++) {

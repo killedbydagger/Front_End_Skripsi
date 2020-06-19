@@ -253,7 +253,7 @@ public class RegisterActivity extends AppCompatActivity {
             et_password.setError("Field can't be empty");
             validationChecks.put("Password", false);
         } else if (!PASSWORD_PATTERN.matcher(et_password.getText().toString()).matches()) {
-            et_password.setError("Field can't be empty");
+            et_password.setError("Password must contain atleast 1 upper case, 1 lower case, 1 digit and minimum 6 character");
             validationChecks.put("Password", false);
         } else {
             et_password.setError(null);
@@ -381,9 +381,9 @@ public class RegisterActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Please check your email to finish your registration", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();
-
                     } else {
-                        Toast.makeText(getApplicationContext(), "Failed to create new account", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), status, Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();
