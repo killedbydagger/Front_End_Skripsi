@@ -264,10 +264,12 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void validateConfirm() {
-        if (et_confirmPassword.getText().toString().isEmpty()) {
+        String passwordConfirm = et_confirmPassword.getText().toString();
+        String password = et_confirmPassword.getText().toString();
+        if (passwordConfirm.isEmpty()) {
             et_confirmPassword.setError("Field can't be empty");
             validationChecks.put("Confirm", false);
-        } else if (!et_confirmPassword.getText().toString().equals(et_confirmPassword.getText().toString())) {
+        } else if (!password.equals(passwordConfirm)) {
             et_confirmPassword.setError("Password and confirm password don't match");
             validationChecks.put("Confirm", false);
         } else {
