@@ -54,7 +54,7 @@ public class ApplicantProfile extends AppCompatActivity {
 
     Button btn_applicantViewFile, btn_applicantCall, btn_applicantEmail;
     ImageView img_close, img_applicantPhoto;
-    TextView tv_applicantName, tv_applicantDOB, tv_applicantEducation, tv_applicantLocation, tv_applicantDesc, tv_userPhoneNum, tv_userEmailAdd;
+    TextView tv_applicantName, tv_applicantDOB, tv_applicantEducation, tv_applicantLocation, tv_applicantDesc, tv_userPhoneNum, tv_userEmailAdd, tv_noPhoto;
 
     private RecyclerView mList;
 
@@ -80,6 +80,8 @@ public class ApplicantProfile extends AppCompatActivity {
         viewDialog.showDialog();
 
         mList = findViewById(R.id.rv_photo);
+
+        tv_noPhoto = findViewById(R.id.tv_noPhoto);
 
         portfolioList = new ArrayList<>();
         adapter = new PortfolioAdapter(getApplicationContext(),portfolioList);
@@ -218,23 +220,28 @@ public class ApplicantProfile extends AppCompatActivity {
                             SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd");
                             SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
                             Date oneWayTripDate = null;
-                            try {
-                                oneWayTripDate = input.parse(date);
-                                tv_applicantDOB.setText(output.format(oneWayTripDate));
-                                System.out.println("ini tanggalnya: " + oneWayTripDate);
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
 
-                            int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                            if (SDK_INT > 8)
-                            {
-                                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                                        .permitAll().build();
-                                StrictMode.setThreadPolicy(policy);
-                                //your codes here
-
+                            if(applicantImgURL.equals(null) || applicantImgURL.equals("null")){
+                                img_applicantPhoto.setImageResource(R.drawable.logo1);
                             }
+                            else {
+                                try {
+                                    oneWayTripDate = input.parse(date);
+                                    tv_applicantDOB.setText(output.format(oneWayTripDate));
+                                    System.out.println("ini tanggalnya: " + oneWayTripDate);
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+
+                                int SDK_INT = android.os.Build.VERSION.SDK_INT;
+                                if (SDK_INT > 8)
+                                {
+                                    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                                            .permitAll().build();
+                                    StrictMode.setThreadPolicy(policy);
+                                    //your codes here
+
+                                }
                                 try {
                                     java.net.URL url = new URL(applicantImgURL);
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -248,6 +255,7 @@ public class ApplicantProfile extends AppCompatActivity {
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
+                            }
 
 
 
@@ -260,7 +268,7 @@ public class ApplicantProfile extends AppCompatActivity {
                             loadImagePortfolio(applicantId);
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -314,7 +322,8 @@ public class ApplicantProfile extends AppCompatActivity {
                         viewDialog.hideDialog();
                         showLoading(false);
                     } else {
-                         Toast.makeText(getApplicationContext(), "Load failed", Toast.LENGTH_LONG).show();
+                         //Toast.makeText(getApplicationContext(), "Load failed", Toast.LENGTH_LONG).show();
+                        tv_noPhoto.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
                         showLoading(false);
                     }

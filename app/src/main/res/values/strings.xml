@@ -4,7 +4,7 @@
     <string name="edt_password">Password</string>
     <string name="changePassword">Change Password</string>
     <string name="forgot_password">Forget Password</string>
-    <string name="signin">Sign In</string>
+    <string name="signin">Login</string>
     <string name="signup">Register</string>
     <string name="edt_nama">Name</string>
     <string name="edt_fistname">First Name</string>
