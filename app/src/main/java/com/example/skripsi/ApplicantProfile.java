@@ -221,17 +221,18 @@ public class ApplicantProfile extends AppCompatActivity {
                             SimpleDateFormat output = new SimpleDateFormat("dd MMMM yyyy");
                             Date oneWayTripDate = null;
 
+                            try {
+                                oneWayTripDate = input.parse(date);
+                                tv_applicantDOB.setText(output.format(oneWayTripDate));
+                                System.out.println("ini tanggalnya: " + oneWayTripDate);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+
                             if(applicantImgURL.equals(null) || applicantImgURL.equals("null")){
                                 img_applicantPhoto.setImageResource(R.drawable.logo1);
                             }
                             else {
-                                try {
-                                    oneWayTripDate = input.parse(date);
-                                    tv_applicantDOB.setText(output.format(oneWayTripDate));
-                                    System.out.println("ini tanggalnya: " + oneWayTripDate);
-                                } catch (ParseException e) {
-                                    e.printStackTrace();
-                                }
 
                                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
                                 if (SDK_INT > 8)
