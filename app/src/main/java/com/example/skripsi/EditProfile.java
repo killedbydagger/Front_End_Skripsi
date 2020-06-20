@@ -699,6 +699,7 @@ public class EditProfile extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
                             String userCV = object.getString("user_cv");
+                            System.out.println(userCV);
                             editor.putString(CV_URL, userCV);
                             editor.apply();
                         }

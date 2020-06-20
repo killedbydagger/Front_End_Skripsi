@@ -137,7 +137,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         sessionManager = new SessionManager(getActivity().getApplicationContext());
 
-        HashMap<String, String> user = sessionManager.getUserDetail();
+        final HashMap<String, String> user = sessionManager.getUserDetail();
         String mFirstName = user.get(sessionManager.FIRST_NAME);
         String mLastName = user.get(sessionManager.LAST_NAME);
         String mDob = user.get(sessionManager.DOB);
@@ -145,7 +145,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         String mLokasi = user.get(sessionManager.LOCATION_NAME);
         String mDescription = user.get(sessionManager.DESCRIPTION);
         final String status = user.get(sessionManager.STATUS);
-        final String mCV = user.get(sessionManager.CV_URL);
 
         tv_nama.setText(mFirstName + " " + mLastName);
 
@@ -169,10 +168,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         btn_viewfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String mCV = user.get(sessionManager.CV_URL);
                 if (mCV.equals(null)||mCV.equals("null")){
                     Toast.makeText(getContext(), "No file can be viewed", Toast.LENGTH_LONG).show();
                 }
                 else{
+                    System.out.println(mCV);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mCV));
                     startActivity(browserIntent);
                 }
