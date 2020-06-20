@@ -96,7 +96,7 @@ public class ViewPortfolio extends AppCompatActivity {
                         });
 
                 AlertDialog alert = alertDialog.create();
-                alert.setTitle("Create new business");
+                alert.setTitle("Delete");
                 alert.show();
             }
         });

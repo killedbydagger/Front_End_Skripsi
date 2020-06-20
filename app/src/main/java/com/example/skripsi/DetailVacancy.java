@@ -1,5 +1,7 @@
 package com.example.skripsi;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -170,11 +172,28 @@ public class DetailVacancy extends AppCompatActivity {
         btn_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    apply(userId ,vacancyId, businessId);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DetailVacancy.this);
+                alertDialog.setMessage("Are you sure want to apply ?").setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    apply(userId ,vacancyId, businessId);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                AlertDialog alert = alertDialog.create();
+                alert.setTitle("Apply to vacancy");
+                alert.show();
             }
         });
 
