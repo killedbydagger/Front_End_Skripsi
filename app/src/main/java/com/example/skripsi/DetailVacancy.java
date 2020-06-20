@@ -129,7 +129,7 @@ public class DetailVacancy extends AppCompatActivity {
         }
 
         sessionManager = new SessionManager(getApplicationContext());
-        HashMap<String, String> user = sessionManager.getUserDetail();
+        final HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
 
         img_favorite.setOnClickListener(new View.OnClickListener() {
@@ -177,10 +177,18 @@ public class DetailVacancy extends AppCompatActivity {
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                try {
-                                    apply(userId ,vacancyId, businessId);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                String userEducation = user.get(sessionManager.EDUCATION_NAME);
+                                String userLocation = user.get(sessionManager.LOCATION_NAME);
+
+                                if(userEducation == null || userLocation == null){
+                                    Toast.makeText(getApplicationContext(), "Please update your profile before applying", Toast.LENGTH_LONG).show();
+                                }
+                                else{
+                                    try {
+                                        apply(userId ,vacancyId, businessId);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         })
