@@ -25,6 +25,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -36,6 +37,19 @@ public class ChangePassword extends AppCompatActivity {
     Button btn_save;
     EditText et_oldPassword, et_newPassword, et_confirmPassword;
     CheckBox cb_showPassword;
+
+    Map<String, Boolean> validationChecks = new HashMap<>();
+
+    ViewDialog viewDialog;
+
+    private static final Pattern PASSWORD_PATTERN =
+            Pattern.compile("^" +
+                    "(?=.*[0-9])" + //at least 1 digit
+                    "(?=.*[a-z])" + //at least 1 lower case letter
+                    "(?=.*[A-Z])" + //at least 1 upper case letter
+                    "(?=\\S+$)" + //no white spaces
+                    ".{6,}" + //at least 6 characters
+                    "$");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +63,8 @@ public class ChangePassword extends AppCompatActivity {
                 finish();
             }
         });
+
+        viewDialog = new ViewDialog(ChangePassword.this);
 
         et_oldPassword = findViewById(R.id.et_oldPassword);
         et_newPassword = findViewById(R.id.et_newPassword);
@@ -78,15 +94,59 @@ public class ChangePassword extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    if (et_newPassword.getText().toString().equals(et_confirmPassword.getText().toString())) {
+                validateNewPassword();
+                validateOldPassword();
+                validateConfirm();
+                if (!validationChecks.containsValue(false)) {
+                    viewDialog.showDialog();
+                    try {
                         changePassword(userEmail, et_oldPassword.getText().toString(), et_newPassword.getText().toString());
-                    } else et_confirmPassword.setError("Password do not match!");
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
+
             }
         });
+    }
+
+    private void validateNewPassword() {
+        if (et_newPassword.getText().toString().isEmpty()) {
+            et_newPassword.setError("Field can't be empty");
+            validationChecks.put("New Password", false);
+        }else if (!PASSWORD_PATTERN.matcher(et_newPassword.getText().toString()).matches()) {
+            et_newPassword.setError("Password must contain atleast 1 upper case, 1 lower case, 1 digit and minimum 6 character");
+            validationChecks.put("New Password", false);
+        }
+        else {
+            et_newPassword.setError(null);
+            validationChecks.put("New Password", true);
+        }
+    }
+
+    private void validateOldPassword() {
+        if (et_oldPassword.getText().toString().isEmpty()) {
+            et_oldPassword.setError("Field can't be empty");
+            validationChecks.put("Old Password", false);
+        } else {
+            et_oldPassword.setError(null);
+            validationChecks.put("Old Password", true);
+        }
+    }
+
+    private void validateConfirm() {
+        String passwordConfirm = et_confirmPassword.getText().toString();
+        String password = et_newPassword.getText().toString();
+        if (passwordConfirm.isEmpty()) {
+            et_confirmPassword.setError("Field can't be empty");
+            validationChecks.put("Confirm", false);
+        } else if (!passwordConfirm.equals(password)) {
+            et_confirmPassword.setError("New Password and confirm password don't match");
+            validationChecks.put("Confirm", false);
+        } else {
+            et_confirmPassword.setError(null);
+            validationChecks.put("Confirm", true);
+        }
     }
 
     private void changePassword(String userEmail, String userOlpPw, String userNewPw) throws JSONException {
@@ -103,9 +163,11 @@ public class ChangePassword extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Success to change password", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Failed to change password", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Server Error", Toast.LENGTH_LONG).show();
