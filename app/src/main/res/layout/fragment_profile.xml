@@ -185,7 +185,7 @@
                         android:background="@drawable/button_login_card"
                         android:text="@string/addPortfolio"
                         android:textColor="@color/colorWhite"
-                        android:textSize="15sp" />
+                        android:textSize="13sp" />
                 </LinearLayout>
 
             </LinearLayout>
