@@ -9,9 +9,11 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,7 +81,7 @@ public class ForgetPassword extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
-                        Toast.makeText(getApplicationContext(), "Reset Password Success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Reset Password Success, check your email to get your new password", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();
                     }
@@ -104,7 +106,10 @@ public class ForgetPassword extends AppCompatActivity {
                 return params;
             }
         };
-    }
 
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        requestQueue.add(jsonObjectRequest);
+
+    }
 
 }
