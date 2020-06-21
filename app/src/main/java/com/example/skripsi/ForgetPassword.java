@@ -85,6 +85,7 @@ public class ForgetPassword extends AppCompatActivity {
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Reset Password Failed", Toast.LENGTH_LONG).show();
+                        viewDialog.hideDialog();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
