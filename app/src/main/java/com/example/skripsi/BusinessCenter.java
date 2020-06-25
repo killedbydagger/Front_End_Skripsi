@@ -351,6 +351,9 @@ public class BusinessCenter extends AppCompatActivity {
 
                             String busOverview = object.getString("bus_overview");
                             String busImage = object.getString("bus_image");
+                            String busRating = object.getString("rating");
+
+                            tv_ratingPerusahaan.setText(busRating);
 
                             editor.putString(BUSINESS_ID, busId);
                             editor.putString(BUSINESS_NAME, busName);
@@ -401,7 +404,7 @@ public class BusinessCenter extends AppCompatActivity {
                             tampungId = busId;
                         }
 
-                        viewRating(tampungId);
+                        //viewRating(tampungId);
                         loadVacancyData(tampungId);
                         viewDialog.hideDialog();
 
@@ -450,41 +453,41 @@ public class BusinessCenter extends AppCompatActivity {
 
     }
 
-    private void viewRating(String id) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/BusinessRating/getBusinessRateValue";
-        final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("business_id", id);
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    vacancyList.clear();
-                    String status = response.getString("status");
-                    if (status.equals("Success")) {
-                        tv_ratingPerusahaan.setText(response.getString("rating"));
-                    } else {
-                        tv_ratingPerusahaan.setText("5.0");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                final Map<String, String> params = new HashMap<String, String>();
-                params.put("Context-Type", "application/json");
-                return params;
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(jsonObjectRequest);
-    }
+//    private void viewRating(String id) throws JSONException {
+//        String URL = "https://springjava-1591708327203.azurewebsites.net/BusinessRating/getBusinessRateValue";
+//        final JSONObject jsonBody = new JSONObject();
+//        jsonBody.put("business_id", id);
+//        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    vacancyList.clear();
+//                    String status = response.getString("status");
+//                    if (status.equals("Success")) {
+//                        tv_ratingPerusahaan.setText(response.getString("rating"));
+//                    } else {
+//                        tv_ratingPerusahaan.setText("5.0");
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                final Map<String, String> params = new HashMap<String, String>();
+//                params.put("Context-Type", "application/json");
+//                return params;
+//            }
+//        };
+//
+//        RequestQueue requestQueue = Volley.newRequestQueue(this);
+//        requestQueue.add(jsonObjectRequest);
+//    }
 
 }
