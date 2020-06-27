@@ -183,7 +183,7 @@ public class EditBusiness extends AppCompatActivity {
 
                     if(flag.equals("N")){
                         try {
-                            editProfileWithoutImage(userId, business_id , et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
+                            editBusinessWithoutImage(userId, business_id , et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -276,7 +276,7 @@ public class EditBusiness extends AppCompatActivity {
         sp_location.setSelection(Integer.parseInt(id));
     }
 
-    private void editProfileWithoutImage(String userId, String businessId, String businessName, String locationId, String businessOverview) throws JSONException {
+    private void editBusinessWithoutImage(String userId, String businessId, String businessName, String locationId, String businessOverview) throws JSONException {
         Context mContext = EditBusiness.this;
         String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusinessWithoutImage";
         final JSONObject jsonBody = new JSONObject();
