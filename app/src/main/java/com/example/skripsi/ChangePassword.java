@@ -153,7 +153,7 @@ public class ChangePassword extends AppCompatActivity {
 
     private void changePassword(String userEmail, String userOlpPw, String userNewPw) throws JSONException {
         Context mContext = ChangePassword.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/User/changePasswordUser";
+        String URL = "https://springjava.azurewebsites.net/User/changePasswordUser";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", userEmail);
         jsonBody.put("old_password", userOlpPw);

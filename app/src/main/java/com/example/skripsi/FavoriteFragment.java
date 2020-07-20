@@ -86,7 +86,7 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void loadFavorite(final Context context, String id) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/FavoriteVacancy/getFavoriteVacancy";
+        String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/getFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {

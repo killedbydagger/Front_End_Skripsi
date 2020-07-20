@@ -511,7 +511,7 @@ public class EditProfile extends AppCompatActivity {
 
     private void editProfileWithoutImage() throws JSONException {
         Context mContext = EditProfile.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/User/editUserProfileWithoutImage";
+        String URL = "https://springjava.azurewebsites.net/User/editUserProfileWithoutImage";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("first_name", et_firstName.getText().toString());
         jsonBody.put("last_name", et_lastName.getText().toString());
@@ -596,7 +596,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void editProfile(File imageView){
-        String URL = "https://springjava-1591708327203.azurewebsites.net/User/editUserProfile";
+        String URL = "https://springjava.azurewebsites.net/User/editUserProfile";
         Map<String,String> bodypart = new HashMap<>();
 
         bodypart.put("first_name", et_firstName.getText().toString());
@@ -683,7 +683,7 @@ public class EditProfile extends AppCompatActivity {
     }
 
     private void uploadFilePDF(File imageView, String id){
-        String URL = "https://springjava-1591708327203.azurewebsites.net/User/insertUserCV";
+        String URL = "https://springjava.azurewebsites.net/User/insertUserCV";
         Map<String,String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);

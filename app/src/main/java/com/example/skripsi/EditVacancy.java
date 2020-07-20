@@ -294,7 +294,7 @@ public class EditVacancy extends AppCompatActivity {
     private void loadPositionData(int categoryId) throws JSONException {
         System.out.println(categoryId);
         if (sp_position.getSelectedItemPosition() != 0) {
-            String URL = "https://springjava-1591708327203.azurewebsites.net/CategoryPosition/getCategoryPosition";
+            String URL = "https://springjava.azurewebsites.net/CategoryPosition/getCategoryPosition";
             final JSONObject jsonBody = new JSONObject();
             jsonBody.put("category_id", categoryId);
 
@@ -353,7 +353,7 @@ public class EditVacancy extends AppCompatActivity {
 
     private void editVacancy(String businessId, String vacId, int categoryId, String title, String description, String salary, int locationId, int positionId, String date) throws JSONException {
         Context mContext = EditVacancy.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/editVacancy";
+        String URL = "https://springjava.azurewebsites.net/Vacancy/editVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", businessId);
         jsonBody.put("vac_id", vacId);

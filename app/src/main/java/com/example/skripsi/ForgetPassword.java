@@ -73,7 +73,7 @@ public class ForgetPassword extends AppCompatActivity {
 //    }
 
     public void forget_password(String email) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/User/forgetPasswordUser";
+        String URL = "https://springjava.azurewebsites.net/User/forgetPasswordUser";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", email);
 

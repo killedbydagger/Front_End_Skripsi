@@ -189,7 +189,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
     }
 
     private void favoriteVacancy(String userId, String vacId) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/FavoriteVacancy/addFavoriteVacancy";
+        String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/addFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);
@@ -226,7 +226,7 @@ public class RecommendedAdapter extends RecyclerView.Adapter<RecommendedAdapter.
     }
 
     private void unFavorite(String userId, String vacId) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/FavoriteVacancy/removeFavoriteVacancy";
+        String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/removeFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);

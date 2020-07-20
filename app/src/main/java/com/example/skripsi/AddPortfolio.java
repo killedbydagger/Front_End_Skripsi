@@ -136,7 +136,7 @@ public class AddPortfolio extends AppCompatActivity {
     }
 
     private void addNewPortfolio(File imageView, String id){
-        String URL = "https://springjava-1591708327203.azurewebsites.net/UserPortfolio/insertUserPortfolio";
+        String URL = "https://springjava.azurewebsites.net/UserPortfolio/insertUserPortfolio";
         Map<String,String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);

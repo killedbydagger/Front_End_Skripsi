@@ -238,7 +238,7 @@ public class SearchFragment extends Fragment {
     private void loadPositionData(int categoryId) throws JSONException {
         System.out.println(categoryId);
         if(sp_kategoriJabatan.getSelectedItemPosition() != 0) {
-            String URL = "https://springjava-1591708327203.azurewebsites.net/CategoryPosition/getCategoryPosition";
+            String URL = "https://springjava.azurewebsites.net/CategoryPosition/getCategoryPosition";
             final JSONObject jsonBody = new JSONObject();
             jsonBody.put("category_id",categoryId);
 
@@ -290,7 +290,7 @@ public class SearchFragment extends Fragment {
     }
 
     private void loadSearchVacancy(int userId, int category, int position, CharSequence keyword, int location, Editable salary) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/searchVacancy";
+        String URL = "https://springjava.azurewebsites.net/Vacancy/searchVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("category_id", category);

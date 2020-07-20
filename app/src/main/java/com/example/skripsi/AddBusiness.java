@@ -285,7 +285,7 @@ public class AddBusiness extends AppCompatActivity {
     }
 
     private void addPhotoBusiness(File imageView, String businessId) throws JSONException {
-        final String URL = "https://springjava-1591708327203.azurewebsites.net/Business/setBusinessImage";
+        final String URL = "https://springjava.azurewebsites.net/Business/setBusinessImage";
         //final String URL = "http://25.54.110.177:8095/Business/setBusinessImagee";
 
         Map<String,String> bodypart = new HashMap<>();
@@ -319,7 +319,7 @@ public class AddBusiness extends AppCompatActivity {
     }
 
     private void creatBusinessNew(File imageView, String id, String namaBisnis, String locationId, String overview){
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusiness";
+        String URL = "https://springjava.azurewebsites.net/Business/createNewBusiness";
         Map<String,String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);
@@ -364,7 +364,7 @@ public class AddBusiness extends AppCompatActivity {
 
     private void createBisnisWithoutImage(String id, String namaBisnis, int locationId, String overview) throws JSONException {
         Context mContext = AddBusiness.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusinessWithoutImage";
+        String URL = "https://springjava.azurewebsites.net/Business/createNewBusinessWithoutImage";
         //String URL = "http://25.54.110.177:8095/Business/createNewBusiness";
         JSONObject jsonBody = new JSONObject();
 

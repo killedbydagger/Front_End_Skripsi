@@ -116,7 +116,7 @@ public class ViewPortfolio extends AppCompatActivity {
     }
 
     private void deletePortfolio(String userId, String businessId) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/UserPortfolio/removeUserPortfolio";
+        String URL = "https://springjava.azurewebsites.net/UserPortfolio/removeUserPortfolio";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("portfolio_id", businessId);

@@ -178,7 +178,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     }
 
     private void deleteVacancy(final Context mContext, String id, String vacId, final int position) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/deleteVacancy";
+        String URL = "https://springjava.azurewebsites.net/Vacancy/deleteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
         jsonBody.put("vac_id", vacId);

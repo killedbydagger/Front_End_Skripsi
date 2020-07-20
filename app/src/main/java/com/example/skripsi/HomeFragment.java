@@ -149,7 +149,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void getUserRecommendation(int id) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Recommendation/getUserRecommendation";
+        String URL = "https://springjava.azurewebsites.net/Recommendation/getUserRecommendation";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -206,7 +206,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadRecommendation(String id, String categories, int locationid) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/recommendVacancy";
+        String URL = "https://springjava.azurewebsites.net/Vacancy/recommendVacancy";
         //String URL = "http://25.54.110.177:8095/Vacancy/recommendVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);

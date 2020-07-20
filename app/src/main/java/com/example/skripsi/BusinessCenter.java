@@ -255,7 +255,7 @@ public class BusinessCenter extends AppCompatActivity {
     }
 
     private void loadVacancyData(String id) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Vacancy/viewAllVacancyByBusID";
+        String URL = "https://springjava.azurewebsites.net/Vacancy/viewAllVacancyByBusID";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -325,7 +325,7 @@ public class BusinessCenter extends AppCompatActivity {
     private void checkBisnis(String id) throws JSONException {
         Context mContext = BusinessCenter.this;
 
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/checkUserBusiness";
+        String URL = "https://springjava.azurewebsites.net/Business/checkUserBusiness";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
 

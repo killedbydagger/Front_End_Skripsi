@@ -392,7 +392,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     }
 
     private void loadImagePortfolio(String id) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
+        String URL = "https://springjava.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
         //String URL = "http://25.54.110.177:8095/UserPortfolio/getAllUserPortfolio";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);

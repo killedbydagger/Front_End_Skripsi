@@ -117,7 +117,7 @@ public class ApplicationHistory extends AppCompatActivity {
     }
 
     private void applicantHistory(String id) throws JSONException {
-        String URL = "https://springjava-1591708327203.azurewebsites.net/VacancyApplicant/getUserApplicant";
+        String URL = "https://springjava.azurewebsites.net/VacancyApplicant/getUserApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {

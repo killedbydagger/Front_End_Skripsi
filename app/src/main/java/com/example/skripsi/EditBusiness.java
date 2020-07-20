@@ -278,7 +278,7 @@ public class EditBusiness extends AppCompatActivity {
 
     private void editBusinessWithoutImage(String userId, String businessId, String businessName, String locationId, String businessOverview) throws JSONException {
         Context mContext = EditBusiness.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusinessWithoutImage";
+        String URL = "https://springjava.azurewebsites.net/Business/editUserBusinessWithoutImage";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("business_id", businessId);
@@ -372,7 +372,7 @@ public class EditBusiness extends AppCompatActivity {
 //    }
 
     private void editBusinessMulti(final File imageView, String id, String businessId, String namaBisnis, String locationId, String overview){
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/editUserBusiness";
+        String URL = "https://springjava.azurewebsites.net/Business/editUserBusiness";
         Map<String,String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);
