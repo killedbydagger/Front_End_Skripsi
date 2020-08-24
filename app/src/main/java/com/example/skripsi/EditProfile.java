@@ -119,15 +119,14 @@ public class EditProfile extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
-                    }else{
+                    } else {
                         pickImageFromGallery();
                     }
-                }
-                else{
+                } else {
                     pickImageFromGallery();
                 }
             }
@@ -188,15 +187,14 @@ public class EditProfile extends AppCompatActivity {
         btn_upload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE2);
-                    }else{
+                    } else {
                         pickFile();
                     }
-                }
-                else{
+                } else {
                     pickFile();
                 }
             }
@@ -219,8 +217,7 @@ public class EditProfile extends AppCompatActivity {
 //        String tampungTanggal = splitDob[0];
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -230,8 +227,7 @@ public class EditProfile extends AppCompatActivity {
 
         if (mImage == null || mImage.equals("null")) {
             img_profile.setImageResource(R.drawable.logo1);
-        }
-        else {
+        } else {
             try {
                 URL url = new URL(user.get(sessionManager.IMG_URL));
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -297,21 +293,20 @@ public class EditProfile extends AppCompatActivity {
                 if (!validationChecks.containsValue(false)) {
                     viewDialog = new ViewDialog(EditProfile.this);
                     viewDialog.showDialog();
-                        if(flag.equals("N") ){
-                            try {
-                                editProfileWithoutImage();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                    if (flag.equals("N")) {
+                        try {
+                            editProfileWithoutImage();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        else{
-                                editProfile(imageFile);
-                        }
+                    } else {
+                        editProfile(imageFile);
+                    }
 
-                        if(flagPDF.equals("Y")){
-                            String id = user.get(sessionManager.ID);
-                            uploadFilePDF(pdfFile, id);
-                        }
+                    if (flagPDF.equals("Y")) {
+                        String id = user.get(sessionManager.ID);
+                        uploadFilePDF(pdfFile, id);
+                    }
                 }
 
             }
@@ -329,27 +324,25 @@ public class EditProfile extends AppCompatActivity {
         Intent intentPDF = new Intent(Intent.ACTION_GET_CONTENT);
         intentPDF.setType("application/pdf");
         intentPDF.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(Intent.createChooser(intentPDF , "Select File"), FILE_PICK_CODE);
+        startActivityForResult(Intent.createChooser(intentPDF, "Select File"), FILE_PICK_CODE);
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromGallery();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
                 }
             }
             break;
-            case PERMISSION_CODE2 :{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            case PERMISSION_CODE2: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickFile();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
                 }
             }
             break;
@@ -358,15 +351,14 @@ public class EditProfile extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri selectedImageUri = data.getData();
             String filePath = FetchPath.getPath(this, selectedImageUri);
             imageFile = new File(filePath);
             img_profile.setImageURI(selectedImageUri);
             img_profile.setScaleType(ImageView.ScaleType.FIT_XY);
             flag = "Y";
-        }
-        else if(resultCode == RESULT_OK && requestCode == FILE_PICK_CODE){
+        } else if (resultCode == RESULT_OK && requestCode == FILE_PICK_CODE) {
             Uri selectedImageUri = data.getData();
             String filePath = FetchPath.getPath(this, selectedImageUri);
             pdfFile = new File(filePath);
@@ -511,7 +503,8 @@ public class EditProfile extends AppCompatActivity {
 
     private void editProfileWithoutImage() throws JSONException {
         Context mContext = EditProfile.this;
-        String URL = "https://springjava.azurewebsites.net/User/editUserProfileWithoutImage";
+        String URL = "http://25.56.11.101:8095/User/editUserProfileWithoutImage";
+        //String URL = "https://springjava.azurewebsites.net/User/editUserProfileWithoutImage";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("first_name", et_firstName.getText().toString());
         jsonBody.put("last_name", et_lastName.getText().toString());
@@ -571,7 +564,7 @@ public class EditProfile extends AppCompatActivity {
                         }
                     } else {
                         viewDialog.hideDialog();
-                         Toast.makeText(getApplicationContext(), "Edit profile failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Edit profile failed", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -595,9 +588,10 @@ public class EditProfile extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    private void editProfile(File imageView){
-        String URL = "https://springjava.azurewebsites.net/User/editUserProfile";
-        Map<String,String> bodypart = new HashMap<>();
+    private void editProfile(File imageView) {
+        String URL = "http://25.56.11.101:8095/User/editUserProfile";
+        //String URL = "https://springjava.azurewebsites.net/User/editUserProfile";
+        Map<String, String> bodypart = new HashMap<>();
 
         bodypart.put("first_name", et_firstName.getText().toString());
         bodypart.put("last_name", et_lastName.getText().toString());
@@ -682,9 +676,10 @@ public class EditProfile extends AppCompatActivity {
         requestQueue.add(multipartTest);
     }
 
-    private void uploadFilePDF(File imageView, String id){
-        String URL = "https://springjava.azurewebsites.net/User/insertUserCV";
-        Map<String,String> bodypart = new HashMap<>();
+    private void uploadFilePDF(File imageView, String id) {
+        String URL = "http://25.56.11.101:8095/User/insertUserCV";
+        //String URL = "https://springjava.azurewebsites.net/User/insertUserCV";
+        Map<String, String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);
 
@@ -703,7 +698,7 @@ public class EditProfile extends AppCompatActivity {
                             editor.putString(CV_URL, userCV);
                             editor.apply();
                         }
-                            Toast.makeText(getApplicationContext(), "Upload file success", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Upload file success", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Upload file failed", Toast.LENGTH_LONG).show();
                     }

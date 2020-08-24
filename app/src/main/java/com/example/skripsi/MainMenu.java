@@ -75,7 +75,8 @@ public class MainMenu extends AppCompatActivity {
     }
 
     private void loadLocationData() throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Location/getAllLocation";
+        String URL = "http://25.56.11.101:8095/Location/getAllLocation";
+        //String URL = "https://springjava.azurewebsites.net/Location/getAllLocation";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email", sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -113,7 +114,8 @@ public class MainMenu extends AppCompatActivity {
     }
 
     private void loadEducationData() throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Education/getAllEducation";
+        String URL = "http://25.56.11.101:8095/Education/getAllEducation";
+        //String URL = "https://springjava.azurewebsites.net/Education/getAllEducation";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email", sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -150,7 +152,8 @@ public class MainMenu extends AppCompatActivity {
     }
 
     private void loadCategoryData() throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Category/getAllCategory";
+        String URL = "http://25.56.11.101:8095/Category/getAllCategory";
+        //String URL = "https://springjava.azurewebsites.net/Category/getAllCategory";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email", sessionManager.EMAIL);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {

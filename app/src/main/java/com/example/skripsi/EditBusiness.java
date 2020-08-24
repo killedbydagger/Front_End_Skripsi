@@ -100,15 +100,14 @@ public class EditBusiness extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
-                    }else{
+                    } else {
                         pickImageFromGallery();
                     }
-                }
-                else{
+                } else {
                     pickImageFromGallery();
                 }
             }
@@ -137,8 +136,7 @@ public class EditBusiness extends AppCompatActivity {
         }
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -148,8 +146,7 @@ public class EditBusiness extends AppCompatActivity {
 
         if (businessImage.equals("null")) {
             img_business.setImageResource(R.drawable.logo1);
-        }
-        else {
+        } else {
             try {
                 URL url = new URL(businessImage);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -181,15 +178,14 @@ public class EditBusiness extends AppCompatActivity {
 //                        e.printStackTrace();
 //                    }
 
-                    if(flag.equals("N")){
+                    if (flag.equals("N")) {
                         try {
-                            editBusinessWithoutImage(userId, business_id , et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
+                            editBusinessWithoutImage(userId, business_id, et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else{
-                        editBusinessMulti(imageFile ,userId, business_id , et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
+                    } else {
+                        editBusinessMulti(imageFile, userId, business_id, et_businessName.getText().toString(), String.valueOf(sp_location.getSelectedItemPosition()), et_businessOverview.getText().toString());
                     }
 
                 }
@@ -207,13 +203,12 @@ public class EditBusiness extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromGallery();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -221,7 +216,7 @@ public class EditBusiness extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri selectedImageUri = data.getData();
             String filePath = FetchPath.getPath(this, selectedImageUri);
             imageFile = new File(filePath);
@@ -278,7 +273,8 @@ public class EditBusiness extends AppCompatActivity {
 
     private void editBusinessWithoutImage(String userId, String businessId, String businessName, String locationId, String businessOverview) throws JSONException {
         Context mContext = EditBusiness.this;
-        String URL = "https://springjava.azurewebsites.net/Business/editUserBusinessWithoutImage";
+        String URL = "http://25.56.11.101:8095/Business/editUserBusinessWithoutImage";
+        //String URL = "https://springjava.azurewebsites.net/Business/editUserBusinessWithoutImage";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("business_id", businessId);
@@ -371,9 +367,10 @@ public class EditBusiness extends AppCompatActivity {
 //        requestQueue.add(multipartTest);
 //    }
 
-    private void editBusinessMulti(final File imageView, String id, String businessId, String namaBisnis, String locationId, String overview){
-        String URL = "https://springjava.azurewebsites.net/Business/editUserBusiness";
-        Map<String,String> bodypart = new HashMap<>();
+    private void editBusinessMulti(final File imageView, String id, String businessId, String namaBisnis, String locationId, String overview) {
+        String URL = "http://25.56.11.101:8095/Business/editUserBusiness";
+        //String URL = "https://springjava.azurewebsites.net/Business/editUserBusiness";
+        Map<String, String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);
         bodypart.put("business_id", businessId);

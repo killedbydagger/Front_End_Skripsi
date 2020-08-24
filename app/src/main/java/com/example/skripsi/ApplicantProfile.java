@@ -84,7 +84,7 @@ public class ApplicantProfile extends AppCompatActivity {
         tv_noPhoto = findViewById(R.id.tv_noPhoto);
 
         portfolioList = new ArrayList<>();
-        adapter = new PortfolioAdapter(getApplicationContext(),portfolioList);
+        adapter = new PortfolioAdapter(getApplicationContext(), portfolioList);
 
         linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -94,10 +94,9 @@ public class ApplicantProfile extends AppCompatActivity {
         btn_applicantViewFile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (cv.equals(null)||cv.equals("null")){
+                if (cv.equals(null) || cv.equals("null")) {
                     Toast.makeText(getApplicationContext(), "No file can be viewed", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(cv));
                     startActivity(browserIntent);
                 }
@@ -184,7 +183,8 @@ public class ApplicantProfile extends AppCompatActivity {
     }
 
     private void showApplicantProfile() throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/User/getUserApplicant";
+        String URL = "http://25.56.11.101:8095/User/getUserApplicant";
+        //String URL = "https://springjava.azurewebsites.net/User/getUserApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", getIntent().getExtras().getString("applicantEmail"));
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -229,14 +229,12 @@ public class ApplicantProfile extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            if(applicantImgURL.equals(null) || applicantImgURL.equals("null")){
+                            if (applicantImgURL.equals(null) || applicantImgURL.equals("null")) {
                                 img_applicantPhoto.setImageResource(R.drawable.logo1);
-                            }
-                            else {
+                            } else {
 
                                 int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                                if (SDK_INT > 8)
-                                {
+                                if (SDK_INT > 8) {
                                     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                             .permitAll().build();
                                     StrictMode.setThreadPolicy(policy);
@@ -257,7 +255,6 @@ public class ApplicantProfile extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-
 
 
                             tv_applicantDesc.setText(applicantDesc);
@@ -294,7 +291,8 @@ public class ApplicantProfile extends AppCompatActivity {
     }
 
     private void loadImagePortfolio(String id) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
+        String URL = "http://25.56.11.101:8095/UserPortfolio/getAllUserPortfolio";
+        //String URL = "https://springjava.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
         //String URL = "http://25.54.110.177:8095/UserPortfolio/getAllUserPortfolio";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
@@ -323,7 +321,7 @@ public class ApplicantProfile extends AppCompatActivity {
                         viewDialog.hideDialog();
                         showLoading(false);
                     } else {
-                         //Toast.makeText(getApplicationContext(), "Load failed", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(), "Load failed", Toast.LENGTH_LONG).show();
                         tv_noPhoto.setVisibility(View.VISIBLE);
                         viewDialog.hideDialog();
                         showLoading(false);

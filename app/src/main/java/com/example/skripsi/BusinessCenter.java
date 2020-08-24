@@ -128,20 +128,17 @@ public class BusinessCenter extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 int item = adapter.getItemCount();
-                if(status.equals("Premium")){
-                    if(item == 10){
+                if (status.equals("Premium")) {
+                    if (item == 10) {
                         Toast.makeText(getApplicationContext(), "Already reach limit", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    } else {
                         Intent addVacancy = new Intent(BusinessCenter.this, AddVacancy.class);
                         startActivity(addVacancy);
                     }
-                }
-                else{
-                    if(item == 2){
+                } else {
+                    if (item == 2) {
                         Toast.makeText(getApplicationContext(), "Already reach limit, need more ? upgrade to PREMIUM member", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    } else {
                         Intent addVacancy = new Intent(BusinessCenter.this, AddVacancy.class);
                         startActivity(addVacancy);
                     }
@@ -201,15 +198,14 @@ public class BusinessCenter extends AppCompatActivity {
         String userStatus = user.get(sessionManager.STATUS);
 
 
-
 //        if (business.get(sessionManager.BUSINESS_ID) == null) {
-            try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
-                editor = sharedPreferences.edit();
-                checkBisnis(userId);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        try {
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
+            editor = sharedPreferences.edit();
+            checkBisnis(userId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 //        } else {
 //            try {
 //                viewRating(business.get(sessionManager.BUSINESS_ID));
@@ -255,7 +251,8 @@ public class BusinessCenter extends AppCompatActivity {
     }
 
     private void loadVacancyData(String id) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Vacancy/viewAllVacancyByBusID";
+        String URL = "http://25.56.11.101:8095/Vacancy/viewAllVacancyByBusID";
+        //String URL = "https://springjava.azurewebsites.net/Vacancy/viewAllVacancyByBusID";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -324,8 +321,8 @@ public class BusinessCenter extends AppCompatActivity {
 
     private void checkBisnis(String id) throws JSONException {
         Context mContext = BusinessCenter.this;
-
-        String URL = "https://springjava.azurewebsites.net/Business/checkUserBusiness";
+        String URL = "http://25.56.11.101:8095/Business/checkUserBusiness";
+        //String URL = "https://springjava.azurewebsites.net/Business/checkUserBusiness";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
 
@@ -361,7 +358,7 @@ public class BusinessCenter extends AppCompatActivity {
                             editor.putString(BUSINESS_LOCATION_NAME, locationName);
                             editor.putString(BUSINESS_OVERVIEW, busOverview);
 
-                            if(!busImage.equals(null)){
+                            if (!busImage.equals(null)) {
                                 editor.putString(BUSINESS_IMAGE, busImage);
                             }
 
@@ -372,8 +369,7 @@ public class BusinessCenter extends AppCompatActivity {
 
 
                             int SDK_INT = android.os.Build.VERSION.SDK_INT;
-                            if (SDK_INT > 8)
-                            {
+                            if (SDK_INT > 8) {
                                 StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                                         .permitAll().build();
                                 StrictMode.setThreadPolicy(policy);
@@ -383,8 +379,7 @@ public class BusinessCenter extends AppCompatActivity {
 
                             if (busImage.equals("null")) {
                                 img_Business.setImageResource(R.drawable.logo1);
-                            }
-                            else{
+                            } else {
                                 try {
                                     URL url = new URL(busImage);
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();

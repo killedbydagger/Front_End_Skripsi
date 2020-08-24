@@ -314,8 +314,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void checkEmail(String email) throws JSONException {
         Context mContext = RegisterActivity.this;
-
-        String URL = "https://springjava.azurewebsites.net/User/checkEmailRegister";
+        String URL = "http://25.56.11.101:8095/User/checkEmailRegister";
+        //String URL = "https://springjava.azurewebsites.net/User/checkEmailRegister";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", email);
 
@@ -359,7 +359,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void submit() throws JSONException {
         Context mContext = RegisterActivity.this;
-        String URL = "https://springjava.azurewebsites.net/User/createNewUser";
+        String URL = "http://25.56.11.101:8095/User/createNewUser";
+        //String URL = "https://springjava.azurewebsites.net/User/createNewUser";
         JSONObject jsonBody = new JSONObject();
 
         int selectedId = rb_genderGroup.getCheckedRadioButtonId();
@@ -381,7 +382,7 @@ public class RegisterActivity extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     System.out.println("Status : " + status);
-                    if(status.equals("Success")) {
+                    if (status.equals("Success")) {
                         Toast.makeText(getApplicationContext(), "Please check your email to finish your registration", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();

@@ -23,12 +23,12 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-public class MultipartTest extends Request<String>{
+public class MultipartTest extends Request<String> {
 
     private MultipartEntityBuilder entity = MultipartEntityBuilder.create();
     private static final String FILE_PART_NAME = "image";
     //    private static final String STRING_PART_NAME = "user_id";
-    private final Map<String,String> bodypart;
+    private final Map<String, String> bodypart;
     private final Response.Listener<String> mListener;
     private final File file;
     //private final String user_id;
@@ -56,21 +56,16 @@ public class MultipartTest extends Request<String>{
     }
 
     @Override
-    public String getBodyContentType()
-    {
+    public String getBodyContentType() {
         return httpentity.getContentType().getValue();
     }
 
     @Override
-    public byte[] getBody() throws AuthFailureError
-    {
+    public byte[] getBody() throws AuthFailureError {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try
-        {
+        try {
             httpentity.writeTo(bos);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return bos.toByteArray();

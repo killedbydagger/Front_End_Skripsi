@@ -139,17 +139,18 @@ public class HomeFragment extends Fragment {
         HashMap<String, String> user = sessionManager.getUserDetail();
         final String userId = user.get(sessionManager.ID);
 
-            try {
-                sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
-                editor = sharedPreferences.edit();
-                getUserRecommendation(Integer.parseInt(userId));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+        try {
+            sharedPreferences = sessionManager.context.getSharedPreferences("LOGIN", PRIVATE_MODE);
+            editor = sharedPreferences.edit();
+            getUserRecommendation(Integer.parseInt(userId));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getUserRecommendation(int id) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Recommendation/getUserRecommendation";
+        String URL = "http://25.56.11.101:8095/Recommendation/getUserRecommendation";
+        //String URL = "https://springjava.azurewebsites.net/Recommendation/getUserRecommendation";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
@@ -206,7 +207,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadRecommendation(String id, String categories, int locationid) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Vacancy/recommendVacancy";
+        String URL = "http://25.56.11.101:8095/Vacancy/recommendVacancy";
+        //String URL = "https://springjava.azurewebsites.net/Vacancy/recommendVacancy";
         //String URL = "http://25.54.110.177:8095/Vacancy/recommendVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);

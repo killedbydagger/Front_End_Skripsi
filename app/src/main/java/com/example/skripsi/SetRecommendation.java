@@ -86,7 +86,6 @@ public class SetRecommendation extends AppCompatActivity {
     }
 
 
-
     private void validateLocation() {
         if (sp_lokasi.getSelectedItemPosition() == 0) {
             ((TextView) sp_lokasi.getSelectedView()).setError("Please choose your location");
@@ -144,7 +143,8 @@ public class SetRecommendation extends AppCompatActivity {
 
     private void setRecommendation(int userid, int location, String category) throws JSONException {
         Context mContext = SetRecommendation.this;
-        String URL = "https://springjava.azurewebsites.net/Recommendation/setUserRecommendation";
+        String URL = "http://25.56.11.101:8095/Recommendation/setUserRecommendation";
+        //String URL = "https://springjava.azurewebsites.net/Recommendation/setUserRecommendation";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userid);
         jsonBody.put("location_id", location);
@@ -161,11 +161,10 @@ public class SetRecommendation extends AppCompatActivity {
                     if (status.equals("Success Insert")) {
                         Toast.makeText(getApplicationContext(), "Success to set recommendation", Toast.LENGTH_LONG).show();
                         finish();
-                    }
-                    else if(status.equals("Success Update")){
+                    } else if (status.equals("Success Update")) {
                         Toast.makeText(getApplicationContext(), "Success to update recommendation", Toast.LENGTH_LONG).show();
                         finish();
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Failed to set recommendation", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {

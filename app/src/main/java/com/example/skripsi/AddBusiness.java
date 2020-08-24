@@ -89,15 +89,14 @@ public class AddBusiness extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
-                    }else{
+                    } else {
                         pickImageFromGallery();
                     }
-                }
-                else{
+                } else {
                     pickImageFromGallery();
                 }
             }
@@ -132,15 +131,14 @@ public class AddBusiness extends AppCompatActivity {
                     //createBisnis(userId , et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
                     viewDialog = new ViewDialog(AddBusiness.this);
                     viewDialog.showDialog();
-                    if(flag.equals("N")){
+                    if (flag.equals("N")) {
                         try {
-                            createBisnisWithoutImage(userId , et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
+                            createBisnisWithoutImage(userId, et_businessName.getText().toString(), locationId, et_businessOverview.getText().toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                    }
-                    else{
-                        creatBusinessNew(imageFile ,userId , et_businessName.getText().toString(), String.valueOf(locationId), et_businessOverview.getText().toString());
+                    } else {
+                        creatBusinessNew(imageFile, userId, et_businessName.getText().toString(), String.valueOf(locationId), et_businessOverview.getText().toString());
                     }
                 }
             }
@@ -156,13 +154,12 @@ public class AddBusiness extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromGallery();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -170,7 +167,7 @@ public class AddBusiness extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri selectedImageUri = data.getData();
             String filePath = FetchPath.getPath(this, selectedImageUri);
             imageFile = new File(filePath);
@@ -228,7 +225,8 @@ public class AddBusiness extends AppCompatActivity {
 
     private void createBisnis(String id, String namaBisnis, int locationId, String overview) throws JSONException {
         Context mContext = AddBusiness.this;
-        String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusiness";
+        String URL = "http://25.56.11.101:8095/Business/createNewBusiness";
+        //String URL = "https://springjava-1591708327203.azurewebsites.net/Business/createNewBusiness";
         //String URL = "http://25.54.110.177:8095/Business/createNewBusiness";
         JSONObject jsonBody = new JSONObject();
 
@@ -251,7 +249,7 @@ public class AddBusiness extends AppCompatActivity {
 
                             String businessId = object.getString("bus_id");
 
-                            if(!flag.equals("N")){
+                            if (!flag.equals("N")) {
                                 addPhotoBusiness(imageFile, businessId);
                             }
                         }
@@ -285,10 +283,11 @@ public class AddBusiness extends AppCompatActivity {
     }
 
     private void addPhotoBusiness(File imageView, String businessId) throws JSONException {
-        final String URL = "https://springjava.azurewebsites.net/Business/setBusinessImage";
+        final String URL = "http://25.56.11.101:8095/Business/setBusinessImage";
+        //final String URL = "https://springjava.azurewebsites.net/Business/setBusinessImage";
         //final String URL = "http://25.54.110.177:8095/Business/setBusinessImagee";
 
-        Map<String,String> bodypart = new HashMap<>();
+        Map<String, String> bodypart = new HashMap<>();
         bodypart.put("bus_id", businessId);
 
         MultipartRequest multipartRequest = new MultipartRequest(URL, new Response.Listener<JSONObject>() {
@@ -297,10 +296,9 @@ public class AddBusiness extends AppCompatActivity {
                 try {
                     String status = response.getString("status");
                     System.out.println("status : " + status);
-                    if(status.equals("Success")){
+                    if (status.equals("Success")) {
 
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Failed to change photo", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
@@ -312,15 +310,16 @@ public class AddBusiness extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
 
             }
-        }, imageView, bodypart );
+        }, imageView, bodypart);
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(multipartRequest);
     }
 
-    private void creatBusinessNew(File imageView, String id, String namaBisnis, String locationId, String overview){
-        String URL = "https://springjava.azurewebsites.net/Business/createNewBusiness";
-        Map<String,String> bodypart = new HashMap<>();
+    private void creatBusinessNew(File imageView, String id, String namaBisnis, String locationId, String overview) {
+        String URL = "http://25.56.11.101:8095/Business/createNewBusiness";
+        //String URL = "https://springjava.azurewebsites.net/Business/createNewBusiness";
+        Map<String, String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);
         bodypart.put("business_name", namaBisnis);
@@ -364,7 +363,8 @@ public class AddBusiness extends AppCompatActivity {
 
     private void createBisnisWithoutImage(String id, String namaBisnis, int locationId, String overview) throws JSONException {
         Context mContext = AddBusiness.this;
-        String URL = "https://springjava.azurewebsites.net/Business/createNewBusinessWithoutImage";
+        String URL = "http://25.56.11.101:8095/Business/createNewBusinessWithoutImage";
+        //String URL = "https://springjava.azurewebsites.net/Business/createNewBusinessWithoutImage";
         //String URL = "http://25.54.110.177:8095/Business/createNewBusiness";
         JSONObject jsonBody = new JSONObject();
 

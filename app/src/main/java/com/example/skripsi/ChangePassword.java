@@ -116,11 +116,10 @@ public class ChangePassword extends AppCompatActivity {
         if (et_newPassword.getText().toString().isEmpty()) {
             et_newPassword.setError("Field can't be empty");
             validationChecks.put("New Password", false);
-        }else if (!PASSWORD_PATTERN.matcher(et_newPassword.getText().toString()).matches()) {
+        } else if (!PASSWORD_PATTERN.matcher(et_newPassword.getText().toString()).matches()) {
             et_newPassword.setError("Password must contain atleast 1 upper case, 1 lower case, 1 digit and minimum 6 character");
             validationChecks.put("New Password", false);
-        }
-        else {
+        } else {
             et_newPassword.setError(null);
             validationChecks.put("New Password", true);
         }
@@ -153,7 +152,8 @@ public class ChangePassword extends AppCompatActivity {
 
     private void changePassword(String userEmail, String userOlpPw, String userNewPw) throws JSONException {
         Context mContext = ChangePassword.this;
-        String URL = "https://springjava.azurewebsites.net/User/changePasswordUser";
+        String URL = "http://25.56.11.101:8095/User/changePasswordUser";
+        //String URL = "https://springjava.azurewebsites.net/User/changePasswordUser";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", userEmail);
         jsonBody.put("old_password", userOlpPw);

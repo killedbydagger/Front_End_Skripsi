@@ -113,7 +113,8 @@ public class Rating extends AppCompatActivity {
     }
 
     private void loadRating(String id) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/BusinessRating/getBusinessRating";
+        String URL = "http://25.56.11.101:8095/BusinessRating/getBusinessRating";
+        //String URL = "https://springjava.azurewebsites.net/BusinessRating/getBusinessRating";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {

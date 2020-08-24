@@ -52,14 +52,14 @@ public class ForgetPassword extends AppCompatActivity {
         btn_resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!et_email.getText().toString().isEmpty()) {
+                if (!et_email.getText().toString().isEmpty()) {
                     viewDialog.showDialog();
                     try {
                         forget_password(et_email.getText().toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }else {
+                } else {
                     et_email.setError("Field can't be empty");
                 }
             }
@@ -73,7 +73,8 @@ public class ForgetPassword extends AppCompatActivity {
 //    }
 
     public void forget_password(String email) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/User/forgetPasswordUser";
+        String URL = "http://25.56.11.101:8095/User/forgetPasswordUser";
+        //String URL = "https://springjava.azurewebsites.net/User/forgetPasswordUser";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("email", email);
 
@@ -86,8 +87,7 @@ public class ForgetPassword extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Reset Password Success, check your email to get your new password", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Reset Password Failed", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                     }
@@ -100,11 +100,11 @@ public class ForgetPassword extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

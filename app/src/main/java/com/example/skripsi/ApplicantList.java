@@ -91,7 +91,8 @@ public class ApplicantList extends AppCompatActivity {
     }
 
     private void loadListApplicant() throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/VacancyApplicant/getVacancyApplicant";
+        String URL = "http://25.56.11.101:8095/VacancyApplicant/getVacancyApplicant";
+        //String URL = "https://springjava.azurewebsites.net/VacancyApplicant/getVacancyApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("vac_id", getIntent().getExtras().getString("VACANCY_ID"));
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {

@@ -60,6 +60,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.widget.ProgressBar;
 
 public class ProfileFragment extends Fragment implements View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
@@ -95,7 +96,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         tv_noPhoto = v.findViewById(R.id.tv_noPhoto);
 
         portfolioList = new ArrayList<>();
-        adapter = new PortfolioAdapter(getContext(),portfolioList);
+        adapter = new PortfolioAdapter(getContext(), portfolioList);
 
         linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -109,8 +110,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         mList.setHasFixedSize(true);
         mList.setAdapter(adapter);
         mList.setLayoutManager(new GridLayoutManager(getContext(), 3));
-
-
 
         img_profile = v.findViewById(R.id.img_profile);
 
@@ -169,10 +168,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
             @Override
             public void onClick(View view) {
                 String mCV = user.get(sessionManager.CV_URL);
-                if (mCV.equals(null)||mCV.equals("null")){
+                if (mCV.equals(null) || mCV.equals("null")) {
                     Toast.makeText(getContext(), "No file can be viewed", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     System.out.println(mCV);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mCV));
                     startActivity(browserIntent);
@@ -189,20 +187,17 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
             @Override
             public void onClick(View view) {
                 int item = adapter.getItemCount();
-                if(status.equals("Premium")){
-                    if(item == 15){
+                if (status.equals("Premium")) {
+                    if (item == 15) {
                         Toast.makeText(view.getContext(), "Already reach limit", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    } else {
                         Intent portfolioIntent = new Intent(view.getContext(), AddPortfolio.class);
                         startActivity(portfolioIntent);
                     }
-                }
-                else{
-                    if(item == 3){
+                } else {
+                    if (item == 3) {
                         Toast.makeText(view.getContext(), "Already reach limit, need more ? upgrade to PREMIUM member", Toast.LENGTH_LONG).show();
-                    }
-                    else{
+                    } else {
                         Intent portfolioIntent = new Intent(view.getContext(), AddPortfolio.class);
                         startActivity(portfolioIntent);
                     }
@@ -220,8 +215,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         });
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -233,8 +227,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         if (foto.equals(null) || foto.equals("null")) {
             img_profile.setImageResource(R.drawable.logo1);
-        }
-        else{
+        } else {
             try {
                 URL url = new URL(user.get(sessionManager.IMG_URL));
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -264,7 +257,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         return v;
 
     }
-
 
 
     @Override
@@ -301,8 +293,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
         }
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -312,8 +303,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
 
         if (mImage == null || mImage.equals("null")) {
             img_profile.setImageResource(R.drawable.logo1);
-        }
-        else{
+        } else {
             try {
                 URL url = new URL(user.get(sessionManager.IMG_URL));
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -392,7 +382,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
     }
 
     private void loadImagePortfolio(String id) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
+        String URL = "http://25.56.11.101:8095/UserPortfolio/getAllUserPortfolio";
+        //String URL = "https://springjava.azurewebsites.net/UserPortfolio/getAllUserPortfolio";
         //String URL = "http://25.54.110.177:8095/UserPortfolio/getAllUserPortfolio";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", id);
@@ -424,7 +415,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, N
                     } else {
                         tv_noPhoto.setVisibility(View.VISIBLE);
                         //Toast.makeText(getContext(), "Load image failed", Toast.LENGTH_LONG).show();
-                         viewDialog.hideDialog();
+                        viewDialog.hideDialog();
                         showLoading(false);
                     }
                 } catch (JSONException e) {

@@ -110,8 +110,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
         });
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -123,8 +122,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
 
         if (foto.equals(null) || foto.equals("null")) {
             viewHolder.img_company.setImageResource(R.drawable.logo1);
-        }
-        else{
+        } else {
             try {
                 URL url = new URL(foto);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -150,8 +148,7 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
                 intent.putExtra("FLAG", searchVacancy.getFavoriteFlag());
                 if (foto == null || foto.equals("null")) {
                     intent.putExtra("BUSINESS_IMAGE", "N");
-                }
-                else{
+                } else {
                     intent.putExtra("BUSINESS_IMAGE", searchVacancy.getVacancyBusImage());
                 }
                 v.getContext().startActivity(intent);
@@ -194,7 +191,8 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
     }
 
     private void favoriteVacancy(String userId, String vacId) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/addFavoriteVacancy";
+        String URL = "http://25.56.11.101:8095/FavoriteVacancy/addFavoriteVacancy";
+        //String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/addFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);
@@ -231,7 +229,8 @@ public class SearchVacancyAdapter extends RecyclerView.Adapter<SearchVacancyAdap
     }
 
     private void unFavorite(String userId, String vacId) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/removeFavoriteVacancy";
+        String URL = "http://25.56.11.101:8095/FavoriteVacancy/removeFavoriteVacancy";
+        //String URL = "https://springjava.azurewebsites.net/FavoriteVacancy/removeFavoriteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);

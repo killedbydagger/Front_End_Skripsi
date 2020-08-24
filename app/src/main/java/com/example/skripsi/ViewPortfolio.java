@@ -68,7 +68,7 @@ public class ViewPortfolio extends AppCompatActivity {
         final String userID = user.get(sessionManager.ID);
 
         img_delete = findViewById(R.id.img_delete);
-        if(imgUserId.equals(userID)){
+        if (imgUserId.equals(userID)) {
             img_delete.setVisibility(View.VISIBLE);
         }
         img_delete.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +116,8 @@ public class ViewPortfolio extends AppCompatActivity {
     }
 
     private void deletePortfolio(String userId, String businessId) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/UserPortfolio/removeUserPortfolio";
+        String URL = "http://25.56.11.101:8095/UserPortfolio/removeUserPortfolio";
+        //String URL = "https://springjava.azurewebsites.net/UserPortfolio/removeUserPortfolio";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("portfolio_id", businessId);
@@ -129,8 +130,7 @@ public class ViewPortfolio extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Success to delete portfolio", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                         finish();
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "failed to delete portfolio", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                     }

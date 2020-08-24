@@ -63,7 +63,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
         final History history = list.get(i);
 
-        
 
         sessionManager = new SessionManager(context);
         HashMap<String, String> user = sessionManager.getUserDetail();
@@ -116,8 +115,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         viewHolder.img_bintang.setImageResource(R.drawable.star);
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -129,8 +127,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         if (foto == null || foto.equals("null")) {
             viewHolder.img_company.setImageResource(R.drawable.logo1);
-        }
-        else{
+        } else {
             try {
                 URL url = new URL(foto);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -156,8 +153,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 intent.putExtra("FLAG", history.getFavoriteFlag());
                 if (foto == null || foto.equals("null")) {
                     intent.putExtra("BUSINESS_IMAGE", "N");
-                }
-                else{
+                } else {
                     intent.putExtra("BUSINESS_IMAGE", history.getBusImage());
                 }
                 v.getContext().startActivity(intent);

@@ -69,15 +69,14 @@ public class AddPortfolio extends AppCompatActivity {
         btn_addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                         String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                         requestPermissions(permissions, PERMISSION_CODE);
-                    }else{
+                    } else {
                         pickImageFromGallery();
                     }
-                }
-                else{
+                } else {
                     pickImageFromGallery();
                 }
             }
@@ -91,13 +90,12 @@ public class AddPortfolio extends AppCompatActivity {
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(flag == "N"){
+                if (flag == "N") {
                     Toast.makeText(getApplicationContext(), "You need to add an image first", Toast.LENGTH_LONG).show();
-                }
-                else{
+                } else {
                     viewDialog = new ViewDialog(AddPortfolio.this);
                     viewDialog.showDialog();
-                    addNewPortfolio(imageFile,userId);
+                    addNewPortfolio(imageFile, userId);
                 }
 
             }
@@ -112,13 +110,12 @@ public class AddPortfolio extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
-            case PERMISSION_CODE:{
-                if(grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        switch (requestCode) {
+            case PERMISSION_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     pickImageFromGallery();
-                }
-                else{
-                    Toast.makeText(this,"Permission denied...!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Permission denied...!", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -126,7 +123,7 @@ public class AddPortfolio extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             Uri selectedImageUri = data.getData();
             String filePath = FetchPath.getPath(this, selectedImageUri);
             imageFile = new File(filePath);
@@ -135,9 +132,10 @@ public class AddPortfolio extends AppCompatActivity {
         }
     }
 
-    private void addNewPortfolio(File imageView, String id){
-        String URL = "https://springjava.azurewebsites.net/UserPortfolio/insertUserPortfolio";
-        Map<String,String> bodypart = new HashMap<>();
+    private void addNewPortfolio(File imageView, String id) {
+        String URL = "http://25.56.11.101:8095/UserPortfolio/insertUserPortfolio";
+        //String URL = "https://springjava.azurewebsites.net/UserPortfolio/insertUserPortfolio";
+        Map<String, String> bodypart = new HashMap<>();
 
         bodypart.put("user_id", id);
 

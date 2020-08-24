@@ -18,7 +18,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.ViewHolder>{
+public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.ViewHolder> {
 
     private Context context;
     private List<Portfolio> list;
@@ -69,7 +69,7 @@ public class PortfolioAdapter extends RecyclerView.Adapter<PortfolioAdapter.View
 
     @Override
     public int getItemCount() {
-            return list.size();
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

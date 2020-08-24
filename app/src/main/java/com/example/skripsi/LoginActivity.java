@@ -87,10 +87,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 validateEmail();
                 validatePassword();
-                if (!validationChecks.containsValue(false)){
+                if (!validationChecks.containsValue(false)) {
                     viewDialog.showDialog();
                     try {
-                        login(et_email.getText().toString(),et_password.getText().toString());
+                        login(et_email.getText().toString(), et_password.getText().toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -101,10 +101,9 @@ public class LoginActivity extends AppCompatActivity {
         cb_showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     et_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                }
-                else{
+                } else {
                     et_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }
             }
@@ -112,27 +111,24 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    private void validateEmail(){
-        if(et_email.getText().toString().isEmpty()){
+    private void validateEmail() {
+        if (et_email.getText().toString().isEmpty()) {
             et_email.setError("Field can't be empty");
             validationChecks.put("Email", false);
-        }
-        else if(!Patterns.EMAIL_ADDRESS.matcher(et_email.getText().toString()).matches()){
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(et_email.getText().toString()).matches()) {
             et_email.setError("Please enter a valid email format");
             validationChecks.put("Email", false);
-        }
-        else {
+        } else {
             et_email.setError(null);
             validationChecks.put("Email", true);
         }
     }
 
-    private void validatePassword(){
-        if(et_password.getText().toString().isEmpty()){
+    private void validatePassword() {
+        if (et_password.getText().toString().isEmpty()) {
             et_password.setError("Field can't be empty");
             validationChecks.put("Password", false);
-        }
-        else{
+        } else {
             et_password.setError(null);
             validationChecks.put("Password", true);
         }
@@ -140,11 +136,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(final String email, String password) throws JSONException {
         Context mContext = LoginActivity.this;
-
-        String URL = "https://springjava.azurewebsites.net/User/getUserLogIn";
+        String URL = "http://25.56.11.101:8095/User/getUserLogIn";
+        //String URL = "https://springjava.azurewebsites.net/User/getUserLogIn";
         final JSONObject jsonBody = new JSONObject();
-        jsonBody.put("email",email);
-        jsonBody.put("password",password);
+        jsonBody.put("email", email);
+        jsonBody.put("password", password);
 
         final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
             @Override
@@ -156,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Login success", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
 
-                        for(int i = 0;i<jsonArray.length();i++){
+                        for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject object = jsonArray.getJSONObject(i);
 
                             String id = object.getString("user_id");
@@ -171,10 +167,9 @@ public class LoginActivity extends AppCompatActivity {
                             String description = "";
 
 
-                            if(object.isNull("user_description")){
+                            if (object.isNull("user_description")) {
                                 description = "";
-                            }
-                            else {
+                            } else {
                                 description = object.getString("user_description");
                             }
 
@@ -186,27 +181,25 @@ public class LoginActivity extends AppCompatActivity {
                             String locationId = "0";
                             String locationName = "";
 
-                            if(object.isNull("education")){
+                            if (object.isNull("education")) {
                                 educationId = "0";
                                 educationName = "";
-                            }
-                            else {
+                            } else {
                                 JSONObject object1 = object.getJSONObject("education");
                                 educationId = object1.getString("education_id");
                                 educationName = object1.getString("education_name");
                             }
 
-                            if(object.isNull("location")){
+                            if (object.isNull("location")) {
                                 locationId = "0";
                                 locationName = "";
-                            }
-                            else {
+                            } else {
                                 JSONObject object2 = object.getJSONObject("location");
                                 locationId = object2.getString("location_id");
                                 locationName = object2.getString("location_name");
                             }
 
-                            sessionManager.createSession(id,email,firstName,lastName,phone,gender,dateOfBirth,description,user_status,educationId,educationName,locationId,locationName, image, cv);
+                            sessionManager.createSession(id, email, firstName, lastName, phone, gender, dateOfBirth, description, user_status, educationId, educationName, locationId, locationName, image, cv);
                             viewDialog.hideDialog();
 
                             FirebaseInstanceId.getInstance().getInstanceId()
@@ -228,12 +221,11 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     });
 
-                            Intent singinIntent = new Intent(getApplicationContext(),MainMenu.class);
+                            Intent singinIntent = new Intent(getApplicationContext(), MainMenu.class);
                             startActivity(singinIntent);
                             finish();
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                         viewDialog.hideDialog();
                     }
@@ -246,11 +238,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError{
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };
@@ -260,7 +252,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void userToken(String email, String token) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/User/setUserFirebaseNotificationToken";
+        String URL = "http://25.56.11.101:8095/User/setUserFirebaseNotificationToken";
+        //String URL = "https://springjava.azurewebsites.net/User/setUserFirebaseNotificationToken";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_email", email);
         jsonBody.put("firebase_token", token);
@@ -271,8 +264,7 @@ public class LoginActivity extends AppCompatActivity {
                     String status = response.getString("status");
                     if (status.equals("Success")) {
                         System.out.println("SUCCESS TO SET USER TOKEN");
-                    }
-                    else {
+                    } else {
                         // Toast.makeText(getApplicationContext(), "Login failed", Toast.LENGTH_LONG).show();
                         System.out.println("FAILED TO SET USER TOKEN");
                     }
@@ -285,11 +277,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }){
+        }) {
             @Override
-            public Map<String,String> getHeaders() throws AuthFailureError {
-                final Map<String,String> params = new HashMap<String, String>();
-                params.put("Context-Type","application/json");
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                final Map<String, String> params = new HashMap<String, String>();
+                params.put("Context-Type", "application/json");
                 return params;
             }
         };

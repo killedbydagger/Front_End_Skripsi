@@ -178,7 +178,8 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
     }
 
     private void deleteVacancy(final Context mContext, String id, String vacId, final int position) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/Vacancy/deleteVacancy";
+        String URL = "http://25.56.11.101:8095/Vacancy/deleteVacancy";
+        //String URL = "https://springjava.azurewebsites.net/Vacancy/deleteVacancy";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", id);
         jsonBody.put("vac_id", vacId);
@@ -192,7 +193,7 @@ public class VacancyAdapter extends RecyclerView.Adapter<VacancyAdapter.ViewHold
                         Toast.makeText(mContext, "Delete vacancy success", Toast.LENGTH_LONG).show();
                         list.remove(position);
                         notifyDataSetChanged();
-                    }else {
+                    } else {
                         Toast.makeText(mContext, status, Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {

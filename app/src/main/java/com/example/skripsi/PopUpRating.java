@@ -80,12 +80,13 @@ public class PopUpRating extends Activity {
             }
         });
 
-        getWindow().setLayout((int)(width*.8), (int)(height*.5));
+        getWindow().setLayout((int) (width * .8), (int) (height * .5));
     }
 
     private void giveRating(int businessId, int vacId, int userid, int rate, Editable comment) throws JSONException {
         Context mContext = PopUpRating.this;
-        String URL = "https://springjava.azurewebsites.net/BusinessRating/applyBusinessRating";
+        String URL = "http://25.56.11.101:8095/BusinessRating/applyBusinessRating";
+        //String URL = "https://springjava.azurewebsites.net/BusinessRating/applyBusinessRating";
         JSONObject jsonBody = new JSONObject();
         jsonBody.put("business_id", businessId);
         jsonBody.put("vac_id", vacId);

@@ -145,7 +145,8 @@ public class ApplicantAdapter extends RecyclerView.Adapter<ApplicantAdapter.View
     }
 
     private void respondApplicant(final Context mContext, String userId, String vacId, String businessId, String respond, final int index) throws JSONException {
-        String URL = "https://springjava.azurewebsites.net/VacancyApplicant/respondVacancyApplicant";
+        String URL = "http://25.56.11.101:8095/VacancyApplicant/respondVacancyApplicant";
+        //String URL = "https://springjava.azurewebsites.net/VacancyApplicant/respondVacancyApplicant";
         final JSONObject jsonBody = new JSONObject();
         jsonBody.put("user_id", userId);
         jsonBody.put("vac_id", vacId);
